@@ -1112,23 +1112,42 @@
       </div>
 
       <!-- ═══════════════════════════════════════
-           缓一缓页面 —— 三层递进式情绪急救
+           缓一缓页面 —— 小缓陪你四层缓降
            ═══════════════════════════════════════ -->
       <div class="page" id="page-play">
         <div class="page-header">
           <h1 class="page-title">缓一缓</h1>
-          <p class="page-subtitle">不是让人开心，而是让人缓一缓</p>
+          <p class="page-subtitle">小缓陪你，一层一层缓下来</p>
         </div>
 
-        <!-- 第一层：身体着陆 —— 当情绪淹没认知时，先回到身体 -->
-        <div class="section">
-          <div class="section-title" style="display:flex;align-items:center;gap:6px;">
-            <span style="font-size:18px;">🫁</span> 第一层：身体着陆
+        <!-- 小缓引导语 -->
+        <div class="xiaohuan-guide" style="margin-bottom:20px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <div style="font-size:28px;flex-shrink:0;">🌿</div>
+            <div>
+              <div style="font-size:14px;color:var(--ink);line-height:1.7;margin-bottom:6px;">
+                "我知道你现在很难受。不用急着变好，我们先一层一层缓下来。"
+              </div>
+              <div style="font-size:12px;color:var(--cocoa-light);">
+                —— 小缓
+              </div>
+            </div>
           </div>
-          <p style="font-size:12px;color:var(--cocoa);margin-bottom:12px;">当脑子转不动的时候，先让身体回来</p>
+        </div>
+
+        <!-- 第一层：身体着陆 —— 小缓说：先回来 -->
+        <div class="section">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <span style="font-size:20px;">🫁</span>
+            <span style="font-size:15px;font-weight:600;color:var(--ink);">第一层：先回来</span>
+          </div>
+          <div style="font-size:12px;color:var(--cocoa);margin-bottom:12px;padding-left:28px;">
+            "当脑子转不动的时候，先让身体回来。"
+          </div>
 
           <!-- 呼吸气泡 -->
           <div class="card" style="margin-bottom:10px;">
+            <div style="font-size:12px;color:var(--cocoa);margin-bottom:10px;">小缓："跟着我呼吸，吸气... 呼气..."</div>
             <div class="breath-container">
               <div class="breath-circle" id="breath-circle">
                 <span style="font-size: 24px;">🫁</span>
@@ -1140,32 +1159,36 @@
 
           <!-- 五感 grounding -->
           <div class="card">
-            <div style="font-size:13px;color:var(--cocoa);margin-bottom:10px;">说出你感知到的：</div>
+            <div style="font-size:12px;color:var(--cocoa);margin-bottom:10px;">小缓："看看周围，告诉我你看到了什么？"</div>
             <div class="grounding-list">
               <div class="grounding-item" onclick="this.classList.toggle('checked')">
                 <div class="grounding-icon">👁</div>
-                <div><strong>3</strong> 个看到的：环顾四周，说出3样东西</div>
+                <div>看到 <strong>3</strong> 样东西</div>
               </div>
               <div class="grounding-item" onclick="this.classList.toggle('checked')">
                 <div class="grounding-icon">👂</div>
-                <div><strong>2</strong> 个听到的：仔细听，说出2种声音</div>
+                <div>听到 <strong>2</strong> 种声音</div>
               </div>
               <div class="grounding-item" onclick="this.classList.toggle('checked')">
                 <div class="grounding-icon">✋</div>
-                <div><strong>1</strong> 个摸到的：触摸身边物体，感受质地</div>
+                <div>摸到 <strong>1</strong> 个东西</div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- 第二层：时间延迟 —— 给冲动一个缓冲带 -->
+        <!-- 第二层：时间延迟 —— 小缓说：等一下 -->
         <div class="section">
-          <div class="section-title" style="display:flex;align-items:center;gap:6px;">
-            <span style="font-size:18px;">⏳</span> 第二层：时间延迟
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <span style="font-size:20px;">⏳</span>
+            <span style="font-size:15px;font-weight:600;color:var(--ink);">第二层：等一下</span>
           </div>
-          <p style="font-size:12px;color:var(--cocoa);margin-bottom:12px;">先做完这些，再决定要不要做那个决定</p>
+          <div style="font-size:12px;color:var(--cocoa);margin-bottom:12px;padding-left:28px;">
+            "不急着做决定，先做完这些再说。"
+          </div>
 
           <div class="card">
+            <div style="font-size:12px;color:var(--cocoa);margin-bottom:10px;">小缓："勾选你做到的，没做到也没关系。"</div>
             <div class="delay-list" id="delay-list">
               <div class="delay-item" onclick="toggleDelay(this)">
                 <div class="delay-checkbox"></div>
@@ -1196,30 +1219,36 @@
           </div>
         </div>
 
-        <!-- 第三层：意义锚定 —— 找到留下来的理由 -->
+        <!-- 第三层：意义锚定 —— 小缓说：看看这个 -->
         <div class="section">
-          <div class="section-title" style="display:flex;align-items:center;gap:6px;">
-            <span style="font-size:18px;">⚓</span> 第三层：意义锚定
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <span style="font-size:20px;">⚓</span>
+            <span style="font-size:15px;font-weight:600;color:var(--ink);">第三层：看看这个</span>
           </div>
-          <p style="font-size:12px;color:var(--cocoa);margin-bottom:12px;">还有什么让你舍不得？</p>
+          <div style="font-size:12px;color:var(--cocoa);margin-bottom:12px;padding-left:28px;">
+            "还有什么让你舍不得？抽一张看看。"
+          </div>
 
-          <!-- 留恋卡片 -->
           <div class="attachment-card" style="margin-bottom:10px;">
+            <div style="font-size:12px;color:var(--cocoa);margin-bottom:10px;">小缓悄悄说：</div>
             <div class="attachment-text" id="attachment-text">还有什么让你舍不得？</div>
             <button class="btn btn-primary" onclick="randomAttachment()">抽一张</button>
           </div>
         </div>
 
-        <!-- 第四层：情绪出口 —— 把毒素倒出来 -->
+        <!-- 第四层：情绪出口 —— 小缓说：倒出来 -->
         <div class="section">
-          <div class="section-title" style="display:flex;align-items:center;gap:6px;">
-            <span style="font-size:18px;">🌀</span> 第四层：情绪出口
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <span style="font-size:20px;">🌀</span>
+            <span style="font-size:15px;font-weight:600;color:var(--ink);">第四层：倒出来</span>
           </div>
-          <p style="font-size:12px;color:var(--cocoa);margin-bottom:12px;">不用变好，先把情绪倒出来</p>
+          <div style="font-size:12px;color:var(--cocoa);margin-bottom:12px;padding-left:28px;">
+            "不用变好，先把情绪倒出来。"
+          </div>
 
           <!-- 抽象生成器 -->
           <div class="card" style="margin-bottom:10px;">
-            <div style="font-size:13px;color:var(--cocoa);margin-bottom:10px;">输入你的烦恼，生成抽象文案：</div>
+            <div style="font-size:12px;color:var(--cocoa);margin-bottom:10px;">小缓："输入你的烦恼，我帮你发疯。"</div>
             <input type="text" class="input" id="fengwen-input" placeholder="例如：加班、失恋、没钱、房贷...">
             <button class="btn btn-primary" onclick="generateFengwen()">生成抽象文案</button>
             <div class="generator-output" id="fengwen-output"></div>
@@ -1227,10 +1256,21 @@
 
           <!-- 情绪翻译器 -->
           <div class="card">
-            <div style="font-size:13px;color:var(--cocoa);margin-bottom:10px;">把坏念头翻译成真实需求：</div>
+            <div style="font-size:12px;color:var(--cocoa);margin-bottom:10px;">小缓："把坏念头告诉我，我帮你翻译。"</div>
             <input type="text" class="input" id="thought-input" placeholder="我现在感觉很糟，想说...">
             <button class="btn btn-primary" onclick="translateThought()">翻译</button>
             <div class="generator-output" id="thought-output"></div>
+          </div>
+        </div>
+
+        <!-- 小缓结尾 -->
+        <div style="text-align:center;padding:24px 16px;">
+          <div style="font-size:28px;margin-bottom:8px;">🌿</div>
+          <div style="font-size:14px;color:var(--cocoa);line-height:1.8;">
+            "不管你现在在哪一层，<br>我都在这里陪你。"
+          </div>
+          <div style="font-size:12px;color:var(--cocoa-light);margin-top:8px;">
+            —— 小缓
           </div>
         </div>
       </div>
