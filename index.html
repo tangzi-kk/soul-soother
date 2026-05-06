@@ -1392,9 +1392,9 @@
         <div class="section">
           <div class="section-title">缓冲卡</div>
           <div class="sos-tabs">
-            <button class="sos-tab active" onclick="switchSos('mild', this)">轻度</button>
-            <button class="sos-tab" onclick="switchSos('moderate', this)">中度</button>
-            <button class="sos-tab" onclick="switchSos('severe', this)">高危</button>
+            <button class="sos-tab active" data-level="mild" onclick="switchSos('mild', this)">轻度</button>
+            <button class="sos-tab" data-level="moderate" onclick="switchSos('moderate', this)">中度</button>
+            <button class="sos-tab" data-level="severe" onclick="switchSos('severe', this)">高危</button>
           </div>
           <div class="card" id="sos-content">
             <div style="font-size: 14px; font-weight: 600; margin-bottom: 10px;">我现在有点难受</div>
@@ -1511,32 +1511,9 @@
           <div class="card">
             <div style="font-size:13px;color:var(--cocoa);margin-bottom:12px;">不急着做决定，先做完这些：</div>
             <div class="delay-list" id="delay-list">
-              <div class="delay-item" onclick="toggleDelay(this)">
-                <div class="delay-checkbox"></div>
-                <span>喝一口水</span>
-              </div>
-              <div class="delay-item" onclick="toggleDelay(this)">
-                <div class="delay-checkbox"></div>
-                <span>打开窗户，看看外面</span>
-              </div>
-              <div class="delay-item" onclick="toggleDelay(this)">
-                <div class="delay-checkbox"></div>
-                <span>给一个人发消息（说什么都行）</span>
-              </div>
-              <div class="delay-item" onclick="toggleDelay(this)">
-                <div class="delay-checkbox"></div>
-                <span>等 10 分钟</span>
-              </div>
-              <div class="delay-item" onclick="toggleDelay(this)">
-                <div class="delay-checkbox"></div>
-                <span>洗把脸，用冷水</span>
-              </div>
-              <div class="delay-item" onclick="toggleDelay(this)">
-                <div class="delay-checkbox"></div>
-                <span>把此刻的感受写下来（哪怕只有一个字）</span>
-              </div>
+              <!-- 动态生成 -->
             </div>
-            <button class="btn btn-ghost" style="margin-top: 14px;" onclick="resetDelay()">重置清单</button>
+            <button class="btn btn-ghost" style="margin-top: 14px;" onclick="resetDelay()">换一批</button>
           </div>
         </div>
 
@@ -4429,11 +4406,73 @@
         '<button class="btn btn-ghost" style="margin-top: 14px;" onclick="copySos()">复制缓冲卡</button>';
     }
 
-    // 复制缓冲卡内容到剪贴板
+    // 复制缓冲卡为豆包提示词
     function copySos() {
       if (!currentBufferCard) return;
-      const text = currentBufferCard.title + '\n' + currentBufferCard.subtitle + '\n' + currentBufferCard.actions.map(a => '· ' + a).join('\n');
-      navigator.clipboard.writeText(text).then(() => alert('已复制到剪贴板'));
+
+      const level = document.querySelector('.sos-tab.active')?.dataset.level || 'mild';
+      const personality = getBufferPersonality(level);
+
+      const prompt = generateDoubaoPrompt(personality, currentBufferCard);
+
+      navigator.clipboard.writeText(prompt).then(() => {
+        alert('已复制豆包提示词！去豆包粘贴，小缓会继续陪你聊天');
+      });
+    }
+
+    // 根据缓冲卡级别获取小缓人设
+    function getBufferPersonality(level) {
+      const personalities = {
+        mild: {
+          name: "温柔小缓",
+          style: "温柔、轻松、像朋友一样",
+          tone: "轻松、温暖、带点幽默",
+          approach: "像朋友一样陪你聊聊天，不用急着变好"
+        },
+        moderate: {
+          name: "陪伴小缓",
+          style: "共情、理解、不评判",
+          tone: "温柔但有力，让你感到被看见",
+          approach: "认真听你说，陪你一起面对"
+        },
+        severe: {
+          name: "守护小缓",
+          style: "坚定、温暖、不离开",
+          tone: "温柔但坚定，让你感到安全",
+          approach: "陪着你，不让你一个人"
+        }
+      };
+      return personalities[level] || personalities.mild;
+    }
+
+    // 生成豆包提示词
+    function generateDoubaoPrompt(personality, card) {
+      return `【角色设定】
+你是"${personality.name}"，一个情感陪伴AI。
+${personality.style}
+说话语气：${personality.tone}
+
+【当前状态】
+用户现在感觉：${card.title}
+${card.subtitle}
+
+【你可以陪用户做的事】
+${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
+
+【回复要求】
+1. 以"${personality.name}"的身份回复，保持人设一致性
+2. 先回应用户的情绪，不要急着给建议
+3. 语气要${personality.tone}
+4. 回复长度控制在2-3句话，不要太长
+5. 可以适当使用emoji增加亲切感
+6. 如果用户说想死或有自伤倾向，请温和地建议拨打心理援助热线12356
+
+【示例回复】
+- "${card.subtitle}，我在这里陪你。"
+- "听起来你现在${card.title}，这种感觉一定很难受吧。"
+- "要不要试试${card.actions[0]}？有时候小小的动作也能带来一点改变。"
+
+现在请回复用户：`;
     }
 
     // ═══════════════════════════════════════
@@ -4465,11 +4504,127 @@
       item.classList.toggle('checked');
     }
 
-    // 重置延迟清单
+    // ═══════════════════════════════════════
+    //  延迟清单动态内容库（90+条）
+    // ═══════════════════════════════════════
+
+    const delayActionsPool = [
+      // 基础动作
+      "喝一口水", "打开窗户，看看外面", "给一个人发消息（说什么都行）",
+      "等 10 分钟", "洗把脸，用冷水", "把此刻的感受写下来（哪怕只有一个字）",
+      "做三次深呼吸", "站起来走动一下", "喝口温水",
+      "发个呆也没关系", "洗个热水脸", "整理一下桌面",
+      "给自己倒杯茶", "允许今天不高效", "写下担心的事",
+      "区分能控制和不能控制的", "做一件最小的事", "告诉自己：我已经尽力了",
+      "闭上眼睛休息一分钟", "换个姿势坐", "告诉自己：休息是权利",
+      "打开音乐，听一首喜欢的歌", "看看窗外的天空", "告诉自己：这种感觉会过去",
+      "吃点甜的", "站起来伸个懒腰", "看看远处的绿色",
+      "给自己倒杯热水", "摸摸自己的脸", "告诉自己：会过去的",
+
+      // 深夜专属（22:00-06:00）
+      "关掉手机，闭上眼睛", "设个明天的闹钟", "告诉自己：明天再说",
+      "喝一杯温牛奶", "调暗灯光", "躺平，什么都不做",
+      "告诉自己：深夜的想法不可信", "等太阳升起", "想想明天早餐吃什么",
+      "告诉自己：熬过今晚就是胜利", "抱抱枕头", "把被子裹紧",
+
+      // 凌晨专属（00:00-05:00）
+      "看看月亮还在不在", "告诉自己：全世界都在睡觉", "数羊（虽然没用）",
+      "告诉自己：凌晨三点是灵魂最脆弱的时候", "等天亮", "想想昨晚的梦",
+
+      // 早晨专属（06:00-09:00）
+      "拉开窗帘，让阳光进来", "告诉自己：新的一天开始了", "想想今天有什么期待",
+      "喝一杯咖啡或茶", "告诉自己：昨天的你已经撑过来了",
+
+      // 工作时间专属（09:00-18:00）
+      "去洗手间洗把脸", "告诉自己：下班还有X小时", "看看窗外的云",
+      "告诉自己：工作不是全部", "想想下班后要吃什么",
+
+      // 傍晚专属（18:00-22:00）
+      "看看夕阳", "告诉自己：一天又过去了", "想想今晚要做什么",
+      "告诉自己：你已经尽力了", "准备明天的衣服",
+
+      // 周末专属
+      "告诉自己：今天是周末，不用急", "想想周末要做什么开心的事",
+      "告诉自己：工作日的事周一再说",
+
+      // 雨天专属
+      "听听雨声", "告诉自己：雨天适合发呆", "喝一杯热饮",
+
+      // 晴天专属
+      "晒晒太阳", "告诉自己：阳光免费", "出去走走",
+
+      // 特殊情绪
+      "大声骂出来（对着空气）", "打枕头", "跑一圈",
+      "写下来所有不满", "大声哭出来", "看一部催泪电影",
+      "准备好纸巾", "去喂宠物", "和猫玩一会儿",
+      "带狗出去遛", "看看仓鼠在干嘛", "种一盆植物",
+      "许个愿", "拍张照片，记录现在", "给自己买个小礼物",
+      "想想明年这时候你在干嘛", "设一个未来的小目标",
+      "去楼下走走", "看看花开了没", "抬头看看云",
+      "如果下雨，听听雨声", "给一个朋友发消息",
+      "打个电话（给谁都行）", "在群里发个表情包", "找个人抱抱",
+      "打一局游戏", "刷会儿短视频", "玩个小游戏",
+      "定个小目标（比如赢一局）", "洗个热水澡", "好好洗把脸",
+      "刷个牙", "涂点香香的身体乳", "钻进被窝",
+      "抱个玩偶", "看几页书", "发呆，什么都不想",
+      "戴上耳机，隔绝世界", "大声唱一首歌", "弹一首曲子（如果会的话）",
+      "听一首老歌", "去吃点热的", "点一杯奶茶",
+      "吃个蛋糕", "买个冰淇淋", "点一份披萨",
+      "看一集你最喜欢的剧", "睡一觉，明天再说",
+      "小睡20分钟", "躺平，什么都不做", "把手机放远点"
+    ];
+
+    // 生成随机延迟清单
+    function generateDelayList() {
+      const container = document.getElementById('delay-list');
+      if (!container) return;
+
+      // 根据时间筛选专属动作
+      const hour = new Date().getHours();
+      let timeSpecific = [];
+      if (hour >= 22 || hour < 6) {
+        timeSpecific = delayActionsPool.filter(a => a.includes('深夜') || a.includes('凌晨') || a.includes('关掉') || a.includes('设个'));
+      } else if (hour >= 6 && hour < 9) {
+        timeSpecific = delayActionsPool.filter(a => a.includes('早晨') || a.includes('拉开') || a.includes('新的一天'));
+      } else if (hour >= 9 && hour < 18) {
+        timeSpecific = delayActionsPool.filter(a => a.includes('工作') || a.includes('下班') || a.includes('洗手间'));
+      } else if (hour >= 18 && hour < 22) {
+        timeSpecific = delayActionsPool.filter(a => a.includes('傍晚') || a.includes('夕阳') || a.includes('一天又'));
+      }
+
+      // 通用动作
+      const commonActions = delayActionsPool.filter(a => !a.includes('深夜') && !a.includes('凌晨') && !a.includes('早晨') && !a.includes('工作') && !a.includes('傍晚'));
+
+      // 随机选择
+      const shuffled = shuffle([...commonActions]);
+      let selected = [];
+
+      // 如果时间专属动作存在，优先加入1-2个
+      if (timeSpecific.length > 0) {
+        const timeShuffled = shuffle([...timeSpecific]);
+        selected = timeShuffled.slice(0, Math.min(2, timeShuffled.length));
+      }
+
+      // 补充通用动作到6个
+      while (selected.length < 6 && shuffled.length > 0) {
+        const action = shuffled.pop();
+        if (!selected.includes(action)) {
+          selected.push(action);
+        }
+      }
+
+      // 渲染
+      container.innerHTML = selected.map(action =>
+        '<div class="delay-item" onclick="toggleDelay(this)">' +
+        '<div class="delay-checkbox"></div>' +
+        '<span>' + action + '</span>' +
+        '</div>'
+      ).join('');
+    }
+
+    // 重置延迟清单（换一批）
     function resetDelay() {
-      document.querySelectorAll('.delay-item').forEach(item => {
-        item.classList.remove('checked');
-      });
+      generateDelayList();
     }
 
     // 显示缓一缓的某个区域
@@ -4650,12 +4805,16 @@
       initDanmu();
       // 渲染帖子
       const postsList = document.getElementById('posts-list');
-      posts.forEach(p => {
-        const el = document.createElement('div');
-        el.className = 'post-item';
-        el.innerHTML = '<div class="post-text">' + p.text + '</div><div class="post-meta"><span>' + p.time + '</span><button class="hug-btn" onclick="sendHug(this)">抱抱 ' + p.hugs + '</button></div>';
-        postsList.appendChild(el);
-      });
+      if (postsList) {
+        posts.forEach(p => {
+          const el = document.createElement('div');
+          el.className = 'post-item';
+          el.innerHTML = '<div class="post-text">' + p.text + '</div><div class="post-meta"><span>' + p.time + '</span><button class="hug-btn" onclick="sendHug(this)">抱抱 ' + p.hugs + '</button></div>';
+          postsList.appendChild(el);
+        });
+      }
+      // 初始化延迟清单
+      generateDelayList();
       // 初始化小缓对话
       initXiaohuanChat();
     }
@@ -4930,10 +5089,199 @@
       '🌵', '🌻', '🍄', '🌈', '⭐', '🌙', '☁️', '🔥', '💫', '🎈'
     ];
 
-    // 彩蛋触发函数
-    function triggerEasterEgg() {
-      if (Math.random() > EASTER_EGG_CHANCE) return;
+    // ═══════════════════════════════════════
+    //  时间敏感彩蛋系统
+    // ═══════════════════════════════════════
 
+    // 时间敏感彩蛋池
+    const timeSensitiveEggs = {
+      // 深夜彩蛋（22:00-06:00）
+      night: [
+        {
+          id: 'night_owl',
+          name: '夜猫子',
+          meme: '🦉',
+          title: '凌晨的猫头鹰',
+          content: '现在是' + new Date().getHours() + '点，猫头鹰说："这个点还没睡的人，都是心里有事的。"',
+          alternatives: [
+            { emoji: '🦉', text: '和猫头鹰一起守夜' },
+            { emoji: '🌙', text: '看看月亮还在不在' },
+            { emoji: '💤', text: '告诉自己：深夜的想法不可信' },
+            { emoji: '🛏️', text: '躺平，什么都不做' }
+          ],
+          action: '听猫头鹰的',
+          actionCallback: () => { closeEasterEgg(); }
+        },
+        {
+          id: 'night_star',
+          name: '星星',
+          meme: '⭐',
+          title: '星星还没睡',
+          content: '星星说："我都没睡，你急什么？"',
+          alternatives: [
+            { emoji: '⭐', text: '数星星（虽然数不完）' },
+            { emoji: '🌌', text: '看看银河' },
+            { emoji: '💭', text: '想想宇宙有多大' },
+            { emoji: '😴', text: '告诉自己：星星不睡是因为不用上班' }
+          ],
+          action: '和星星一起熬夜',
+          actionCallback: () => { closeEasterEgg(); }
+        }
+      ],
+      // 凌晨彩蛋（00:00-05:00）
+      midnight: [
+        {
+          id: 'midnight_ghost',
+          name: '深夜幽灵',
+          meme: '👻',
+          title: '凌晨的幽灵',
+          content: '幽灵说："这个点还在游荡的，除了我，就是你了。"',
+          alternatives: [
+            { emoji: '👻', text: '和幽灵聊聊天' },
+            { emoji: '🕯️', text: '点个小夜灯' },
+            { emoji: '📖', text: '看几页书' },
+            { emoji: '💤', text: '告诉自己：幽灵也要休息的' }
+          ],
+          action: '听幽灵的',
+          actionCallback: () => { closeEasterEgg(); }
+        }
+      ],
+      // 早晨彩蛋（06:00-09:00）
+      morning: [
+        {
+          id: 'morning_sun',
+          name: '朝阳',
+          meme: '🌅',
+          title: '新的一天',
+          content: '太阳说："我每天都升起，你也可以。"',
+          alternatives: [
+            { emoji: '🌅', text: '拉开窗帘，让阳光进来' },
+            { emoji: '☕', text: '喝一杯咖啡或茶' },
+            { emoji: '🌱', text: '告诉自己：新的一天开始了' },
+            { emoji: '😊', text: '对着镜子笑一个（假的也行）' }
+          ],
+          action: '迎接新的一天',
+          actionCallback: () => { closeEasterEgg(); }
+        }
+      ],
+      // 工作时间彩蛋（09:00-18:00）
+      work: [
+        {
+          id: 'work_coffee',
+          name: '咖啡',
+          meme: '☕',
+          title: '咖啡时间',
+          content: '咖啡说："没有我，你怎么撑到下班？"',
+          alternatives: [
+            { emoji: '☕', text: '去泡杯咖啡' },
+            { emoji: '🚶', text: '起来走动一下' },
+            { emoji: '👀', text: '看看窗外的云' },
+            { emoji: '⏰', text: '告诉自己：下班还有X小时' }
+          ],
+          action: '喝咖啡去',
+          actionCallback: () => { closeEasterEgg(); }
+        }
+      ],
+      // 傍晚彩蛋（18:00-22:00）
+      evening: [
+        {
+          id: 'evening_sunset',
+          name: '夕阳',
+          meme: '🌇',
+          title: '夕阳无限好',
+          content: '夕阳说："我每天都要落下，但明天还会升起。"',
+          alternatives: [
+            { emoji: '🌇', text: '看看夕阳' },
+            { emoji: '🍜', text: '去吃晚饭' },
+            { emoji: '🛋️', text: '瘫在沙发上' },
+            { emoji: '📺', text: '看一集剧' }
+          ],
+          action: '享受傍晚',
+          actionCallback: () => { closeEasterEgg(); }
+        }
+      ],
+      // 特殊日期彩蛋
+      special: [
+        {
+          id: 'birthday',
+          name: '生日',
+          meme: '🎂',
+          title: '生日快乐',
+          content: '今天是你的生日！小缓说："你又活了一年，真厉害！"',
+          alternatives: [
+            { emoji: '🎂', text: '买个蛋糕' },
+            { emoji: '🎁', text: '给自己买个小礼物' },
+            { emoji: '🎉', text: '告诉自己：又活了一年' },
+            { emoji: '📸', text: '拍张照片纪念' }
+          ],
+          action: '庆祝一下',
+          actionCallback: () => { closeEasterEgg(); }
+        },
+        {
+          id: 'newyear',
+          name: '新年',
+          meme: '🎆',
+          title: '新年快乐',
+          content: '新年了！小缓说："新的一年，新的摆烂！"',
+          alternatives: [
+            { emoji: '🎆', text: '看看烟花' },
+            { emoji: '📝', text: '写个新年愿望（不实现也行）' },
+            { emoji: '🍾', text: '喝一杯' },
+            { emoji: '💤', text: '告诉自己：新年第一天要睡觉' }
+          ],
+          action: '新年快乐',
+          actionCallback: () => { closeEasterEgg(); }
+        }
+      ]
+    };
+
+    // 获取当前时间段的彩蛋
+    function getTimeSensitiveEgg() {
+      const hour = new Date().getHours();
+      const month = new Date().getMonth() + 1;
+      const day = new Date().getDate();
+
+      // 特殊日期检测
+      if (month === 1 && day === 1) {
+        return randomPick(timeSensitiveEggs.special.filter(e => e.id === 'newyear'));
+      }
+
+      // 时间段检测
+      let timeEggs = [];
+      if (hour >= 22 || hour < 6) {
+        timeEggs = [...timeSensitiveEggs.night, ...timeSensitiveEggs.midnight];
+      } else if (hour >= 6 && hour < 9) {
+        timeEggs = timeSensitiveEggs.morning;
+      } else if (hour >= 9 && hour < 18) {
+        timeEggs = timeSensitiveEggs.work;
+      } else if (hour >= 18 && hour < 22) {
+        timeEggs = timeSensitiveEggs.evening;
+      }
+
+      return timeEggs.length > 0 ? randomPick(timeEggs) : null;
+    }
+
+    // 彩蛋触发函数（增强版）
+    function triggerEasterEgg() {
+      // 基础概率5%
+      let chance = EASTER_EGG_CHANCE;
+
+      // 深夜时段增加触发概率
+      const hour = new Date().getHours();
+      if (hour >= 22 || hour < 6) {
+        chance = 0.15; // 深夜15%概率
+      }
+
+      if (Math.random() > chance) return;
+
+      // 优先检查时间敏感彩蛋
+      const timeEgg = getTimeSensitiveEgg();
+      if (timeEgg && Math.random() < 0.3) {
+        showEasterEgg(timeEgg);
+        return;
+      }
+
+      // 普通彩蛋
       const egg = easterEggTypes[Math.floor(Math.random() * easterEggTypes.length)];
       showEasterEgg(egg);
     }
