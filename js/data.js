@@ -1,7 +1,7 @@
 // Soul Soother - 数据文件（全面升级版）
 
 // 今日抽象文案库
-const dailyQuotes = [
+var dailyQuotes = [
   "我的精神状态：一边想死，一边怕死，一边觉得自己不配死，最后决定先活着，因为死了就看不到这么抽象的自己了",
   "确诊了：我是'想死但不敢'综合征晚期患者，病程：从出生到现在",
   "别人：内卷；我：内耗；别人：躺平；我：躺尸；别人：发疯；我：稳定地发疯",
@@ -34,7 +34,7 @@ const dailyQuotes = [
 ];
 
 // 深夜急救包文案
-const nightRescue = [
+var nightRescue = [
   "凌晨3点还没睡？恭喜你，你正在经历'深夜哲学家'模式",
   "凌晨4点的想法不是真实的，是你的大脑在骗你",
   "再坚持3小时，太阳就出来了——虽然太阳出来也不一定能解决问题，但至少天亮了",
@@ -48,7 +48,7 @@ const nightRescue = [
 ];
 
 // 互动工具数据
-const tools = {
+var tools = {
   // 发疯文学生成模板
   fengwenTemplates: [
     { template: "啊啊啊啊啊我{e}啊{e}啊{e}啊但我的快递还没到我的剧还没追完我的猫还没喂所以我决定先活着等这些都做完了再死结果发现永远做不完所以我永远死不了真抽象哈哈哈哈", weight: 3 },
@@ -125,7 +125,7 @@ const tools = {
 };
 
 // 趣味测评数据 - SBTI 抽象风格
-const quizzes = [
+var quizzes = [
   {
     id: "mental-state",
     name: "测测你的精神状态有多美丽",
@@ -358,7 +358,7 @@ const quizzes = [
 ];
 
 // 治愈合集数据 - 增加测评维度
-const collections = [
+var collections = [
   {
     id: "pixel-thoughts",
     name: "Pixel Thoughts",
@@ -506,7 +506,7 @@ const collections = [
 ];
 
 // 弹幕数据
-const danmuList = [
+var danmuList = [
   "今日份活着已打卡 ✓",
   "你不是废物，你是加载中",
   "人生先别优化，先保活",
@@ -548,7 +548,7 @@ function getRandomQuote() {
 
 // 生成发疯文学（升级版）- 使用 split/join 替代 replaceAll 提高兼容性
 function generateFengwen(emotion) {
-  const totalWeight = tools.fengwenTemplates.reduce(function(sum, t) { return sum + t.weight; }, 0);
+  var totalWeight = tools.fengwenTemplates.reduce(function(sum, t) { return sum + t.weight; }, 0);
   var random = Math.random() * totalWeight;
   var selected = tools.fengwenTemplates[0];
   for (var i = 0; i < tools.fengwenTemplates.length; i++) {

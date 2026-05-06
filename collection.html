@@ -55,46 +55,62 @@
     <div class="footer-links">
       <a href="about.html">关于我们</a>
       <a href="about.html#help">求助资源</a>
-      <a href="https://github.com/yourusername/soul-soother" target="_blank">GitHub</a>
+      <a href="https://github.com/tangzi-kk/soul-soother" target="_blank">GitHub</a>
     </div>
   </footer>
 
   <script src="js/data.js"></script>
   <script>
-    let currentCategory = 'all';
+    var currentCategory = 'all';
 
     function renderCollections() {
-      const grid = document.getElementById('collectionGrid');
-      const filtered = currentCategory === 'all'
-        ? collections
-        : collections.filter(c => c.category === currentCategory);
+      var grid = document.getElementById('collectionGrid');
+      var filtered = [];
+      if (currentCategory === 'all') {
+        filtered = collections;
+      } else {
+        for (var i = 0; i < collections.length; i++) {
+          if (collections[i].category === currentCategory) {
+            filtered.push(collections[i]);
+          }
+        }
+      }
 
-      grid.innerHTML = filtered.map(item => `
-        <a href="${item.url}" target="_blank" rel="noopener" class="collection-item">
-          <span class="collection-item-icon">${item.icon}</span>
-          <div class="collection-item-content">
-            <div class="collection-item-title">${item.name}</div>
-            <div class="collection-item-desc">${item.description}</div>
-            <div class="collection-item-tags">
-              ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-            </div>
-            <div class="collection-item-mood">${item.mood || ''}</div>
-            <div class="collection-item-ratings">
-              ${item.ratings ? `
-                <span class="rating-dim"><span class="rating-dim-label">趣</span><span class="rating-stars">${renderStars(item.ratings.fun)}</span></span>
-                <span class="rating-dim"><span class="rating-dim-label">轻</span><span class="rating-stars">${renderStars(item.ratings.ease)}</span></span>
-                <span class="rating-dim"><span class="rating-dim-label">愈</span><span class="rating-stars">${renderStars(item.ratings.relief)}</span></span>
-              ` : ''}
-            </div>
-            ${item.review ? `<div class="collection-item-review">"${item.review}"</div>` : ''}
-          </div>
-        </a>
-      `).join('');
+      var html = '';
+      for (var j = 0; j < filtered.length; j++) {
+        var item = filtered[j];
+        var tagsHtml = '';
+        for (var t = 0; t < item.tags.length; t++) {
+          tagsHtml += '<span class="tag">' + item.tags[t] + '</span>';
+        }
+        var ratingsHtml = '';
+        if (item.ratings) {
+          ratingsHtml = '<span class="rating-dim"><span class="rating-dim-label">趣</span><span class="rating-stars">' + renderStars(item.ratings.fun) + '</span></span>' +
+            '<span class="rating-dim"><span class="rating-dim-label">轻</span><span class="rating-stars">' + renderStars(item.ratings.ease) + '</span></span>' +
+            '<span class="rating-dim"><span class="rating-dim-label">愈</span><span class="rating-stars">' + renderStars(item.ratings.relief) + '</span></span>';
+        }
+        var reviewHtml = item.review ? '<div class="collection-item-review">"' + item.review + '"</div>' : '';
+        html += '<a href="' + item.url + '" target="_blank" rel="noopener" class="collection-item">' +
+          '<span class="collection-item-icon">' + item.icon + '</span>' +
+          '<div class="collection-item-content">' +
+            '<div class="collection-item-title">' + item.name + '</div>' +
+            '<div class="collection-item-desc">' + item.description + '</div>' +
+            '<div class="collection-item-tags">' + tagsHtml + '</div>' +
+            '<div class="collection-item-mood">' + (item.mood || '') + '</div>' +
+            '<div class="collection-item-ratings">' + ratingsHtml + '</div>' +
+            reviewHtml +
+          '</div>' +
+        '</a>';
+      }
+      grid.innerHTML = html;
     }
 
     function filterCategory(category, el) {
       currentCategory = category;
-      document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
+      var tabs = document.querySelectorAll('.category-tab');
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+      }
       el.classList.add('active');
       renderCollections();
     }

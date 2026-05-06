@@ -97,13 +97,13 @@
     <div class="footer-links">
       <a href="about.html">关于我们</a>
       <a href="about.html#help">求助资源</a>
-      <a href="https://github.com/yourusername/soul-soother" target="_blank">GitHub</a>
+      <a href="https://github.com/tangzi-kk/soul-soother" target="_blank">GitHub</a>
     </div>
   </footer>
 
   <script src="js/data.js"></script>
   <script>
-    const resultEmojis = {
+    var resultEmojis = {
       'atmer': '💸',
       'zzzz': '💤',
       'malo': '🐒',
@@ -111,7 +111,7 @@
       'hedgehog': '🦔',
       'chameleon': '🦎',
       'ghost': '👻',
-      'blackhole': '🕳️',
+      'blackhole': '🕳️'
     };
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -119,30 +119,38 @@
     });
 
     function renderQuizList() {
-      const container = document.getElementById('quizCards');
-      container.innerHTML = quizzes.map(q => `
-        <div class="quiz-card" onclick="startQuiz('${q.id}')">
-          <div class="quiz-card-header">
-            <span class="quiz-card-icon">${q.icon}</span>
-            <div>
-              <div class="quiz-card-title">${q.name}</div>
-              <div class="quiz-card-desc">${q.description}</div>
-            </div>
-          </div>
-          <div class="quiz-card-meta">
-            <span class="quiz-card-time">⏱️ ${q.duration}</span>
-            <button class="btn btn-primary" style="padding: 8px 18px; font-size: 13px;">开始测试</button>
-          </div>
-        </div>
-      `).join('');
+      var container = document.getElementById('quizCards');
+      var html = '';
+      for (var i = 0; i < quizzes.length; i++) {
+        var q = quizzes[i];
+        html += '<div class="quiz-card" onclick="startQuiz(\'' + q.id + '\')">' +
+          '<div class="quiz-card-header">' +
+            '<span class="quiz-card-icon">' + q.icon + '</span>' +
+            '<div>' +
+              '<div class="quiz-card-title">' + q.name + '</div>' +
+              '<div class="quiz-card-desc">' + q.description + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="quiz-card-meta">' +
+            '<span class="quiz-card-time">⏱️ ' + q.duration + '</span>' +
+            '<button class="btn btn-primary" style="padding: 8px 18px; font-size: 13px;">开始测试</button>' +
+          '</div>' +
+        '</div>';
+      }
+      container.innerHTML = html;
     }
 
-    let currentQuiz = null;
-    let currentQuestion = 0;
-    let answers = [];
+    var currentQuiz = null;
+    var currentQuestion = 0;
+    var answers = [];
 
     function startQuiz(quizId) {
-      currentQuiz = quizzes.find(q => q.id === quizId);
+      for (var i = 0; i < quizzes.length; i++) {
+        if (quizzes[i].id === quizId) {
+          currentQuiz = quizzes[i];
+          break;
+        }
+      }
       currentQuestion = 0;
       answers = [];
 
@@ -154,19 +162,20 @@
     }
 
     function renderQuestion() {
-      const question = currentQuiz.questions[currentQuestion];
+      var question = currentQuiz.questions[currentQuestion];
       document.getElementById('questionText').textContent = question.text;
 
-      const optionsHtml = question.options.map((option, index) => `
-        <div class="quiz-option ${answers[currentQuestion] === index ? 'selected' : ''}" onclick="selectOption(${index})">
-          ${option.text}
-        </div>
-      `).join('');
+      var optionsHtml = '';
+      for (var i = 0; i < question.options.length; i++) {
+        var selectedClass = answers[currentQuestion] === i ? 'selected' : '';
+        optionsHtml += '<div class="quiz-option ' + selectedClass + '" onclick="selectOption(' + i + ')">' +
+          question.options[i].text + '</div>';
+      }
       document.getElementById('optionsContainer').innerHTML = optionsHtml;
 
-      const progress = ((currentQuestion + 1) / currentQuiz.questions.length) * 100;
+      var progress = ((currentQuestion + 1) / currentQuiz.questions.length) * 100;
       document.getElementById('progressFill').style.width = progress + '%';
-      document.getElementById('progressText').textContent = `${currentQuestion + 1}/${currentQuiz.questions.length}`;
+      document.getElementById('progressText').textContent = (currentQuestion + 1) + '/' + currentQuiz.questions.length;
 
       document.getElementById('prevBtn').style.visibility = currentQuestion === 0 ? 'hidden' : 'visible';
       document.getElementById('nextBtn').textContent = currentQuestion === currentQuiz.questions.length - 1 ? '查看结果' : '下一题';
@@ -199,12 +208,18 @@
     }
 
     function showResult() {
-      let score = 0;
-      answers.forEach((answerIndex, questionIndex) => {
-        score += currentQuiz.questions[questionIndex].options[answerIndex].value;
-      });
+      var score = 0;
+      for (var i = 0; i < answers.length; i++) {
+        score += currentQuiz.questions[i].options[answers[i]].value;
+      }
 
-      let result = currentQuiz.results.find(r => score >= r.minScore && score <= r.maxScore);
+      var result = null;
+      for (var j = 0; j < currentQuiz.results.length; j++) {
+        if (score >= currentQuiz.results[j].minScore && score <= currentQuiz.results[j].maxScore) {
+          result = currentQuiz.results[j];
+          break;
+        }
+      }
       if (!result) result = currentQuiz.results[currentQuiz.results.length - 1];
 
       document.getElementById('resultEmoji').textContent = resultEmojis[result.id] || '🎭';
@@ -214,38 +229,43 @@
       document.getElementById('resultDesc').textContent = result.description;
       document.getElementById('resultAdvice').textContent = result.advice;
 
-      const recommendations = [
+      var recommendations = [
         { name: 'Pixel Thoughts', desc: '60秒冥想，把烦恼放进星星里', icon: '✨', url: 'collection.html' },
         { name: '流体模拟', desc: '鼠标划过产生美丽的色彩流动', icon: '🌊', url: 'collection.html' },
-        { name: '发疯文学生成器', desc: '输入情绪，生成发疯文学', icon: '📝', url: 'tools.html#fengwen' },
+        { name: '发疯文学生成器', desc: '输入情绪，生成发疯文学', icon: '📝', url: 'tools.html#fengwen' }
       ];
 
-      document.getElementById('recommendations').innerHTML = recommendations.map(r => `
-        <a href="${r.url}" style="text-decoration: none; color: inherit;">
-          <div class="recommendation-item">
-            <span class="recommendation-icon">${r.icon}</span>
-            <div>
-              <div class="recommendation-name">${r.name}</div>
-              <div class="recommendation-desc">${r.desc}</div>
-            </div>
-          </div>
-        </a>
-      `).join('');
+      var recHtml = '';
+      for (var k = 0; k < recommendations.length; k++) {
+        var r = recommendations[k];
+        recHtml += '<a href="' + r.url + '" style="text-decoration: none; color: inherit;">' +
+          '<div class="recommendation-item">' +
+            '<span class="recommendation-icon">' + r.icon + '</span>' +
+            '<div>' +
+              '<div class="recommendation-name">' + r.name + '</div>' +
+              '<div class="recommendation-desc">' + r.desc + '</div>' +
+            '</div>' +
+          '</div>' +
+        '</a>';
+      }
+      document.getElementById('recommendations').innerHTML = recHtml;
 
       document.getElementById('quizPage').classList.add('hidden');
       document.getElementById('resultPage').classList.remove('hidden');
     }
 
     function shareResult() {
-      const title = document.getElementById('resultTitle').textContent;
-      const text = `我在 Soul Soother 测出来是「${title}」，快来测测你的精神状态！`;
+      var title = document.getElementById('resultTitle').textContent;
+      var text = '我在 Soul Soother 测出来是「' + title + '」，快来测测你的精神状态！';
 
       if (navigator.share) {
-        navigator.share({ title: 'Soul Soother 测评结果', text });
-      } else {
-        navigator.clipboard.writeText(text).then(() => {
+        navigator.share({ title: 'Soul Soother 测评结果', text: text });
+      } else if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function() {
           alert('结果已复制到剪贴板');
         });
+      } else {
+        alert(text);
       }
     }
 
