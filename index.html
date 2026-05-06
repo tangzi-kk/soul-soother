@@ -3,413 +3,1113 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Semantic Gravity — 文字溶解装置</title>
+  <title>Soul Soother — 用抽象接住崩溃</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;400;600&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --ink: #472425;
+      --ink-light: #5d3334;
+      --cocoa: #80705f;
+      --cocoa-light: #a09588;
+      --canvas: #f9f8f4;
+      --canvas-warm: #f5f0e8;
+      --accent: #738ae5;
+      --danger: #e73737;
+      --danger-soft: #fef2f2;
+      --success: #63a648;
+      --border: rgba(128, 112, 95, 0.15);
+      --shadow: rgba(71, 36, 37, 0.08);
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
+
     html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #f9f8f4;
+      background: var(--canvas);
       font-family: 'Noto Serif SC', serif;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
     }
-    #canvas-container {
+
+    /* ═══════════════════════════════════════
+       背景层：文字溶解装置
+       ═══════════════════════════════════════ */
+    #gravity-canvas {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 1;
+      z-index: 0;
+      opacity: 0.6;
+      pointer-events: all;
     }
-    .control-panel {
+
+    /* ═══════════════════════════════════════
+       内容层：网站功能
+       ═══════════════════════════════════════ */
+    #app {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* 顶部导航 */
+    .top-nav {
       position: fixed;
-      top: 24px;
-      right: 24px;
-      z-index: 10;
-      background: rgba(249, 248, 244, 0.92);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(128, 112, 95, 0.12);
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: linear-gradient(to bottom, rgba(249, 248, 244, 0.95) 0%, rgba(249, 248, 244, 0.8) 70%, transparent 100%);
+      backdrop-filter: blur(12px);
+    }
+
+    .logo {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 18px;
+      color: var(--ink);
+      letter-spacing: 0.04em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      color: var(--cocoa);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: color 0.3s ease;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: var(--ink);
+    }
+
+    /* 页面容器 */
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding: 80px 24px 40px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* ═══════════════════════════════════════
+       首页：Hero + 功能入口
+       ═══════════════════════════════════════ */
+    .hero {
+      text-align: center;
+      padding: 60px 0 40px;
+    }
+
+    .hero-label {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 14px;
+      color: var(--cocoa);
+      letter-spacing: 0.12em;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .hero-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 36px;
+      font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 12px;
+      color: var(--ink);
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: var(--cocoa);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .hero-hint {
+      font-size: 12px;
+      color: var(--cocoa-light);
+      letter-spacing: 0.04em;
+    }
+
+    /* 紧急入口 */
+    .emergency-banner {
+      background: var(--danger-soft);
+      border: 1px solid rgba(231, 55, 55, 0.15);
       border-radius: 16px;
       padding: 20px;
-      width: 260px;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-8px);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .control-panel.open {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
-    .control-panel h2 {
-      font-size: 13px;
-      font-weight: 400;
-      color: #80705f;
-      letter-spacing: 0.08em;
-      margin-bottom: 16px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid rgba(128, 112, 95, 0.1);
-    }
-    .control-group {
-      margin-bottom: 14px;
-    }
-    .control-group label {
-      display: block;
-      font-size: 11px;
-      color: #a09588;
-      margin-bottom: 6px;
-      letter-spacing: 0.02em;
-    }
-    .control-group input[type="range"] {
-      width: 100%;
-      height: 2px;
-      background: rgba(128, 112, 95, 0.15);
-      border-radius: 1px;
-      outline: none;
-      -webkit-appearance: none;
-    }
-    .control-group input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 12px;
-      height: 12px;
-      background: #80705f;
-      border-radius: 50%;
+      margin-bottom: 32px;
+      text-align: center;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      transition: all 0.3s ease;
     }
-    .control-group input[type="range"]::-webkit-slider-thumb:hover {
-      transform: scale(1.3);
+
+    .emergency-banner:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(231, 55, 55, 0.1);
     }
-    .control-group input[type="text"] {
-      width: 100%;
-      padding: 6px 10px;
-      border: 1px solid rgba(128, 112, 95, 0.15);
-      border-radius: 6px;
+
+    .emergency-text {
+      font-size: 15px;
+      color: var(--danger);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .emergency-sub {
       font-size: 12px;
-      color: #472425;
-      background: rgba(255, 255, 255, 0.5);
-      font-family: 'Noto Serif SC', serif;
+      color: var(--cocoa);
     }
-    .control-group input[type="text"]:focus {
-      outline: none;
-      border-color: rgba(128, 112, 95, 0.4);
+
+    /* 功能卡片网格 */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 32px;
     }
-    .toggle-btn {
-      position: fixed;
-      top: 24px;
-      right: 24px;
-      z-index: 11;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: 1px solid rgba(128, 112, 95, 0.2);
-      background: rgba(249, 248, 244, 0.9);
+
+    .feature-card {
+      background: rgba(255, 255, 255, 0.85);
       backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 16px;
+      text-align: center;
       cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px var(--shadow);
+      border-color: rgba(115, 138, 229, 0.3);
+    }
+
+    .feature-icon {
+      width: 32px;
+      height: 32px;
+      margin: 0 auto 10px;
+      color: var(--cocoa);
+    }
+
+    .feature-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .feature-desc {
+      font-size: 11px;
+      color: var(--cocoa-light);
+      line-height: 1.4;
+    }
+
+    /* 今日抽象 */
+    .quote-section {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .quote-text {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--ink);
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    .quote-refresh {
+      font-size: 12px;
+      color: var(--cocoa);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 16px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    .quote-refresh:hover {
+      background: var(--canvas-warm);
+      color: var(--ink);
+    }
+
+    /* 免责声明 */
+    .disclaimer {
+      text-align: center;
+      font-size: 11px;
+      color: var(--cocoa-light);
+      padding: 20px 0;
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════════════
+       子页面通用样式
+       ═══════════════════════════════════════ */
+    .page-header {
+      text-align: center;
+      padding: 20px 0 32px;
+    }
+
+    .page-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      font-size: 14px;
+      color: var(--cocoa);
+    }
+
+    .section {
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+
+    /* 卡片 */
+    .card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 8px 24px var(--shadow);
+    }
+
+    /* 按钮 */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: none;
+      font-size: 14px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .btn-primary {
+      background: var(--ink);
+      color: var(--canvas);
+    }
+
+    .btn-primary:hover {
+      background: var(--ink-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--cocoa);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover {
+      background: var(--canvas-warm);
+      color: var(--ink);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      opacity: 0.9;
+    }
+
+    /* 输入框 */
+    .input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      font-size: 14px;
+      font-family: inherit;
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .input::placeholder {
+      color: var(--cocoa-light);
+    }
+
+    /* ═══════════════════════════════════════
+       测评页面
+       ═══════════════════════════════════════ */
+    .quiz-card {
+      cursor: pointer;
+    }
+
+    .quiz-card-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .quiz-card-desc {
+      font-size: 12px;
+      color: var(--cocoa);
+      line-height: 1.5;
+    }
+
+    .quiz-question {
+      font-size: 18px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quiz-option {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      font-size: 14px;
+      color: var(--ink);
+      font-family: inherit;
+    }
+
+    .quiz-option:hover {
+      border-color: var(--accent);
+      background: rgba(115, 138, 229, 0.05);
+    }
+
+    .quiz-progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .quiz-progress-bar {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    /* 结果 */
+    .result-icon {
+      font-size: 48px;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .result-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .result-tagline {
+      text-align: center;
+      color: var(--cocoa);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .result-desc {
+      font-size: 14px;
+      line-height: 1.8;
+      color: var(--ink-light);
+      margin-bottom: 20px;
+    }
+
+    /* ═══════════════════════════════════════
+       互助页面
+       ═══════════════════════════════════════ */
+    .help-card-draw {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .help-card-content {
+      font-size: 18px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+      color: var(--ink);
+      min-height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
-      color: #80705f;
     }
-    .toggle-btn:hover {
-      background: rgba(249, 248, 244, 1);
-      transform: scale(1.05);
+
+    .help-card-source {
+      font-size: 12px;
+      color: var(--cocoa-light);
+      margin-bottom: 20px;
     }
-    .toggle-btn svg {
-      width: 16px;
-      height: 16px;
+
+    .danmu-container {
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 12px;
+      margin-bottom: 20px;
     }
-    .info-text {
-      position: fixed;
-      bottom: 24px;
-      left: 24px;
-      z-index: 10;
-      font-size: 11px;
-      color: rgba(128, 112, 95, 0.5);
-      letter-spacing: 0.04em;
-      pointer-events: none;
+
+    .danmu-item {
+      position: absolute;
+      white-space: nowrap;
+      font-size: 13px;
+      color: var(--cocoa);
+      padding: 4px 12px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      animation: danmu-float 15s linear infinite;
+    }
+
+    @keyframes danmu-float {
+      from { transform: translateX(100vw); }
+      to { transform: translateX(-100%); }
+    }
+
+    .post-item {
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+    }
+
+    .post-item:last-child {
+      border-bottom: none;
+    }
+
+    .post-text {
+      font-size: 14px;
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+
+    .post-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--cocoa-light);
+    }
+
+    .hug-btn {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px 12px;
+      font-size: 12px;
+      color: var(--cocoa);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .hug-btn:hover {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: rgba(231, 55, 55, 0.2);
+    }
+
+    /* ═══════════════════════════════════════
+       急救页面
+       ═══════════════════════════════════════ */
+    .timer-display {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 72px;
+      text-align: center;
+      color: var(--ink);
+      margin: 20px 0;
+    }
+
+    .timer-text {
+      text-align: center;
+      font-size: 14px;
+      color: var(--cocoa);
+      margin-bottom: 24px;
+    }
+
+    .sos-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .sos-tab {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      font-size: 13px;
+      color: var(--cocoa);
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .sos-tab.active {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: rgba(231, 55, 55, 0.2);
+    }
+
+    .resource-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .resource-item:last-child {
+      border-bottom: none;
+    }
+
+    .resource-name {
+      font-size: 14px;
+    }
+
+    .resource-phone {
+      font-size: 14px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .emergency-notice {
+      background: var(--danger-soft);
+      border: 1px solid rgba(231, 55, 55, 0.15);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 13px;
       line-height: 1.6;
+      color: var(--danger);
+      margin-top: 20px;
+    }
+
+    /* ═══════════════════════════════════════
+       开心页面
+       ═══════════════════════════════════════ */
+    .feed-display {
+      font-size: 18px;
+      line-height: 1.8;
+      text-align: center;
+      padding: 40px 20px;
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .generator-output {
+      margin-top: 16px;
+      padding: 16px;
+      background: var(--canvas-warm);
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.7;
+      display: none;
+    }
+
+    .generator-output.show {
+      display: block;
+    }
+
+    /* 隐藏类 */
+    .hidden {
+      display: none !important;
+    }
+
+    /* 动画 */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
     }
   </style>
 </head>
 <body>
-  <div id="canvas-container"></div>
+  <!-- 背景：文字溶解装置 -->
+  <div id="gravity-canvas"></div>
 
-  <button class="toggle-btn" id="toggleBtn" title="参数面板">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="3"></circle>
-      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-    </svg>
-  </button>
+  <!-- 主应用 -->
+  <div id="app">
+    <!-- 顶部导航 -->
+    <nav class="top-nav">
+      <div class="logo">Soul Soother</div>
+      <div class="nav-links">
+        <button class="nav-link active" onclick="showPage('home')">首页</button>
+        <button class="nav-link" onclick="showPage('quiz')">测评</button>
+        <button class="nav-link" onclick="showPage('mutual')">互助</button>
+        <button class="nav-link" onclick="showPage('kit')">急救</button>
+        <button class="nav-link" onclick="showPage('play')">开心</button>
+      </div>
+    </nav>
 
-  <div class="control-panel" id="controlPanel">
-    <h2>引力参数</h2>
-    <div class="control-group">
-      <label>圆点生成速度</label>
-      <input type="range" id="dotSpeed" min="30" max="200" value="80">
+    <!-- ═══════════════════════════════════════
+         首页
+         ═══════════════════════════════════════ -->
+    <div class="page active" id="page-home">
+      <div class="hero">
+        <span class="hero-label">用抽象接住崩溃 · 用玩笑降低痛感</span>
+        <h1 class="hero-title">你现在不用变好</h1>
+        <p class="hero-subtitle">先在这里待一会儿<br>笑一笑，喘口气</p>
+        <p class="hero-hint">点击背景文字，看它们被引力吸走</p>
+      </div>
+
+      <!-- 紧急入口 -->
+      <div class="emergency-banner" onclick="showPage('kit')">
+        <div class="emergency-text">我现在很难受，需要帮忙</div>
+        <div class="emergency-sub">30秒缓冲 · 求救卡 · 紧急热线</div>
+      </div>
+
+      <!-- 功能入口 -->
+      <div class="feature-grid">
+        <div class="feature-card" onclick="showPage('quiz')">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+          <div class="feature-title">精神状态测评</div>
+          <div class="feature-desc">SBTI式抽象测试<br>测测你有多疯</div>
+        </div>
+        <div class="feature-card" onclick="showPage('mutual')">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          <div class="feature-title">互助卡 & 弹幕</div>
+          <div class="feature-desc">抽一张治愈卡片<br>看看陌生人的留言</div>
+        </div>
+        <div class="feature-card" onclick="showPage('play')">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          <div class="feature-title">发疯文学</div>
+          <div class="feature-desc">输入情绪生成文案<br>坏念头翻译机</div>
+        </div>
+        <div class="feature-card" onclick="showPage('kit')">
+          <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+          <div class="feature-title">深夜急救包</div>
+          <div class="feature-desc">30秒呼吸缓冲<br>求救卡 & 热线</div>
+        </div>
+      </div>
+
+      <!-- 今日抽象 -->
+      <div class="quote-section">
+        <div class="quote-text" id="dailyQuote">"我的精神状态：一边想死，一边怕死，一边觉得自己不配死，最后决定先活着，因为死了就看不到这么抽象的自己了。"</div>
+        <button class="quote-refresh" onclick="refreshQuote()">换一句</button>
+      </div>
+
+      <div class="disclaimer">
+        内容仅供娱乐放松，不能替代专业医疗建议<br>
+        如果你正处于危险中，请立即拨打 120 或 110
+      </div>
     </div>
-    <div class="control-group">
-      <label>字符移动速度</label>
-      <input type="range" id="moveSpeed" min="0.01" max="0.15" step="0.01" value="0.04">
+
+    <!-- ═══════════════════════════════════════
+         测评页面
+         ═══════════════════════════════════════ -->
+    <div class="page" id="page-quiz">
+      <div class="page-header">
+        <h1 class="page-title">精神状态测评</h1>
+        <p class="page-subtitle">了解你的精神状态，不是给你贴标签</p>
+      </div>
+
+      <div id="quiz-list">
+        <div class="card quiz-card" onclick="startQuiz('sbti')">
+          <div class="quiz-card-title">SBTI 抽象型格测试</div>
+          <div class="quiz-card-desc">8道题测出你的精神动物：ATM-er / ZZZZ / MALO / 阴暗爬行型</div>
+        </div>
+        <div class="card quiz-card" onclick="startQuiz('energy')">
+          <div class="quiz-card-title">今日能量检测</div>
+          <div class="quiz-card-desc">5道题快速评估你今天的精神状态等级</div>
+        </div>
+        <div class="card quiz-card" onclick="startQuiz('coping')">
+          <div class="quiz-card-title"> coping 风格测评</div>
+          <div class="quiz-card-desc">你面对崩溃时的默认应对模式是什么？</div>
+        </div>
+      </div>
+
+      <div id="quiz-taking" class="hidden">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+          </div>
+          <span id="quiz-progress-text">1/8</span>
+        </div>
+        <div class="quiz-question" id="quiz-question"></div>
+        <div class="quiz-options" id="quiz-options"></div>
+      </div>
+
+      <div id="quiz-result" class="hidden">
+        <div class="result-icon" id="result-icon"></div>
+        <div class="result-title" id="result-title"></div>
+        <div class="result-tagline" id="result-tagline"></div>
+        <div class="result-desc" id="result-desc"></div>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+          <button class="btn btn-ghost" onclick="showQuizList()">再测一次</button>
+          <button class="btn btn-primary" onclick="showPage('mutual')">去互助区</button>
+        </div>
+      </div>
     </div>
-    <div class="control-group">
-      <label>安全距离</label>
-      <input type="range" id="safeDist" min="10" max="50" value="24">
+
+    <!-- ═══════════════════════════════════════
+         互助页面
+         ═══════════════════════════════════════ -->
+    <div class="page" id="page-mutual">
+      <div class="page-header">
+        <h1 class="page-title">互助</h1>
+        <p class="page-subtitle">你不是一个人，这里有人陪你</p>
+      </div>
+
+      <div class="section">
+        <div class="section-title">抽一张互助卡</div>
+        <div class="card help-card-draw">
+          <div class="help-card-content" id="help-card-text">点击抽一张属于你的互助卡</div>
+          <div class="help-card-source" id="help-card-source"></div>
+          <button class="btn btn-primary" onclick="drawHelpCard()">抽一张</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">深夜弹幕墙</div>
+        <div class="danmu-container" id="danmu-container"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">留一句给陌生人</div>
+        <input type="text" class="input" id="post-input" placeholder="今天发生了什么？随便说一句...">
+        <button class="btn btn-primary" onclick="postHelp()">发布</button>
+        <div id="posts-list" style="margin-top: 16px;"></div>
+      </div>
     </div>
-    <div class="control-group">
-      <label>直线长度</label>
-      <input type="range" id="lineLen" min="50" max="400" value="180">
+
+    <!-- ═══════════════════════════════════════
+         急救页面
+         ═══════════════════════════════════════ -->
+    <div class="page" id="page-kit">
+      <div class="page-header">
+        <h1 class="page-title">深夜急救包</h1>
+        <p class="page-subtitle">危机时刻的缓冲系统</p>
+      </div>
+
+      <div class="section">
+        <div class="section-title">30秒缓冲</div>
+        <div class="card">
+          <div class="timer-display" id="timer-display">30</div>
+          <div class="timer-text" id="timer-text">深呼吸，跟着数字倒数</div>
+          <button class="btn btn-primary" id="timer-btn" onclick="startTimer()">开始缓冲</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">求救卡</div>
+        <div class="sos-tabs">
+          <button class="sos-tab active" onclick="switchSos('mild', this)">轻度</button>
+          <button class="sos-tab" onclick="switchSos('moderate', this)">中度</button>
+          <button class="sos-tab" onclick="switchSos('severe', this)">高危</button>
+        </div>
+        <div class="card" id="sos-content">
+          <div style="font-size: 15px; font-weight: 600; margin-bottom: 12px;">我现在有点难受</div>
+          <div style="font-size: 14px; line-height: 2; color: var(--cocoa);">
+            <div>· 先喝一口水</div>
+            <div>· 走到窗边看看外面</div>
+            <div>· 给一个信任的人发消息</div>
+          </div>
+          <button class="btn btn-ghost" style="margin-top: 16px;" onclick="copySos()">复制求救卡</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">紧急资源</div>
+        <div class="card">
+          <div class="resource-item">
+            <span class="resource-name">全国心理援助热线</span>
+            <a href="tel:400-161-9995" class="resource-phone">400-161-9995</a>
+          </div>
+          <div class="resource-item">
+            <span class="resource-name">北京回龙观医院</span>
+            <a href="tel:010-82951332" class="resource-phone">010-82951332</a>
+          </div>
+          <div class="resource-item">
+            <span class="resource-name">生命热线</span>
+            <a href="tel:400-821-1215" class="resource-phone">400-821-1215</a>
+          </div>
+        </div>
+        <div class="emergency-notice">
+          <strong>紧急情况：</strong>如果你或你认识的人正处于危险中，请立即拨打 120（急救）或 110（报警），或前往最近的医院急诊科。
+        </div>
+      </div>
     </div>
-    <div class="control-group">
-      <label>文字内容</label>
-      <input type="text" id="textContent" value="用抽象接住崩溃 用玩笑降低痛感">
+
+    <!-- ═══════════════════════════════════════
+         开心页面
+         ═══════════════════════════════════════ -->
+    <div class="page" id="page-play">
+      <div class="page-header">
+        <h1 class="page-title">开心一秒</h1>
+        <p class="page-subtitle">低能量也能玩的治愈内容</p>
+      </div>
+
+      <div class="section">
+        <div class="section-title">随机投喂</div>
+        <div class="card">
+          <div class="feed-display" id="feed-display">点击按钮，随机获得一份快乐</div>
+          <button class="btn btn-primary" onclick="randomFeed()">投喂我</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">发疯文学生成器</div>
+        <div class="card">
+          <input type="text" class="input" id="fengwen-input" placeholder="例如：加班、失恋、没钱...">
+          <button class="btn btn-primary" onclick="generateFengwen()">生成发疯文学</button>
+          <div class="generator-output" id="fengwen-output"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">坏念头翻译机</div>
+        <div class="card">
+          <input type="text" class="input" id="thought-input" placeholder="我脑子里现在有一句很坏的话...">
+          <button class="btn btn-primary" onclick="translateThought()">翻译</button>
+          <div class="generator-output" id="thought-output"></div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="info-text">
-    点击画面生成引力点<br>
-    文字被无形力量吸引、聚集、漂浮
-  </div>
-
+  <!-- 数据与逻辑 -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
   <script>
-    // ═══════════════════════════════════════════════════════════════
-    //  SEMANTIC GRAVITY — 文字溶解装置
-    //  核心概念：文字被无形引力撕开，形成稀疏团簇
-    //  视觉隐喻：植物的根、时间的刻度、雨线、神经突触
-    // ═══════════════════════════════════════════════════════════════
-
-    const CONFIG = {
-      canvas: {
-        width: 393,
-        height: 852,
-        backgroundColor: '#f9f8f4',
-      },
+    // ═══════════════════════════════════════
+    //  文字溶解装置（背景）
+    // ═══════════════════════════════════════
+    const GRAVITY_CONFIG = {
       text: {
         content: '用抽象接住崩溃\n用玩笑降低痛感\n\n我的精神状态：\n一边想死 一边怕死\n一边觉得自己不配死\n最后决定先活着\n\n因为死了就看不到\n这么抽象的自己了',
-        fontSize: 14,
+        fontSize: 13,
         color: '#472425',
-        strokeColor: '#80705f',
-        strokeWeight: 0,
-        letterSpacing: 2,
-        lineSpacing: 28,
-        margin: { top: 120, right: 40, bottom: 120, left: 40 },
-        fontFamily: 'Noto Serif SC',
+        letterSpacing: 1.5,
+        lineSpacing: 24,
+        margin: { top: 100, right: 40, bottom: 100, left: 40 },
       },
       dot: {
         color: '#80705f',
-        size: 4,
-        positionRange: { x: [60, 333], y: [100, 700] },
-        generationInterval: 80,
-        maxDots: 8,
+        size: 3,
+        positionRange: { x: [60, 333], y: [80, 600] },
+        generationInterval: 120,
+        maxDots: 6,
       },
       attraction: {
-        countRange: [3, 8],
-        safeDistance: 24,
-        speed: 0.04,
-        targetFontSize: 22,
+        countRange: [3, 6],
+        safeDistance: 20,
+        speed: 0.03,
+        targetFontSize: 18,
         targetColors: ['#63a648', '#8ec492', '#e6efb3'],
       },
       line: {
         color: '#d4c4b0',
-        thickness: 0.8,
-        lengthRange: [80, 280],
-        opacity: 0.35,
+        thickness: 0.6,
+        lengthRange: [60, 200],
+        opacity: 0.3,
       },
     };
 
-    let chars = [];
-    let dots = [];
-    let lines = [];
-    let frameCounter = 0;
+    let gravityChars = [];
+    let gravityDots = [];
+    let gravityLines = [];
+    let gravityFrame = 0;
 
-    function setup() {
+    function gravitySetup() {
       const canvas = createCanvas(windowWidth, windowHeight);
-      canvas.parent('canvas-container');
-      textFont(CONFIG.text.fontFamily);
+      canvas.parent('gravity-canvas');
+      textFont('Noto Serif SC');
       textAlign(LEFT, TOP);
-      initializeText();
+      initGravityText();
     }
 
-    function windowResized() {
-      resizeCanvas(windowWidth, windowHeight);
-      initializeText();
-    }
-
-    function draw() {
-      background(CONFIG.canvas.backgroundColor);
-      frameCounter++;
-      if (frameCounter % CONFIG.dot.generationInterval === 0 && dots.length < CONFIG.dot.maxDots) {
-        spawnDot();
+    function gravityDraw() {
+      clear();
+      gravityFrame++;
+      if (gravityFrame % GRAVITY_CONFIG.dot.generationInterval === 0 && gravityDots.length < GRAVITY_CONFIG.dot.maxDots) {
+        spawnGravityDot();
       }
-      updateChars();
-      drawLines();
-      drawDots();
-      drawChars();
+      updateGravityChars();
+      drawGravityLines();
+      drawGravityDots();
+      drawGravityChars();
     }
 
-    function mousePressed() {
+    function gravityMousePressed() {
       if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
-        spawnDotAt(mouseX, mouseY);
+        spawnGravityDotAt(mouseX, mouseY);
       }
     }
 
-    function initializeText() {
-      chars = [];
-      const content = CONFIG.text.content;
-      const fontSize = CONFIG.text.fontSize;
-      const margin = CONFIG.text.margin;
-      const letterSpacing = CONFIG.text.letterSpacing;
-      const lineSpacing = CONFIG.text.lineSpacing;
-      textSize(fontSize);
-      const maxWidth = width - margin.left - margin.right;
-      let currentX = margin.left;
-      let currentY = margin.top;
-      const rawLines = content.split('\n');
-      for (let lineIdx = 0; lineIdx < rawLines.length; lineIdx++) {
-        const line = rawLines[lineIdx];
-        if (line === '') {
-          currentY += lineSpacing;
-          continue;
+    function initGravityText() {
+      gravityChars = [];
+      const cfg = GRAVITY_CONFIG.text;
+      textSize(cfg.fontSize);
+      const maxW = width - cfg.margin.left - cfg.margin.right;
+      let cx = cfg.margin.left;
+      let cy = cfg.margin.top;
+      cfg.content.split('\n').forEach(line => {
+        if (line === '') { cy += cfg.lineSpacing; return; }
+        let cl = '';
+        for (let ch of line) {
+          const tw = textWidth(cl + ch) + (cl.length) * cfg.letterSpacing;
+          if (tw > maxW && cl !== '') {
+            outputGravityLine(cl, cx, cy, cfg.fontSize, cfg.letterSpacing);
+            cy += cfg.lineSpacing;
+            cl = ch;
+          } else cl += ch;
         }
-        let currentLine = '';
-        for (let i = 0; i < line.length; i++) {
-          const char = line[i];
-          const testLine = currentLine + char;
-          const testWidth = textWidth(testLine) + (testLine.length - 1) * letterSpacing;
-          if (testWidth > maxWidth && currentLine !== '') {
-            outputLine(currentLine, currentX, currentY, fontSize, letterSpacing);
-            currentY += lineSpacing;
-            currentLine = char;
-          } else {
-            currentLine = testLine;
-          }
-        }
-        if (currentLine !== '') {
-          outputLine(currentLine, currentX, currentY, fontSize, letterSpacing);
-        }
-        currentY += lineSpacing;
-      }
-    }
-
-    function outputLine(line, startX, y, fontSize, letterSpacing) {
-      let x = startX;
-      for (let i = 0; i < line.length; i++) {
-        const char = line[i];
-        const charWidth = textWidth(char);
-        chars.push({
-          char: char,
-          originX: x,
-          originY: y,
-          x: x,
-          y: y,
-          fontSize: fontSize,
-          color: CONFIG.text.color,
-          strokeColor: CONFIG.text.strokeColor,
-          strokeWeight: CONFIG.text.strokeWeight,
-          targetX: null,
-          targetY: null,
-          targetFontSize: fontSize,
-          targetColor: null,
-          isAttracted: false,
-          attractedBy: null,
-          alpha: 255,
-          floatOffset: random(TWO_PI),
-        });
-        x += charWidth + letterSpacing;
-      }
-    }
-
-    function spawnDot() {
-      const range = CONFIG.dot.positionRange;
-      const x = random(range.x[0], range.x[1]);
-      const y = random(range.y[0], range.y[1]);
-      spawnDotAt(x, y);
-    }
-
-    function spawnDotAt(x, y) {
-      const dot = {
-        x: x,
-        y: y,
-        size: CONFIG.dot.size,
-        color: CONFIG.dot.color,
-        attractedChars: [],
-        birthFrame: frameCount,
-        pulsePhase: random(TWO_PI),
-      };
-      dots.push(dot);
-      const lineLength = random(CONFIG.line.lengthRange[0], CONFIG.line.lengthRange[1]);
-      lines.push({
-        x: x,
-        y: y,
-        length: lineLength,
-        currentLength: 0,
-        growthSpeed: random(1, 3),
-        color: CONFIG.line.color,
-        thickness: CONFIG.line.thickness,
-        opacity: CONFIG.line.opacity,
-        birthFrame: frameCount,
+        if (cl) outputGravityLine(cl, cx, cy, cfg.fontSize, cfg.letterSpacing);
+        cy += cfg.lineSpacing;
       });
-      attractCharsToDot(dot);
     }
 
-    function attractCharsToDot(dot) {
-      const countRange = CONFIG.attraction.countRange;
-      const targetCount = floor(random(countRange[0], countRange[1] + 1));
-      const availableChars = chars.filter(c => !c.isAttracted);
-      if (availableChars.length === 0) return;
-      const shuffled = shuffleArray([...availableChars]);
-      const selected = shuffled.slice(0, min(targetCount, shuffled.length));
-      for (let i = 0; i < selected.length; i++) {
-        const char = selected[i];
+    function outputGravityLine(line, sx, y, fs, ls) {
+      let x = sx;
+      for (let ch of line) {
+        const cw = textWidth(ch);
+        gravityChars.push({
+          char: ch, originX: x, originY: y, x, y,
+          fontSize: fs, color: GRAVITY_CONFIG.text.color,
+          targetX: null, targetY: null, targetFontSize: fs, targetColor: null,
+          isAttracted: false, attractedBy: null, floatOffset: random(TWO_PI)
+        });
+        x += cw + ls;
+      }
+    }
+
+    function spawnGravityDot() {
+      const r = GRAVITY_CONFIG.dot.positionRange;
+      spawnGravityDotAt(random(r.x[0], r.x[1]), random(r.y[0], r.y[1]));
+    }
+
+    function spawnGravityDotAt(x, y) {
+      const dot = { x, y, size: GRAVITY_CONFIG.dot.size, color: GRAVITY_CONFIG.dot.color, attractedChars: [], birthFrame: frameCount, pulsePhase: random(TWO_PI) };
+      gravityDots.push(dot);
+      const ll = random(GRAVITY_CONFIG.line.lengthRange[0], GRAVITY_CONFIG.line.lengthRange[1]);
+      gravityLines.push({ x, y, length: ll, currentLength: 0, growthSpeed: random(0.5, 2), color: GRAVITY_CONFIG.line.color, thickness: GRAVITY_CONFIG.line.thickness, opacity: GRAVITY_CONFIG.line.opacity, birthFrame: frameCount });
+      attractGravityChars(dot);
+    }
+
+    function attractGravityChars(dot) {
+      const cr = GRAVITY_CONFIG.attraction.countRange;
+      const tc = floor(random(cr[0], cr[1] + 1));
+      const avail = gravityChars.filter(c => !c.isAttracted);
+      if (!avail.length) return;
+      const shuffled = avail.sort(() => random() - 0.5);
+      const selected = shuffled.slice(0, min(tc, shuffled.length));
+      selected.forEach((ch, i) => {
         const angle = (TWO_PI / selected.length) * i + random(-0.3, 0.3);
-        const radius = random(15, 35);
-        char.isAttracted = true;
-        char.attractedBy = dot;
-        char.targetX = dot.x + cos(angle) * radius;
-        char.targetY = dot.y + sin(angle) * radius;
-        char.targetFontSize = CONFIG.attraction.targetFontSize;
-        char.targetColor = random(CONFIG.attraction.targetColors);
-        dot.attractedChars.push(char);
-      }
+        const radius = random(12, 28);
+        ch.isAttracted = true;
+        ch.attractedBy = dot;
+        ch.targetX = dot.x + cos(angle) * radius;
+        ch.targetY = dot.y + sin(angle) * radius;
+        ch.targetFontSize = GRAVITY_CONFIG.attraction.targetFontSize;
+        ch.targetColor = random(GRAVITY_CONFIG.attraction.targetColors);
+        dot.attractedChars.push(ch);
+      });
     }
 
-    function updateChars() {
-      for (let char of chars) {
-        if (char.isAttracted && char.targetX !== null) {
-          char.x += (char.targetX - char.x) * CONFIG.attraction.speed;
-          char.y += (char.targetY - char.y) * CONFIG.attraction.speed;
-          char.fontSize += (char.targetFontSize - char.fontSize) * CONFIG.attraction.speed * 0.5;
-          maintainSafeDistance(char);
+    function updateGravityChars() {
+      for (let ch of gravityChars) {
+        if (ch.isAttracted && ch.targetX !== null) {
+          ch.x += (ch.targetX - ch.x) * GRAVITY_CONFIG.attraction.speed;
+          ch.y += (ch.targetY - ch.y) * GRAVITY_CONFIG.attraction.speed;
+          ch.fontSize += (ch.targetFontSize - ch.fontSize) * GRAVITY_CONFIG.attraction.speed * 0.5;
+          for (let other of gravityChars) {
+            if (other === ch || !other.isAttracted || other.attractedBy !== ch.attractedBy) continue;
+            const dx = other.x - ch.x, dy = other.y - ch.y;
+            const dist = sqrt(dx * dx + dy * dy);
+            if (dist < GRAVITY_CONFIG.attraction.safeDistance && dist > 0) {
+              const force = (GRAVITY_CONFIG.attraction.safeDistance - dist) / dist * 0.5;
+              ch.x -= dx * force; ch.y -= dy * force;
+            }
+          }
         } else {
-          char.y += sin(frameCount * 0.01 + char.floatOffset) * 0.15;
-          char.x += cos(frameCount * 0.008 + char.floatOffset) * 0.1;
+          ch.y += sin(frameCount * 0.008 + ch.floatOffset) * 0.1;
+          ch.x += cos(frameCount * 0.006 + ch.floatOffset) * 0.08;
         }
       }
     }
 
-    function maintainSafeDistance(char) {
-      if (!char.isAttracted) return;
-      for (let other of chars) {
-        if (other === char || !other.isAttracted || other.attractedBy !== char.attractedBy) continue;
-        const dx = other.x - char.x;
-        const dy = other.y - char.y;
-        const dist = sqrt(dx * dx + dy * dy);
-        if (dist < CONFIG.attraction.safeDistance && dist > 0) {
-          const force = (CONFIG.attraction.safeDistance - dist) / dist * 0.5;
-          char.x -= dx * force;
-          char.y -= dy * force;
-        }
-      }
-    }
-
-    function drawLines() {
-      for (let line of lines) {
+    function drawGravityLines() {
+      for (let line of gravityLines) {
         if (line.currentLength < line.length) {
           line.currentLength += line.growthSpeed;
           line.currentLength = min(line.currentLength, line.length);
@@ -422,91 +1122,323 @@
       }
     }
 
-    function drawDots() {
-      for (let dot of dots) {
+    function drawGravityDots() {
+      for (let dot of gravityDots) {
         const age = frameCount - dot.birthFrame;
         const fadeIn = min(age / 40, 1);
         const pulse = sin(frameCount * 0.03 + dot.pulsePhase) * 0.3 + 0.7;
         const c = color(dot.color);
         noStroke();
-        fill(red(c), green(c), blue(c), 15 * fadeIn * pulse);
+        fill(red(c), green(c), blue(c), 12 * fadeIn * pulse);
         ellipse(dot.x, dot.y, dot.size * 4);
-        fill(red(c), green(c), blue(c), 40 * fadeIn * pulse);
+        fill(red(c), green(c), blue(c), 35 * fadeIn * pulse);
         ellipse(dot.x, dot.y, dot.size * 2);
-        fill(red(c), green(c), blue(c), 180 * fadeIn);
+        fill(red(c), green(c), blue(c), 160 * fadeIn);
         ellipse(dot.x, dot.y, dot.size);
       }
     }
 
-    function drawChars() {
-      for (let char of chars) {
-        const fontSize = char.fontSize;
-        textSize(fontSize);
+    function drawGravityChars() {
+      for (let ch of gravityChars) {
+        textSize(ch.fontSize);
         let c;
-        if (char.isAttracted && char.targetColor) {
-          const targetC = color(char.targetColor);
-          const originC = color(CONFIG.text.color);
-          const distToTarget = dist(char.x, char.y, char.targetX, char.targetY);
-          const maxDist = 100;
-          const progress = constrain(1 - distToTarget / maxDist, 0, 1);
+        if (ch.isAttracted && ch.targetColor) {
+          const targetC = color(ch.targetColor);
+          const originC = color(GRAVITY_CONFIG.text.color);
+          const distToTarget = dist(ch.x, ch.y, ch.targetX, ch.targetY);
+          const progress = constrain(1 - distToTarget / 100, 0, 1);
           c = lerpColor(originC, targetC, progress);
-        } else {
-          c = color(char.color);
-        }
-        if (char.strokeWeight > 0) {
-          stroke(color(char.strokeColor));
-          strokeWeight(char.strokeWeight);
-        } else {
-          noStroke();
-        }
+        } else c = color(ch.color);
+        noStroke();
         fill(c);
-        text(char.char, char.x, char.y);
+        text(ch.char, ch.x, ch.y);
       }
     }
 
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = floor(random(i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
+    function gravityWindowResized() {
+      resizeCanvas(windowWidth, windowHeight);
+      initGravityText();
     }
 
-    const toggleBtn = document.getElementById('toggleBtn');
-    const controlPanel = document.getElementById('controlPanel');
-
-    toggleBtn.addEventListener('click', () => {
-      controlPanel.classList.toggle('open');
+    // 启动 p5.js 背景
+    new p5(function(p) {
+      p.setup = function() { gravitySetup.call(p); };
+      p.draw = function() { gravityDraw.call(p); };
+      p.mousePressed = function() { gravityMousePressed.call(p); };
+      p.windowResized = function() { gravityWindowResized.call(p); };
     });
 
-    document.getElementById('dotSpeed').addEventListener('input', (e) => {
-      CONFIG.dot.generationInterval = 230 - parseInt(e.target.value);
-    });
+    // ═══════════════════════════════════════
+    //  页面切换
+    // ═══════════════════════════════════════
+    function showPage(pageName) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + pageName).classList.add('active');
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('app').scrollTop = 0;
+    }
 
-    document.getElementById('moveSpeed').addEventListener('input', (e) => {
-      CONFIG.attraction.speed = parseFloat(e.target.value);
-    });
+    // 数据
+    const quotes = [
+      "我的精神状态：一边想死，一边怕死，一边觉得自己不配死，最后决定先活着，因为死了就看不到这么抽象的自己了。",
+      "今天活着的理由：外卖快到了。",
+      "我不是懒，我只是在节能模式。",
+      "人生就像打电话，不是你先挂就是我先挂，但我希望是电信先倒闭。",
+      "每天都在'想死'和'怕死'之间仰卧起坐。",
+      "我的脑子：80%的水，20%的想死。",
+      "别人：为梦想奋斗。我：为活着奋斗。",
+      "凌晨三点的我：哲学大师。早上的我：废物。"
+    ];
 
-    document.getElementById('safeDist').addEventListener('input', (e) => {
-      CONFIG.attraction.safeDistance = parseInt(e.target.value);
-    });
+    const helpCards = [
+      { text: "你今天已经做得很好了，真的。", source: "来自一个陌生人" },
+      { text: "我知道很难，但请再坚持一下。", source: "来自一个曾经想放弃的人" },
+      { text: "你的存在本身就是一种胜利。", source: "来自一个理解你的人" },
+      { text: "哭吧，没关系，我在这里。", source: "来自一个愿意倾听的人" },
+      { text: "明天不一定会更好，但你会更强大。", source: "来自一个走过来的人" }
+    ];
 
-    document.getElementById('lineLen').addEventListener('input', (e) => {
-      CONFIG.line.lengthRange = [parseInt(e.target.value) * 0.4, parseInt(e.target.value)];
-    });
+    const feeds = [
+      "小狗正在给你盖被子，请查收。",
+      "你今天呼吸了，已经很棒了。",
+      "一只猫正在远处看着你，觉得你很有趣。",
+      "你的存在让这个世界多了一种可能性。",
+      "有人在想你，即使你不知道。",
+      "你今天喝够水了吗？没有的话现在去喝一口。",
+      "你的大脑正在努力保护你，它很爱你。"
+    ];
 
-    document.getElementById('textContent').addEventListener('change', (e) => {
-      CONFIG.text.content = e.target.value;
-      dots = [];
-      lines = [];
-      initializeText();
-    });
+    const danmus = [
+      "今天还活着，已经很厉害了",
+      "凌晨三点的你并不孤单",
+      "又撑过一天，真棒",
+      "你的痛苦是真实的，但也会过去的",
+      "想死是大脑在求救，不是你的错",
+      "明天可能会好一点",
+      "你值得被温柔对待",
+      "包括被你自己"
+    ];
 
-    document.addEventListener('click', (e) => {
-      if (!controlPanel.contains(e.target) && !toggleBtn.contains(e.target)) {
-        controlPanel.classList.remove('open');
+    const posts = [
+      { text: "今天凌晨三点还没睡，但看到这句话突然觉得没那么孤单了", time: "刚刚", hugs: 3 },
+      { text: "又自伤了，但比上次少了一道，算进步吗", time: "5分钟前", hugs: 5 },
+      { text: "测出来我是阴暗爬行型，笑死，确实", time: "10分钟前", hugs: 2 }
+    ];
+
+    // 首页
+    function refreshQuote() {
+      const q = quotes[floor(random(quotes.length))];
+      document.getElementById('dailyQuote').textContent = '"' + q + '"';
+    }
+
+    // 测评
+    let currentQuiz = null;
+    let currentQuestion = 0;
+    let quizAnswers = [];
+
+    const quizzes = {
+      sbti: {
+        title: "SBTI 抽象型格测试",
+        questions: [
+          { q: "凌晨三点，你正在：", options: ["刷手机傻笑", "思考人生意义","搜索'怎么无痛'","已经睡了"] },
+          { q: "朋友问你'最近怎么样'，你会：", options: ["'挺好的'（实际想死）","直接发疯","转移话题","真的挺好的"] },
+          { q: "你的 coping 方式是：", options: ["睡觉逃避","暴饮暴食","伤害自己","找人倾诉"] },
+          { q: "看到治愈内容，你的反应是：", options: ["更想哭了","毫无感觉","稍微好点","觉得虚伪"] }
+        ],
+        results: {
+          atmer: { icon: "🌀", title: "ATM-er 型", tagline: "随时在崩溃边缘取钱", desc: "你的精神状态就像 ATM 机——随时可能吐钱（眼泪），但更多时候是余额不足。" },
+          zzzz: { icon: "💤", title: "ZZZZ 型", tagline: "用睡眠逃避一切", desc: "你的默认应对模式是睡觉。不是懒，是节能。不是逃避，是战略性撤退。" },
+          malo: { icon: "🌑", title: "MALO 型", tagline: "阴暗但还在爬行", desc: "你在阴暗的角落里爬行，但至少还在移动。不是前进，是蠕动，但蠕动也是动。" },
+          shadow: { icon: "👻", title: "阴暗爬行型", tagline: "已经放弃挣扎", desc: "你已经接受了阴暗的事实，并在此状态下找到了一种诡异的平静。" }
+        }
       }
-    });
+    };
+
+    function startQuiz(type) {
+      currentQuiz = quizzes[type];
+      currentQuestion = 0;
+      quizAnswers = [];
+      document.getElementById('quiz-list').classList.add('hidden');
+      document.getElementById('quiz-taking').classList.remove('hidden');
+      document.getElementById('quiz-result').classList.add('hidden');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = currentQuiz.questions[currentQuestion];
+      document.getElementById('quiz-question').textContent = q.q;
+      document.getElementById('quiz-progress-text').textContent = (currentQuestion + 1) + '/' + currentQuiz.questions.length;
+      document.getElementById('quiz-progress-fill').style.width = ((currentQuestion + 1) / currentQuiz.questions.length * 100) + '%';
+      const opts = document.getElementById('quiz-options');
+      opts.innerHTML = '';
+      q.options.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.onclick = () => answerQuestion(i);
+        opts.appendChild(btn);
+      });
+    }
+
+    function answerQuestion(ans) {
+      quizAnswers.push(ans);
+      if (currentQuestion < currentQuiz.questions.length - 1) {
+        currentQuestion++;
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById('quiz-taking').classList.add('hidden');
+      document.getElementById('quiz-result').classList.remove('hidden');
+      const results = Object.keys(currentQuiz.results);
+      const r = currentQuiz.results[results[floor(random(results.length))]];
+      document.getElementById('result-icon').textContent = r.icon;
+      document.getElementById('result-title').textContent = r.title;
+      document.getElementById('result-tagline').textContent = r.tagline;
+      document.getElementById('result-desc').textContent = r.desc;
+    }
+
+    function showQuizList() {
+      document.getElementById('quiz-list').classList.remove('hidden');
+      document.getElementById('quiz-taking').classList.add('hidden');
+      document.getElementById('quiz-result').classList.add('hidden');
+    }
+
+    // 互助
+    function drawHelpCard() {
+      const card = helpCards[floor(random(helpCards.length))];
+      document.getElementById('help-card-text').textContent = card.text;
+      document.getElementById('help-card-source').textContent = '— ' + card.source;
+    }
+
+    function initDanmu() {
+      const container = document.getElementById('danmu-container');
+      danmus.forEach((text, i) => {
+        const el = document.createElement('div');
+        el.className = 'danmu-item';
+        el.textContent = text;
+        el.style.top = (20 + i * 30) + 'px';
+        el.style.animationDelay = (i * 2) + 's';
+        el.style.animationDuration = (12 + random() * 8) + 's';
+        container.appendChild(el);
+      });
+    }
+
+    function postHelp() {
+      const input = document.getElementById('post-input');
+      const text = input.value.trim();
+      if (!text) return;
+      const list = document.getElementById('posts-list');
+      const post = document.createElement('div');
+      post.className = 'post-item';
+      post.innerHTML = '<div class="post-text">' + text + '</div><div class="post-meta"><span>刚刚</span><button class="hug-btn" onclick="sendHug(this)">抱抱</button></div>';
+      list.insertBefore(post, list.firstChild);
+      input.value = '';
+    }
+
+    function sendHug(btn) {
+      btn.textContent = '已抱抱 ❤';
+      btn.style.background = '#fef2f2';
+      btn.style.color = '#e73737';
+      btn.style.borderColor = 'rgba(231,55,55,0.2)';
+    }
+
+    // 急救
+    let timerInterval = null;
+    function startTimer() {
+      if (timerInterval) return;
+      let count = 30;
+      const display = document.getElementById('timer-display');
+      const text = document.getElementById('timer-text');
+      const btn = document.getElementById('timer-btn');
+      btn.textContent = '缓冲中...';
+      text.textContent = '深呼吸，慢慢倒数';
+      timerInterval = setInterval(() => {
+        count--;
+        display.textContent = count;
+        if (count <= 0) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+          display.textContent = '✓';
+          text.textContent = '你做得很好，这30秒你撑过来了';
+          btn.textContent = '再来一次';
+        }
+      }, 1000);
+    }
+
+    const sosContents = {
+      mild: { title: "我现在有点难受", actions: ["先喝一口水", "走到窗边看看外面", "给一个信任的人发消息"] },
+      moderate: { title: "我现在很难受", actions: ["深呼吸10次", "用冷水洗把脸", "拨打心理热线 400-161-9995", "告诉身边的人"] },
+      severe: { title: "我快撑不住了", actions: ["立刻拨打 120 或 110", "联系最近的人", "去最近的医院急诊科", "你不是一个人"] }
+    };
+
+    function switchSos(level, btn) {
+      document.querySelectorAll('.sos-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      const content = sosContents[level];
+      document.getElementById('sos-content').innerHTML = '<div style="font-size: 15px; font-weight: 600; margin-bottom: 12px;">' + content.title + '</div><div style="font-size: 14px; line-height: 2; color: var(--cocoa);">' + content.actions.map(a => '<div>· ' + a + '</div>').join('') + '</div><button class="btn btn-ghost" style="margin-top: 16px;" onclick="copySos()">复制求救卡</button>';
+    }
+
+    function copySos() {
+      const text = document.querySelector('#sos-content div:first-child').textContent + '\n' + Array.from(document.querySelectorAll('#sos-content div:nth-child(2) div')).map(d => d.textContent).join('\n');
+      navigator.clipboard.writeText(text).then(() => alert('已复制到剪贴板'));
+    }
+
+    // 开心
+    function randomFeed() {
+      const feed = feeds[floor(random(feeds.length))];
+      document.getElementById('feed-display').textContent = feed;
+    }
+
+    function generateFengwen() {
+      const input = document.getElementById('fengwen-input').value.trim() || '生活';
+      const templates = [
+        input + '？' + input + '！哈哈哈哈哈哈哈哈哈哈哈哈！我精神状态挺好的呀！',
+        '谁懂啊，' + input + '的时候我真的想死，但又怕死，所以决定先活着折磨世界。',
+        input + '？没关系！精神稳定一分钟也很厉害了！'
+      ];
+      const output = document.getElementById('fengwen-output');
+      output.textContent = templates[floor(random(templates.length))];
+      output.classList.add('show');
+    }
+
+    function translateThought() {
+      const input = document.getElementById('thought-input').value.trim();
+      if (!input) return;
+      const translations = {
+        '想死': '我现在很难受，需要休息',
+        '自杀': '我需要帮助，请陪陪我',
+        '自伤': '我需要释放压力，可以捏冰块',
+        '没意义': '我现在很累，需要暂停一下'
+      };
+      let result = '翻译："' + input + '" → "我现在很难受，但我会试着撑过去"';
+      for (let [key, val] of Object.entries(translations)) {
+        if (input.includes(key)) { result = '翻译："' + input + '" → "' + val + '"'; break; }
+      }
+      const output = document.getElementById('thought-output');
+      output.textContent = result;
+      output.classList.add('show');
+    }
+
+    // 初始化
+    function init() {
+      refreshQuote();
+      initDanmu();
+      // 渲染帖子
+      const postsList = document.getElementById('posts-list');
+      posts.forEach(p => {
+        const el = document.createElement('div');
+        el.className = 'post-item';
+        el.innerHTML = '<div class="post-text">' + p.text + '</div><div class="post-meta"><span>' + p.time + '</span><button class="hug-btn" onclick="sendHug(this)">抱抱</button></div>';
+        postsList.appendChild(el);
+      });
+    }
+
+    init();
   </script>
 </body>
 </html>
