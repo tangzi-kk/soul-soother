@@ -331,6 +331,248 @@
     }
 
     /* ═══════════════════════════════════════
+       彩蛋系统："想死"替代方案弹窗
+       ═══════════════════════════════════════ */
+
+    /* 彩蛋遮罩层 */
+    .easter-egg-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(71, 36, 37, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .easter-egg-overlay.active {
+      display: flex;
+    }
+
+    /* 彩蛋弹窗 */
+    .easter-egg-modal {
+      background: linear-gradient(135deg, #fff 0%, #f9f8f4 100%);
+      border-radius: 20px;
+      padding: 24px 20px;
+      width: 90%;
+      max-width: 340px;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      animation: slideUp 0.4s ease;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      border: 2px solid var(--accent);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* 彩蛋标题 */
+    .easter-egg-title {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 20px;
+      color: var(--ink);
+      text-align: center;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    /* 彩蛋表情包区域 */
+    .easter-egg-meme {
+      text-align: center;
+      font-size: 80px;
+      margin: 16px 0;
+      animation: memeBounce 0.6s ease infinite alternate;
+      line-height: 1;
+    }
+
+    @keyframes memeBounce {
+      from { transform: scale(0.9) rotate(-5deg); }
+      to { transform: scale(1.1) rotate(5deg); }
+    }
+
+    /* 彩蛋内容 */
+    .easter-egg-content {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.8;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    /* 彩蛋替代方案列表 */
+    .easter-egg-alternatives {
+      background: rgba(115, 138, 229, 0.08);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .easter-egg-alternative-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 13px;
+      color: var(--ink);
+      border-bottom: 1px dashed var(--border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .easter-egg-alternative-item:last-child {
+      border-bottom: none;
+    }
+
+    .easter-egg-alternative-item:active {
+      transform: scale(0.98);
+      color: var(--accent);
+    }
+
+    .easter-egg-alternative-item .alt-emoji {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    /* 彩蛋紧急信息 */
+    .easter-egg-emergency {
+      background: var(--danger-soft);
+      border: 1px solid rgba(231, 55, 55, 0.2);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .easter-egg-emergency-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--danger);
+      margin-bottom: 6px;
+    }
+
+    .easter-egg-emergency-number {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--danger);
+      letter-spacing: 0.05em;
+      cursor: pointer;
+    }
+
+    .easter-egg-emergency-hint {
+      font-size: 11px;
+      color: var(--cocoa);
+      margin-top: 4px;
+    }
+
+    /* 彩蛋按钮 */
+    .easter-egg-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      margin-bottom: 8px;
+    }
+
+    .easter-egg-btn.primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .easter-egg-btn.primary:active {
+      transform: scale(0.98);
+      opacity: 0.9;
+    }
+
+    .easter-egg-btn.ghost {
+      background: transparent;
+      color: var(--cocoa);
+      border: 1px solid var(--border);
+    }
+
+    .easter-egg-btn.ghost:active {
+      background: var(--canvas-warm);
+    }
+
+    /* 彩蛋关闭按钮 */
+    .easter-egg-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--canvas-warm);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--cocoa);
+    }
+
+    .easter-egg-close:active {
+      background: var(--border);
+    }
+
+    /* 彩蛋粒子特效 */
+    .easter-egg-particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .easter-egg-particle {
+      position: absolute;
+      font-size: 24px;
+      animation: particleFloat 2s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-200px) scale(0.5); opacity: 0; }
+    }
+
+    /* 彩蛋闪烁文字 */
+    .easter-egg-flash {
+      animation: flashText 0.5s ease infinite alternate;
+    }
+
+    @keyframes flashText {
+      from { opacity: 0.5; }
+      to { opacity: 1; }
+    }
+
+    /* 彩蛋震动效果 */
+    .easter-egg-shake {
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    /* ═══════════════════════════════════════
        子页面通用样式
        ═══════════════════════════════════════ */
     .page-header {
@@ -4419,6 +4661,372 @@
     }
 
     init();
+  </script>
+
+  <!-- ═══════════════════════════════════════
+       彩蛋系统："想死"替代方案弹窗
+       ═══════════════════════════════════════ -->
+  <div class="easter-egg-overlay" id="easterEggOverlay" onclick="closeEasterEgg(event)">
+    <div class="easter-egg-modal" id="easterEggModal">
+      <button class="easter-egg-close" onclick="closeEasterEgg()">×</button>
+      <div class="easter-egg-meme" id="easterEggMeme">🐱</div>
+      <div class="easter-egg-title" id="easterEggTitle">等等！</div>
+      <div class="easter-egg-content" id="easterEggContent"></div>
+      <div class="easter-egg-alternatives" id="easterEggAlternatives"></div>
+      <div class="easter-egg-emergency" id="easterEggEmergency">
+        <div class="easter-egg-emergency-title">如果你现在很难受</div>
+        <div class="easter-egg-emergency-number" onclick="window.location.href='tel:12356'">12356</div>
+        <div class="easter-egg-emergency-hint">全国统一心理援助热线（点击拨打）</div>
+      </div>
+      <button class="easter-egg-btn primary" id="easterEggActionBtn" onclick="easterEggAction()">好的，我先试试</button>
+      <button class="easter-egg-btn ghost" onclick="closeEasterEgg()">关闭</button>
+    </div>
+  </div>
+
+  <!-- 彩蛋粒子容器 -->
+  <div class="easter-egg-particles" id="easterEggParticles"></div>
+
+  <script>
+    // ═══════════════════════════════════════
+    //  彩蛋系统："想死"替代方案
+    // ═══════════════════════════════════════
+
+    // 彩蛋触发概率（每次点击有5%概率触发）
+    const EASTER_EGG_CHANCE = 0.05;
+
+    // 彩蛋类型池
+    const easterEggTypes = [
+      {
+        id: 'meme_cat',
+        name: '猫咪安慰',
+        meme: '🐱',
+        title: '等等！',
+        content: '小猫咪说："想死之前，先摸摸我吧。"',
+        alternatives: [
+          { emoji: '🐱', text: '去摸摸你的猫（如果有的话）' },
+          { emoji: '🍜', text: '去吃一碗热乎乎的面' },
+          { emoji: '🛁', text: '泡个热水澡' },
+          { emoji: '🎵', text: '听一首你18岁喜欢的歌' }
+        ],
+        action: '好的，我先试试',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_dog',
+        name: '狗狗鼓励',
+        meme: '🐶',
+        title: '汪！',
+        content: '小狗说："你走了谁给我铲屎？再撑撑！"',
+        alternatives: [
+          { emoji: '🐶', text: '去遛狗（或者云吸狗）' },
+          { emoji: '🍕', text: '点一份披萨' },
+          { emoji: '📺', text: '看一集你最喜欢的剧' },
+          { emoji: '💤', text: '睡一觉，明天再说' }
+        ],
+        action: '为了狗狗，我再撑撑',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_food',
+        name: '美食诱惑',
+        meme: '🍜',
+        title: '饿了吗？',
+        content: '胃说："想死可以，但先让我吃饱。"',
+        alternatives: [
+          { emoji: '🍜', text: '去吃点热的' },
+          { emoji: '🧋', text: '点一杯奶茶' },
+          { emoji: '🍰', text: '吃个蛋糕' },
+          { emoji: '🍦', text: '买个冰淇淋' }
+        ],
+        action: '先吃再说',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_sleep',
+        name: '睡眠召唤',
+        meme: '💤',
+        title: '困了吗？',
+        content: '大脑说："我现在一团浆糊，等我睡醒再决定。"',
+        alternatives: [
+          { emoji: '💤', text: '小睡20分钟' },
+          { emoji: '🛏️', text: '躺平，什么都不做' },
+          { emoji: '🌙', text: '设个明天的闹钟' },
+          { emoji: '📱', text: '把手机放远点' }
+        ],
+        action: '先睡再说',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_music',
+        name: '音乐疗愈',
+        meme: '🎵',
+        title: '听首歌吧',
+        content: '音乐说："我可以陪你一会儿。"',
+        alternatives: [
+          { emoji: '🎵', text: '听一首老歌' },
+          { emoji: '🎸', text: '弹一首曲子（如果会的话）' },
+          { emoji: '🎤', text: '大声唱一首歌' },
+          { emoji: '🎧', text: '戴上耳机，隔绝世界' }
+        ],
+        action: '听歌去',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_nature',
+        name: '自然召唤',
+        meme: '🌿',
+        title: '出去走走',
+        content: '大自然说："我的风还没吹够你。"',
+        alternatives: [
+          { emoji: '🌿', text: '去楼下走走' },
+          { emoji: '🌸', text: '看看花开了没' },
+          { emoji: '☁️', text: '抬头看看云' },
+          { emoji: '🌧️', text: '如果下雨，听听雨声' }
+        ],
+        action: '出去走走',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_friend',
+        name: '朋友召唤',
+        meme: '👥',
+        title: '找个人',
+        content: '朋友说："我还在，虽然我不知道你现在很难受。"',
+        alternatives: [
+          { emoji: '👥', text: '给一个朋友发消息' },
+          { emoji: '📞', text: '打个电话（给谁都行）' },
+          { emoji: '💬', text: '在群里发个表情包' },
+          { emoji: '🤗', text: '找个人抱抱' }
+        ],
+        action: '找人聊聊',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_game',
+        name: '游戏诱惑',
+        meme: '🎮',
+        title: '打一局？',
+        content: '游戏说："死了可以复活，现实也可以。"',
+        alternatives: [
+          { emoji: '🎮', text: '打一局游戏' },
+          { emoji: '📱', text: '刷会儿短视频' },
+          { emoji: '🧩', text: '玩个小游戏' },
+          { emoji: '🎯', text: '定个小目标（比如赢一局）' }
+        ],
+        action: '打一局再说',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_shower',
+        name: '洗澡召唤',
+        meme: '🚿',
+        title: '洗个澡吧',
+        content: '水流说："我可以冲走一些烦恼。"',
+        alternatives: [
+          { emoji: '🚿', text: '洗个热水澡' },
+          { emoji: '🧼', text: '好好洗把脸' },
+          { emoji: '🪥', text: '刷个牙' },
+          { emoji: '🧴', text: '涂点香香的身体乳' }
+        ],
+        action: '洗澡去',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_bed',
+        name: '被窝召唤',
+        meme: '🛏️',
+        title: '躺会儿',
+        content: '被窝说："进来，我保护你。"',
+        alternatives: [
+          { emoji: '🛏️', text: '钻进被窝' },
+          { emoji: '🧸', text: '抱个玩偶' },
+          { emoji: '📖', text: '看几页书' },
+          { emoji: '💭', text: '发呆，什么都不想' }
+        ],
+        action: '躺平',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_cry',
+        name: '哭出来',
+        meme: '😭',
+        title: '哭吧',
+        content: '眼泪说："我帮你排毒。"',
+        alternatives: [
+          { emoji: '😭', text: '大声哭出来' },
+          { emoji: '📓', text: '写下来为什么难过' },
+          { emoji: '🎬', text: '看一部催泪电影' },
+          { emoji: '🧻', text: '准备好纸巾' }
+        ],
+        action: '哭完再说',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_angry',
+        name: '发泄一下',
+        meme: '😤',
+        title: '生气吗？',
+        content: '愤怒说："我可以被释放，不是被压抑。"',
+        alternatives: [
+          { emoji: '😤', text: '大声骂出来（对着空气）' },
+          { emoji: '🥊', text: '打枕头' },
+          { emoji: '🏃', text: '跑一圈' },
+          { emoji: '📝', text: '写下来所有不满' }
+        ],
+        action: '发泄一下',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_hope',
+        name: '希望',
+        meme: '🌈',
+        title: '再等等',
+        content: '希望说："我还在，虽然你看不见我。"',
+        alternatives: [
+          { emoji: '🌈', text: '看看窗外的天空' },
+          { emoji: '🌅', text: '等明天的日出' },
+          { emoji: '🌱', text: '种一盆植物' },
+          { emoji: '✨', text: '许个愿' }
+        ],
+        action: '再等等',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_future',
+        name: '未来',
+        meme: '🔮',
+        title: '未来还有',
+        content: '未来说："我还没来，你怎么知道不好？"',
+        alternatives: [
+          { emoji: '🔮', text: '想想明年这时候你在干嘛' },
+          { emoji: '📅', text: '设一个未来的小目标' },
+          { emoji: '🎁', text: '给自己买个小礼物' },
+          { emoji: '📸', text: '拍张照片，记录现在' }
+        ],
+        action: '看看未来',
+        actionCallback: () => { closeEasterEgg(); }
+      },
+      {
+        id: 'meme_pet',
+        name: '宠物',
+        meme: '🐾',
+        title: '毛孩子在等你',
+        content: '宠物说："你走了谁喂我？"',
+        alternatives: [
+          { emoji: '🐾', text: '去喂宠物' },
+          { emoji: '🐱', text: '和猫玩一会儿' },
+          { emoji: '🐶', text: '带狗出去遛' },
+          { emoji: '🐹', text: '看看仓鼠在干嘛' }
+        ],
+        action: '为了毛孩子',
+        actionCallback: () => { closeEasterEgg(); }
+      }
+    ];
+
+    // 抽象表情包emoji池（30个）
+    const memeEmojis = [
+      '🐱', '🐶', '🦊', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸',
+      '🐙', '🦄', '🐝', '🦋', '🐞', '🐢', '🐬', '🦉', '🦔', '🐿️',
+      '🌵', '🌻', '🍄', '🌈', '⭐', '🌙', '☁️', '🔥', '💫', '🎈'
+    ];
+
+    // 彩蛋触发函数
+    function triggerEasterEgg() {
+      if (Math.random() > EASTER_EGG_CHANCE) return;
+
+      const egg = easterEggTypes[Math.floor(Math.random() * easterEggTypes.length)];
+      showEasterEgg(egg);
+    }
+
+    // 显示彩蛋
+    function showEasterEgg(egg) {
+      const overlay = document.getElementById('easterEggOverlay');
+      const modal = document.getElementById('easterEggModal');
+      const memeEl = document.getElementById('easterEggMeme');
+      const titleEl = document.getElementById('easterEggTitle');
+      const contentEl = document.getElementById('easterEggContent');
+      const alternativesEl = document.getElementById('easterEggAlternatives');
+      const actionBtn = document.getElementById('easterEggActionBtn');
+
+      // 随机选择一个表情包
+      const randomMeme = memeEmojis[Math.floor(Math.random() * memeEmojis.length)];
+      memeEl.textContent = randomMeme;
+
+      titleEl.textContent = egg.title;
+      contentEl.textContent = egg.content;
+
+      // 生成替代方案列表
+      let altHtml = '';
+      egg.alternatives.forEach(alt => {
+        altHtml += '<div class="easter-egg-alternative-item" onclick="this.classList.toggle(\'checked\')">' +
+          '<span class="alt-emoji">' + alt.emoji + '</span>' +
+          '<span>' + alt.text + '</span>' +
+          '</div>';
+      });
+      alternativesEl.innerHTML = altHtml;
+
+      // 设置按钮
+      actionBtn.textContent = egg.action;
+      actionBtn.onclick = () => {
+        if (egg.actionCallback) egg.actionCallback();
+      };
+
+      // 显示弹窗
+      overlay.classList.add('active');
+
+      // 触发粒子特效
+      createEasterEggParticles();
+
+      // 触发震动效果
+      modal.classList.add('easter-egg-shake');
+      setTimeout(() => modal.classList.remove('easter-egg-shake'), 500);
+    }
+
+    // 关闭彩蛋
+    function closeEasterEgg(event) {
+      if (event && event.target !== event.currentTarget) return;
+      document.getElementById('easterEggOverlay').classList.remove('active');
+    }
+
+    // 彩蛋粒子特效
+    function createEasterEggParticles() {
+      const container = document.getElementById('easterEggParticles');
+      container.innerHTML = '';
+
+      const particles = ['✨', '💫', '⭐', '🌟', '💕', '💖', '💗', '💝', '🎈', '🎉'];
+
+      for (let i = 0; i < 15; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'easter-egg-particle';
+        particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = (50 + Math.random() * 50) + '%';
+        particle.style.animationDelay = (Math.random() * 0.5) + 's';
+        particle.style.animationDuration = (1.5 + Math.random()) + 's';
+        container.appendChild(particle);
+
+        // 自动清理
+        setTimeout(() => particle.remove(), 3000);
+      }
+    }
+
+    // 彩蛋动作函数
+    function easterEggAction() {
+      closeEasterEgg();
+    }
+
+    // 为所有按钮添加彩蛋触发
+    function initEasterEggTriggers() {
+      document.addEventListener('click', function(e) {
+        // 只触发在按钮、卡片、选项上的点击
+        if (e.target.closest('button') || e.target.closest('.card') || e.target.closest('.chat-option-btn')) {
+          triggerEasterEgg();
+        }
+      });
+    }
+
+    // 初始化彩蛋系统
+    initEasterEggTriggers();
   </script>
 </body>
 </html>
