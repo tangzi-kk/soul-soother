@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Soul Soother - 用抽象接住崩溃</title>
+  <title>Soul Soother — 用抽象接住崩溃</title>
   <meta name="description" content="一个面向极端情绪状态人群的轻量级趣味治愈网站，用Z世代最懂的抽象自嘲语言，让濒临崩溃的人在会心一笑中获得短暂的喘息">
   <link rel="stylesheet" href="css/style.css">
 </head>
@@ -20,23 +20,32 @@
       <div class="night-rescue-text" id="nightRescueText"></div>
     </div>
 
+    <!-- Hero: 极简居中，大量留白 -->
     <section class="hero">
       <span class="hero-label">Soul Soother</span>
       <h1 class="hero-title">用抽象接住崩溃</h1>
       <p class="hero-subtitle">用玩笑降低痛感，让濒临崩溃的人在会心一笑中获得短暂的喘息</p>
-      <a href="quiz.html" class="cta cta-primary">开始测试 →</a>
+      <a href="quiz.html" class="cta cta-primary">
+        开始测试
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
     </section>
 
+    <!-- Daily Quote: 居中引用式布局 -->
     <section class="section">
       <div class="daily-quote">
         <div class="daily-quote-text" id="dailyQuote">加载中...</div>
         <div class="daily-quote-footer">
           <span class="daily-quote-date" id="dailyDate"></span>
-          <button class="cta cta-ghost" onclick="refreshQuote()">换一句</button>
+          <button class="cta cta-ghost" onclick="refreshQuote()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            换一句
+          </button>
         </div>
       </div>
     </section>
 
+    <!-- Action Grid: 2x2 画廊网格，hover 时顶部出现 accent 线条 -->
     <section class="section">
       <div class="section-header">
         <span class="section-number">01</span>
@@ -44,41 +53,43 @@
       </div>
       <div class="action-grid">
         <a href="quiz.html" class="action-card">
-          <div class="action-card-icon">🧠</div>
+          <svg class="action-card-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
           <div class="action-card-title">精神状态检测</div>
           <div class="action-card-desc">测测你有多抽象</div>
         </a>
         <a href="tools.html#fengwen" class="action-card">
-          <div class="action-card-icon">📝</div>
+          <svg class="action-card-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
           <div class="action-card-title">发疯文学生成</div>
           <div class="action-card-desc">把情绪变成段子</div>
         </a>
         <a href="collection.html" class="action-card">
-          <div class="action-card-icon">🎮</div>
+          <svg class="action-card-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
           <div class="action-card-title">治愈小游戏</div>
           <div class="action-card-desc">无聊时随便玩</div>
         </a>
         <a href="tools.html#help-card" class="action-card">
-          <div class="action-card-icon">💝</div>
+          <svg class="action-card-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
           <div class="action-card-title">抽互助卡</div>
           <div class="action-card-desc">今天也有人陪你</div>
         </a>
       </div>
     </section>
 
+    <!-- Help Card: 居中仪式感的单卡片 -->
     <section class="section">
       <div class="section-header">
         <span class="section-number">02</span>
         <h2 class="section-title">来自陌生人的陪伴</h2>
       </div>
       <div class="help-card-section">
-        <div class="help-card-icon" id="helpCardIcon">🎲</div>
+        <svg id="helpCardIcon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
         <div class="help-card-text" id="helpCardText">点击抽一张属于你的互助卡</div>
         <button class="cta" onclick="drawHelpCard()">抽一张</button>
         <div class="help-card-sub">每一条都来自真实的人</div>
       </div>
     </section>
 
+    <!-- Danmu + Help Posts: 上下流式 -->
     <section class="section">
       <div class="section-header">
         <span class="section-number">03</span>
@@ -95,7 +106,10 @@
       <div class="help-posts-section">
         <div class="help-textarea-wrap">
           <textarea class="help-textarea" id="helpPost" placeholder="今天发生了什么？随便说一句..."></textarea>
-          <button class="cta cta-primary" onclick="postHelp()" style="width: 100%;">发布</button>
+          <button class="cta cta-primary" onclick="postHelp()" style="width: 100%;">
+            发布
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          </button>
         </div>
 
         <div class="help-posts-header">
@@ -106,21 +120,21 @@
             <div class="help-post-text">今天凌晨三点还没睡，但看到这句话突然觉得没那么孤单了</div>
             <div class="help-post-footer">
               <span class="help-post-time">刚刚</span>
-              <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+              <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
             </div>
           </div>
           <div class="help-post">
             <div class="help-post-text">又自伤了，但比上次少了一道，算进步吗</div>
             <div class="help-post-footer">
               <span class="help-post-time">5分钟前</span>
-              <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+              <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
             </div>
           </div>
           <div class="help-post">
             <div class="help-post-text">测出来我是"阴暗爬行型"，笑死，确实</div>
             <div class="help-post-footer">
               <span class="help-post-time">10分钟前</span>
-              <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+              <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
             </div>
           </div>
         </div>
@@ -211,9 +225,8 @@
       iconEl.style.opacity = '0';
       textEl.style.opacity = '0';
       setTimeout(function() {
-        iconEl.textContent = card.icon || '✨';
-        textEl.textContent = card.text;
         iconEl.style.opacity = '1';
+        textEl.textContent = card.text;
         textEl.style.opacity = '1';
       }, 300);
     }
@@ -242,7 +255,7 @@
       var postsContainer = document.getElementById('helpPosts');
       var newPost = document.createElement('div');
       newPost.className = 'help-post fade-in';
-      newPost.innerHTML = '<div class="help-post-text">' + content + '</div><div class="help-post-footer"><span class="help-post-time">刚刚</span><button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button></div>';
+      newPost.innerHTML = '<div class="help-post-text">' + content + '</div><div class="help-post-footer"><span class="help-post-time">刚刚</span><button class="hug-btn" onclick="sendHug(this)">抱抱</button></div>';
       postsContainer.insertBefore(newPost, postsContainer.firstChild);
       document.getElementById('helpPost').value = '';
       saveHelpPost(content);
@@ -250,7 +263,7 @@
 
     function sendHug(btn) {
       btn.classList.add('hugged');
-      btn.textContent = '🫂 已抱抱';
+      btn.textContent = '已抱抱';
       btn.disabled = true;
     }
 

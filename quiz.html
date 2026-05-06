@@ -55,8 +55,14 @@
           <div class="quiz-result-advice" id="resultAdvice"></div>
 
           <div class="result-actions">
-            <button class="cta cta-primary" onclick="shareResult()">分享</button>
-            <button class="cta cta-ghost" onclick="restartQuiz()">再测</button>
+            <button class="cta cta-primary" onclick="shareResult()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:middle;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+              分享
+            </button>
+            <button class="cta cta-ghost" onclick="restartQuiz()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:middle;"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+              再测
+            </button>
           </div>
 
           <div class="result-rec-title">适合你的内容</div>
@@ -69,23 +75,18 @@
   <nav class="bottom-nav">
     <div class="bottom-nav-inner">
       <a href="index.html" class="bottom-nav-item">
-        <span class="bottom-nav-icon">🏠</span>
         <span>首页</span>
       </a>
       <a href="quiz.html" class="bottom-nav-item active">
-        <span class="bottom-nav-icon">🧠</span>
         <span>测评</span>
       </a>
       <a href="collection.html" class="bottom-nav-item">
-        <span class="bottom-nav-icon">🎮</span>
         <span>合集</span>
       </a>
       <a href="tools.html" class="bottom-nav-item">
-        <span class="bottom-nav-icon">🛠️</span>
         <span>工具</span>
       </a>
       <a href="about.html" class="bottom-nav-item">
-        <span class="bottom-nav-icon">ℹ️</span>
         <span>关于</span>
       </a>
     </div>
@@ -114,6 +115,11 @@
       'blackhole': '🕳️'
     };
 
+    var quizIcons = {
+      'mental-state': '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>',
+      'social-mask': '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>'
+    };
+
     document.addEventListener('DOMContentLoaded', function() {
       renderQuizList();
     });
@@ -123,17 +129,21 @@
       var html = '';
       for (var i = 0; i < quizzes.length; i++) {
         var q = quizzes[i];
+        var iconSvg = quizIcons[q.id] || '';
         html += '<div class="quiz-card" onclick="startQuiz(\'' + q.id + '\')">' +
           '<div class="quiz-card-header">' +
-            '<span class="quiz-card-icon">' + q.icon + '</span>' +
+            '<span class="quiz-card-icon">' + iconSvg + '</span>' +
             '<div>' +
               '<div class="quiz-card-title">' + q.name + '</div>' +
               '<div class="quiz-card-desc">' + q.description + '</div>' +
             '</div>' +
           '</div>' +
           '<div class="quiz-card-meta">' +
-            '<span class="quiz-card-time">⏱️ ' + q.duration + '</span>' +
-            '<button class="cta cta-primary" style="padding: 8px 18px; font-size: 13px;">开始测试</button>' +
+            '<span class="quiz-card-time">' + q.duration + '</span>' +
+            '<button class="cta cta-primary" style="padding: 8px 18px; font-size: 13px;">' +
+              '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:4px;vertical-align:middle;"><polyline points="9 18 15 12 9 6"></polyline></svg>' +
+              '开始测试' +
+            '</button>' +
           '</div>' +
         '</div>';
       }
@@ -178,7 +188,12 @@
       document.getElementById('progressText').textContent = (currentQuestion + 1) + '/' + currentQuiz.questions.length;
 
       document.getElementById('prevBtn').style.visibility = currentQuestion === 0 ? 'hidden' : 'visible';
-      document.getElementById('nextBtn').textContent = currentQuestion === currentQuiz.questions.length - 1 ? '查看结果' : '下一题';
+      var nextBtn = document.getElementById('nextBtn');
+      if (currentQuestion === currentQuiz.questions.length - 1) {
+        nextBtn.innerHTML = '查看结果<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;vertical-align:middle;"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+      } else {
+        nextBtn.innerHTML = '下一题<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;vertical-align:middle;"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+      }
     }
 
     function selectOption(index) {
@@ -229,18 +244,25 @@
       document.getElementById('resultDesc').textContent = result.description;
       document.getElementById('resultAdvice').textContent = result.advice;
 
+      var recIcons = {
+        'Pixel Thoughts': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>',
+        '流体模拟': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>',
+        '发疯文学生成器': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>'
+      };
+
       var recommendations = [
-        { name: 'Pixel Thoughts', desc: '60秒冥想，把烦恼放进星星里', icon: '✨', url: 'collection.html' },
-        { name: '流体模拟', desc: '鼠标划过产生美丽的色彩流动', icon: '🌊', url: 'collection.html' },
-        { name: '发疯文学生成器', desc: '输入情绪，生成发疯文学', icon: '📝', url: 'tools.html#fengwen' }
+        { name: 'Pixel Thoughts', desc: '60秒冥想，把烦恼放进星星里', url: 'collection.html' },
+        { name: '流体模拟', desc: '鼠标划过产生美丽的色彩流动', url: 'collection.html' },
+        { name: '发疯文学生成器', desc: '输入情绪，生成发疯文学', url: 'tools.html#fengwen' }
       ];
 
       var recHtml = '';
       for (var k = 0; k < recommendations.length; k++) {
         var r = recommendations[k];
+        var recIcon = recIcons[r.name] || '';
         recHtml += '<a href="' + r.url + '" style="text-decoration: none; color: inherit;">' +
           '<div class="recommendation-item">' +
-            '<span class="recommendation-icon">' + r.icon + '</span>' +
+            '<span class="recommendation-icon">' + recIcon + '</span>' +
             '<div>' +
               '<div class="recommendation-name">' + r.name + '</div>' +
               '<div class="recommendation-desc">' + r.desc + '</div>' +
