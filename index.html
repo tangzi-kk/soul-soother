@@ -271,6 +271,56 @@
       color: var(--cocoa);
     }
 
+    /* 快速操作按钮 */
+    .quick-actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .quick-action-btn {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(128, 112, 95, 0.12);
+      border-radius: 14px;
+      padding: 16px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(71, 36, 37, 0.06);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .quick-action-btn:active {
+      transform: scale(0.96);
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 4px 12px rgba(71, 36, 37, 0.1);
+    }
+
+    .quick-action-icon {
+      font-size: 24px;
+    }
+
+    .quick-action-text {
+      font-size: 12px;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* 缓一缓各区域 */
+    .play-section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .play-section.active {
+      display: block;
+    }
+
     /* 免责声明 */
     .disclaimer {
       text-align: center;
@@ -1138,42 +1188,49 @@
       </div>
 
       <!-- ═══════════════════════════════════════
-           缓一缓页面 —— 小缓陪你四层缓降
+           缓一缓页面 —— 用户视角重新设计
            ═══════════════════════════════════════ -->
       <div class="page" id="page-play">
         <div class="page-header">
           <h1 class="page-title">缓一缓</h1>
-          <p class="page-subtitle">小缓陪你，一层一层缓下来</p>
+          <p class="page-subtitle">不用变好，先缓下来</p>
         </div>
 
-        <!-- 小缓引导语 -->
-        <div class="xiaohuan-guide" style="margin-bottom:20px;">
-          <div style="display:flex;align-items:flex-start;gap:10px;">
-            <div style="font-size:28px;flex-shrink:0;">🌿</div>
-            <div>
-              <div style="font-size:14px;color:var(--ink);line-height:1.7;margin-bottom:6px;">
-                "我知道你现在很难受。不用急着变好，我们先一层一层缓下来。"
-              </div>
-              <div style="font-size:12px;color:var(--cocoa-light);">
-                —— 小缓
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 第一层：身体着陆 —— 小缓说：先回来 -->
+        <!-- 快速选择：我现在想... -->
         <div class="section">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-            <span style="font-size:20px;">🫁</span>
-            <span style="font-size:15px;font-weight:600;color:var(--ink);">第一层：先回来</span>
+          <div class="section-title">我现在想...</div>
+          <div class="quick-actions">
+            <button class="quick-action-btn" onclick="showPlaySection('breathe')">
+              <span class="quick-action-icon">🫁</span>
+              <span class="quick-action-text">喘口气</span>
+            </button>
+            <button class="quick-action-btn" onclick="showPlaySection('ground')">
+              <span class="quick-action-icon">👁</span>
+              <span class="quick-action-text">回神</span>
+            </button>
+            <button class="quick-action-btn" onclick="showPlaySection('delay')">
+              <span class="quick-action-icon">⏳</span>
+              <span class="quick-action-text">等一下</span>
+            </button>
+            <button class="quick-action-btn" onclick="showPlaySection('attachment')">
+              <span class="quick-action-icon">⚓</span>
+              <span class="quick-action-text">找理由</span>
+            </button>
+            <button class="quick-action-btn" onclick="showPlaySection('vent')">
+              <span class="quick-action-icon">🌀</span>
+              <span class="quick-action-text">倒垃圾</span>
+            </button>
+            <button class="quick-action-btn" onclick="showPlaySection('translate')">
+              <span class="quick-action-icon">🔄</span>
+              <span class="quick-action-text">翻译情绪</span>
+            </button>
           </div>
-          <div style="font-size:12px;color:var(--cocoa);margin-bottom:12px;padding-left:28px;">
-            "当脑子转不动的时候，先让身体回来。"
-          </div>
+        </div>
 
-          <!-- 呼吸气泡 -->
-          <div class="card" style="margin-bottom:10px;">
-            <div style="font-size:12px;color:var(--cocoa);margin-bottom:10px;">小缓："跟着我呼吸，吸气... 呼气..."</div>
+        <!-- 呼吸区域 -->
+        <div class="play-section" id="play-breathe">
+          <div class="section-title">🫁 喘口气</div>
+          <div class="card">
             <div class="breath-container">
               <div class="breath-circle" id="breath-circle">
                 <span style="font-size: 24px;">🫁</span>
@@ -1182,10 +1239,13 @@
             </div>
             <button class="btn btn-primary" id="breath-btn" onclick="toggleBreath()">开始呼吸</button>
           </div>
+        </div>
 
-          <!-- 五感 grounding -->
+        <!-- 回神区域 -->
+        <div class="play-section" id="play-ground">
+          <div class="section-title">👁 回神</div>
           <div class="card">
-            <div style="font-size:12px;color:var(--cocoa);margin-bottom:10px;">小缓："看看周围，告诉我你看到了什么？"</div>
+            <div style="font-size:13px;color:var(--cocoa);margin-bottom:12px;">当脑子乱糟糟的时候，看看周围：</div>
             <div class="grounding-list">
               <div class="grounding-item" onclick="this.classList.toggle('checked')">
                 <div class="grounding-icon">👁</div>
@@ -1203,18 +1263,11 @@
           </div>
         </div>
 
-        <!-- 第二层：时间延迟 —— 小缓说：等一下 -->
-        <div class="section">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-            <span style="font-size:20px;">⏳</span>
-            <span style="font-size:15px;font-weight:600;color:var(--ink);">第二层：等一下</span>
-          </div>
-          <div style="font-size:12px;color:var(--cocoa);margin-bottom:12px;padding-left:28px;">
-            "不急着做决定，先做完这些再说。"
-          </div>
-
+        <!-- 等一下区域 -->
+        <div class="play-section" id="play-delay">
+          <div class="section-title">⏳ 等一下</div>
           <div class="card">
-            <div style="font-size:12px;color:var(--cocoa);margin-bottom:10px;">小缓："勾选你做到的，没做到也没关系。"</div>
+            <div style="font-size:13px;color:var(--cocoa);margin-bottom:12px;">不急着做决定，先做完这些：</div>
             <div class="delay-list" id="delay-list">
               <div class="delay-item" onclick="toggleDelay(this)">
                 <div class="delay-checkbox"></div>
@@ -1245,58 +1298,34 @@
           </div>
         </div>
 
-        <!-- 第三层：意义锚定 —— 小缓说：看看这个 -->
-        <div class="section">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-            <span style="font-size:20px;">⚓</span>
-            <span style="font-size:15px;font-weight:600;color:var(--ink);">第三层：看看这个</span>
-          </div>
-          <div style="font-size:12px;color:var(--cocoa);margin-bottom:12px;padding-left:28px;">
-            "还有什么让你舍不得？抽一张看看。"
-          </div>
-
-          <div class="attachment-card" style="margin-bottom:10px;">
-            <div style="font-size:12px;color:var(--cocoa);margin-bottom:10px;">小缓悄悄说：</div>
+        <!-- 找理由区域 -->
+        <div class="play-section" id="play-attachment">
+          <div class="section-title">⚓ 找理由</div>
+          <div class="attachment-card">
             <div class="attachment-text" id="attachment-text">还有什么让你舍不得？</div>
             <button class="btn btn-primary" onclick="randomAttachment()">抽一张</button>
           </div>
         </div>
 
-        <!-- 第四层：情绪出口 —— 小缓说：倒出来 -->
-        <div class="section">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-            <span style="font-size:20px;">🌀</span>
-            <span style="font-size:15px;font-weight:600;color:var(--ink);">第四层：倒出来</span>
-          </div>
-          <div style="font-size:12px;color:var(--cocoa);margin-bottom:12px;padding-left:28px;">
-            "不用变好，先把情绪倒出来。"
-          </div>
-
-          <!-- 抽象生成器 -->
-          <div class="card" style="margin-bottom:10px;">
-            <div style="font-size:12px;color:var(--cocoa);margin-bottom:10px;">小缓："输入你的烦恼，我帮你发疯。"</div>
-            <input type="text" class="input" id="fengwen-input" placeholder="例如：加班、失恋、没钱、房贷...">
-            <button class="btn btn-primary" onclick="generateFengwen()">生成抽象文案</button>
-            <div class="generator-output" id="fengwen-output"></div>
-          </div>
-
-          <!-- 情绪翻译器 -->
+        <!-- 倒垃圾区域 -->
+        <div class="play-section" id="play-vent">
+          <div class="section-title">🌀 倒垃圾</div>
           <div class="card">
-            <div style="font-size:12px;color:var(--cocoa);margin-bottom:10px;">小缓："把坏念头告诉我，我帮你翻译。"</div>
-            <input type="text" class="input" id="thought-input" placeholder="我现在感觉很糟，想说...">
-            <button class="btn btn-primary" onclick="translateThought()">翻译</button>
-            <div class="generator-output" id="thought-output"></div>
+            <div style="font-size:13px;color:var(--cocoa);margin-bottom:10px;">输入你的烦恼，生成发疯文案：</div>
+            <input type="text" class="input" id="fengwen-input" placeholder="例如：加班、失恋、没钱、房贷...">
+            <button class="btn btn-primary" onclick="generateFengwen()">生成</button>
+            <div class="generator-output" id="fengwen-output"></div>
           </div>
         </div>
 
-        <!-- 小缓结尾 -->
-        <div style="text-align:center;padding:24px 16px;">
-          <div style="font-size:28px;margin-bottom:8px;">🌿</div>
-          <div style="font-size:14px;color:var(--cocoa);line-height:1.8;">
-            "不管你现在在哪一层，<br>我都在这里陪你。"
-          </div>
-          <div style="font-size:12px;color:var(--cocoa-light);margin-top:8px;">
-            —— 小缓
+        <!-- 翻译情绪区域 -->
+        <div class="play-section" id="play-translate">
+          <div class="section-title">🔄 翻译情绪</div>
+          <div class="card">
+            <div style="font-size:13px;color:var(--cocoa);margin-bottom:10px;">把坏念头翻译成真实需求：</div>
+            <input type="text" class="input" id="thought-input" placeholder="我现在感觉很糟，想说...">
+            <button class="btn btn-primary" onclick="translateThought()">翻译</button>
+            <div class="generator-output" id="thought-output"></div>
           </div>
         </div>
       </div>
@@ -2067,6 +2096,750 @@
         trait: "啤酒过敏",
         story: "海员，出海三个月，刚上岸",
         text: "想死是大脑在求救，不是你的错。"
+      },
+      {
+        name: "小夏",
+        age: 22,
+        city: "广州",
+        trait: "喜欢喝早茶",
+        story: "会计专业，每天面对数字到想吐",
+        text: "数字不会骗你，但人会。"
+      },
+      {
+        name: "阿枫",
+        age: 24,
+        city: "苏州",
+        trait: "园林里写生",
+        story: "平面设计师，客户改了28版最后要第一版",
+        text: "改吧，反正我也习惯了。"
+      },
+      {
+        name: "小雪",
+        age: 20,
+        city: "拉萨",
+        trait: "高原反应但不想走",
+        story: "客栈义工，来了三个月不想回家",
+        text: "在这里，至少空气是干净的。"
+      },
+      {
+        name: "阿龙",
+        age: 28,
+        city: "东莞",
+        trait: "工厂夜班",
+        story: "流水线工人，每天重复同一个动作两千次",
+        text: "重复不是无意义，是你在养活谁。"
+      },
+      {
+        name: "小月",
+        age: 19,
+        city: "天津",
+        trait: "听相声入睡",
+        story: "相声专业，上台就紧张到忘词",
+        text: "笑不出来的时候，就听别人笑。"
+      },
+      {
+        name: "阿虎",
+        age: 25,
+        city: "合肥",
+        trait: "养了一只乌龟",
+        story: "房产中介，三个月没开单",
+        text: "乌龟活得久，是因为它不急。"
+      },
+      {
+        name: "小星",
+        age: 21,
+        city: "南宁",
+        trait: "夜市摆摊",
+        story: "大专毕业，白天送外卖晚上卖烤串",
+        text: "累是累，但至少是自己的。"
+      },
+      {
+        name: "阿云",
+        age: 23,
+        city: "贵阳",
+        trait: "山里长大的孩子",
+        story: "程序员，第一次坐电梯是18岁",
+        text: "从山里到城里，你已经走了很远。"
+      },
+      {
+        name: "小海",
+        age: 27,
+        city: "大连",
+        trait: "冬泳爱好者",
+        story: "健身教练，疫情后健身房倒闭",
+        text: "身体还记得怎么动，心也要记得。"
+      },
+      {
+        name: "阿梅",
+        age: 20,
+        city: "兰州",
+        trait: "拉面馆女儿",
+        story: "帮家里看店，想考美院被说没出息",
+        text: "你的梦，比一碗面值钱。"
+      },
+      {
+        name: "小石",
+        age: 22,
+        city: "太原",
+        trait: "煤矿工人儿子",
+        story: "考上研究生，全村第一个",
+        text: "你已经是很多人的光了。"
+      },
+      {
+        name: "阿竹",
+        age: 24,
+        city: "福州",
+        trait: "茶艺师",
+        story: "茶庄打工，客人说她是服务员不是茶艺师",
+        text: "茶要慢慢泡，人也是。"
+      },
+      {
+        name: "小冰",
+        age: 18,
+        city: "长春",
+        trait: "滑冰摔了无数次",
+        story: "体校生，教练说她没天赋",
+        text: "摔倒了再站起来，就是天赋。"
+      },
+      {
+        name: "阿雷",
+        age: 26,
+        city: "南昌",
+        trait: "听雨声睡觉",
+        story: "快递员，雨天订单翻倍但路难走",
+        text: "雨天路滑，慢点走，不赶时间。"
+      },
+      {
+        name: "小露",
+        age: 21,
+        city: "海口",
+        trait: "海边捡贝壳",
+        story: "酒店前台，每天对客人微笑到脸僵",
+        text: "不用对每个人笑，对自己笑就行。"
+      },
+      {
+        name: "阿山",
+        age: 25,
+        city: "乌鲁木齐",
+        trait: "烤羊肉串",
+        story: "烤肉店二代，不想继承家业想做音乐",
+        text: "你的选择，比继承更勇敢。"
+      },
+      {
+        name: "小溪",
+        age: 19,
+        city: "西宁",
+        trait: "青海湖骑行",
+        story: "复读第二年，妈妈说再考不上就别读了",
+        text: "湖很大，你的路也很长。"
+      },
+      {
+        name: "阿林",
+        age: 23,
+        city: "呼和浩特",
+        trait: "草原骑马",
+        story: "兽医，第一次给牛接生吐了",
+        text: "第一次都会吐，第二次就好了。"
+      },
+      {
+        name: "小舟",
+        age: 22,
+        city: "宁波",
+        trait: "港口看船",
+        story: "外贸跟单，客户跑单欠了三个月工资",
+        text: "船会来的，只是晚点。"
+      },
+      {
+        name: "阿阳",
+        age: 24,
+        city: "无锡",
+        trait: "太湖钓鱼",
+        story: "芯片厂质检，每天看几千个零件",
+        text: "你检查的每个零件，都在谁的生活里。"
+      },
+      {
+        name: "小蝶",
+        age: 20,
+        city: "温州",
+        trait: "帮家里看店",
+        story: "鞋厂女儿，想学英语被说没用",
+        text: "想学就学，有用没用以后再说。"
+      },
+      {
+        name: "阿峰",
+        age: 27,
+        city: "常州",
+        trait: "恐龙园工作",
+        story: "扮演恐龙，夏天里中暑三次",
+        text: "你在给别人快乐，别忘了给自己。"
+      },
+      {
+        name: "小琴",
+        age: 21,
+        city: "嘉兴",
+        trait: "乌镇导游",
+        story: "背了三年解说词，疫情后游客少了",
+        text: "古镇还在，你的故事也还在。"
+      },
+      {
+        name: "阿波",
+        age: 23,
+        city: "绍兴",
+        trait: "黄酒品鉴",
+        story: "酒坊学徒，师傅说他品不出味道",
+        text: "品不出味道，是因为心里太苦。"
+      },
+      {
+        name: "小荷",
+        age: 19,
+        city: "金华",
+        trait: "横店群演",
+        story: "跑龙套三年，台词不超过十句",
+        text: "没有小角色，只有还没被看见的演员。"
+      },
+      {
+        name: "阿涛",
+        age: 25,
+        city: "台州",
+        trait: "海边渔民",
+        story: "出海捕鱼，父亲去年海难走了",
+        text: "海很大，带走了很多，也留下了很多。"
+      },
+      {
+        name: "小燕",
+        age: 22,
+        city: "湖州",
+        trait: "织里童装",
+        story: "服装厂质检，每天摸几千件衣服",
+        text: "你摸过的每件衣服，都穿在哪个孩子身上。"
+      },
+      {
+        name: "阿辉",
+        age: 24,
+        city: "珠海",
+        trait: "澳门打工",
+        story: "每天过关上班，疫情后失业回珠海",
+        text: "关会再开的，你也是。"
+      },
+      {
+        name: "小兰",
+        age: 20,
+        city: "中山",
+        trait: "灯饰厂工人",
+        story: "组装灯泡，每天做五百个",
+        text: "你做的每个灯泡，都照亮了谁的家。"
+      },
+      {
+        name: "阿鹏",
+        age: 26,
+        city: "惠州",
+        trait: "西湖划船",
+        story: "导游，带团被投诉说讲解无聊",
+        text: "不是无聊，是他们听不懂你的好。"
+      },
+      {
+        name: "小萱",
+        age: 21,
+        city: "汕头",
+        trait: "牛肉丸店女儿",
+        story: "想考舞蹈学院，爸爸说跳舞养不活自己",
+        text: "跳舞养不活你，但能养活你的灵魂。"
+      },
+      {
+        name: "阿杰",
+        age: 23,
+        city: "佛山",
+        trait: "咏春拳馆",
+        story: "武馆教练，学员越来越少",
+        text: "拳要慢慢打，日子也是。"
+      },
+      {
+        name: "小薇",
+        age: 19,
+        city: "江门",
+        trait: "碉楼拍照",
+        story: "民宿管家，客人半夜退房说闹鬼",
+        text: "鬼不可怕，可怕的是人心。"
+      },
+      {
+        name: "阿强",
+        age: 25,
+        city: "湛江",
+        trait: "海鲜市场",
+        story: "凌晨三点起床进货，全年无休",
+        text: "休息一天，市场不会塌，你会好。"
+      },
+      {
+        name: "小琳",
+        age: 22,
+        city: "茂名",
+        trait: "荔枝园",
+        story: "帮家里卖荔枝，今年收成不好",
+        text: "今年不好，明年会好的，荔枝也是。"
+      },
+      {
+        name: "阿坤",
+        age: 24,
+        city: "肇庆",
+        trait: "七星岩",
+        story: "景区售票，每天说同样的话两百遍",
+        text: "同样的话说两百遍，是因为两百个人需要听。"
+      },
+      {
+        name: "小婷",
+        age: 20,
+        city: "清远",
+        trait: "漂流教练",
+        story: "夏天晒到脱皮，冬天没收入",
+        text: "夏天会再来，你也是。"
+      },
+      {
+        name: "阿彬",
+        age: 27,
+        city: "阳江",
+        trait: "刀剪厂",
+        story: "磨刀师傅，磨了十年刀",
+        text: "十年磨一剑，你磨的是生活。"
+      },
+      {
+        name: "小慧",
+        age: 21,
+        city: "韶关",
+        trait: "丹霞山",
+        story: "地质专业，毕业后回山里做科普",
+        text: "山不会走，但你会回来，这就够了。"
+      },
+      {
+        name: "阿翔",
+        age: 23,
+        city: "梅州",
+        trait: "客家围屋",
+        story: "留守儿童长大，现在教留守儿童",
+        text: "你走过的路，他们在走，但你也在陪他们。"
+      },
+      {
+        name: "小梦",
+        age: 19,
+        city: "汕尾",
+        trait: "海边风车",
+        story: "风电场值班，一个人守一片海",
+        text: "一个人守一片海，海也在守着你。"
+      },
+      {
+        name: "阿宇",
+        age: 25,
+        city: "河源",
+        trait: "万绿湖",
+        story: "水库管理员，每天看湖水涨落",
+        text: "水涨水落，日子也是，会过去的。"
+      },
+      {
+        name: "小静",
+        age: 22,
+        city: "揭阳",
+        trait: "玉器市场",
+        story: "帮家里看玉器店，真假分不清",
+        text: "真假分不清没关系，真假日子都要过。"
+      },
+      {
+        name: "阿威",
+        age: 24,
+        city: "云浮",
+        trait: "石材厂",
+        story: "雕刻石头，粉尘大到咳血",
+        text: "石头硬，但你比石头软，软才能活。"
+      },
+      {
+        name: "小欣",
+        age: 20,
+        city: "莱芜",
+        trait: "钢铁厂",
+        story: "钢厂化验员，每天和重金属打交道",
+        text: "重金属有毒，但你的日子没毒。"
+      },
+      {
+        name: "阿宁",
+        age: 26,
+        city: "临沂",
+        trait: "物流园",
+        story: "分拣快递，双十一连续工作36小时",
+        text: "快递会送到的，你的休息也会。"
+      },
+      {
+        name: "小瑞",
+        age: 21,
+        city: "德州",
+        trait: "扒鸡店",
+        story: "继承家业，但不想卖鸡想做设计",
+        text: "鸡要卖，梦也要做，不冲突。"
+      },
+      {
+        name: "阿超",
+        age: 23,
+        city: "聊城",
+        trait: "运河边的",
+        story: "船闸管理，看船来船往",
+        text: "船来船往，你在这里，就是岸。"
+      },
+      {
+        name: "小芳",
+        age: 19,
+        city: "滨州",
+        trait: "棉花地",
+        story: "农大毕业回村种棉花，被说白读了",
+        text: "读书不是让你离开，是让你选择回不回。"
+      },
+      {
+        name: "阿军",
+        age: 25,
+        city: "菏泽",
+        trait: "牡丹园",
+        story: "花农，牡丹花开一季，饿三季",
+        text: "一季花开，三季等待，日子就是这样。"
+      },
+      {
+        name: "小敏",
+        age: 22,
+        city: "日照",
+        trait: "海边灯塔",
+        story: "灯塔守护，一个人守一座塔",
+        text: "你守塔，塔也守你，都不孤单。"
+      },
+      {
+        name: "阿亮",
+        age: 24,
+        city: "枣庄",
+        trait: "煤矿",
+        story: "矿上技术员，下井到腿软",
+        text: "腿软是因为深，不是因为弱。"
+      },
+      {
+        name: "小倩",
+        age: 20,
+        city: "东营",
+        trait: "油田",
+        story: "采油工，每天和抽油机说话",
+        text: "和机器说话不傻，傻的是没人说话。"
+      },
+      {
+        name: "阿飞",
+        age: 27,
+        city: "泰安",
+        trait: "泰山挑山工",
+        story: "挑山三十年，膝盖废了",
+        text: "膝盖废了，但山记得你。"
+      },
+      {
+        name: "小霞",
+        age: 21,
+        city: "威海",
+        trait: "海边民宿",
+        story: "夏天忙到飞起，冬天闲到发霉",
+        text: "忙和闲都是日子，都要过。"
+      },
+      {
+        name: "阿鹏",
+        age: 23,
+        city: "济宁",
+        trait: "孔庙",
+        story: "讲解员，每天讲孔子讲到麻木",
+        text: "孔子也会累，何况是你。"
+      },
+      {
+        name: "小艳",
+        age: 19,
+        city: "潍坊",
+        trait: "风筝厂",
+        story: "做风筝，自己做的风筝飞不起来",
+        text: "风筝飞不起来，但你的心在飞。"
+      },
+      {
+        name: "阿波",
+        age: 25,
+        city: "烟台",
+        trait: "苹果园",
+        story: "果农，今年苹果滞销",
+        text: "苹果会卖掉的，就像日子会过去的。"
+      },
+      {
+        name: "小玲",
+        age: 22,
+        city: "淄博",
+        trait: "烧烤摊",
+        story: "烧烤店女儿，油烟大到咳嗽",
+        text: "油烟大，但烟火气也暖。"
+      },
+      {
+        name: "阿伟",
+        age: 24,
+        city: "济南",
+        trait: "趵突泉",
+        story: "泉水管理员，每天测水质",
+        text: "水干净，你的心也要干净。"
+      },
+      {
+        name: "小娜",
+        age: 20,
+        city: "青岛",
+        trait: "啤酒节",
+        story: "服务员，啤酒节忙到脚不沾地",
+        text: "脚不沾地，但你的心要落地。"
+      },
+      {
+        name: "阿明",
+        age: 26,
+        city: "拉萨",
+        trait: "转经筒",
+        story: "客栈老板，旺季忙淡季愁",
+        text: "旺季忙，淡季闲，都是修行。"
+      },
+      {
+        name: "小芳",
+        age: 21,
+        city: "银川",
+        trait: "贺兰山",
+        story: "岩画保护，一个人守一片山",
+        text: "山不会走，你走了还会回来。"
+      },
+      {
+        name: "阿强",
+        age: 23,
+        city: "西宁",
+        trait: "塔尔寺",
+        story: "讲解员，信佛但不敢出家",
+        text: "信在心里，不在形式。"
+      },
+      {
+        name: "小静",
+        age: 19,
+        city: "兰州",
+        trait: "黄河边",
+        story: "水文站，每天记录黄河水位",
+        text: "黄河水会涨会落，你的心也是。"
+      },
+      {
+        name: "阿龙",
+        age: 25,
+        city: "乌鲁木齐",
+        trait: "大巴扎",
+        story: "干果店，疫情后游客少了",
+        text: "游客会回来的，就像春天会来。"
+      },
+      {
+        name: "小华",
+        age: 22,
+        city: "贵阳",
+        trait: "苗寨",
+        story: "苗族姑娘，出来打工三年没回家",
+        text: "三年没回家，但家一直在。"
+      },
+      {
+        name: "阿东",
+        age: 24,
+        city: "南宁",
+        trait: "螺蛳粉",
+        story: "螺蛳粉店，每天煮两百碗",
+        text: "两百碗粉，两百个故事，你也是其中一个。"
+      },
+      {
+        name: "小凤",
+        age: 20,
+        city: "桂林",
+        trait: "漓江",
+        story: "竹筏工，每天划同样的路线",
+        text: "同样的路线，不同的人，你也是风景。"
+      },
+      {
+        name: "阿海",
+        age: 27,
+        city: "三亚",
+        trait: "海边救生员",
+        story: "救过三个人，但救不了自己失眠",
+        text: "救了别人，也要救自己，从睡觉开始。"
+      },
+      {
+        name: "小娟",
+        age: 21,
+        city: "海口",
+        trait: "椰子树",
+        story: "椰子加工厂，每天开五百个椰子",
+        text: "五百个椰子，五百次打开，打开自己也是。"
+      },
+      {
+        name: "阿林",
+        age: 23,
+        city: "呼和浩特",
+        trait: "草原",
+        story: "牧民，今年干旱草不好",
+        text: "草会长的，就像希望会来的。"
+      },
+      {
+        name: "小雪",
+        age: 19,
+        city: "哈尔滨",
+        trait: "冰雕",
+        story: "冰雕学徒，手冻到裂口子",
+        text: "手会裂，但冰会化，春天会来。"
+      },
+      {
+        name: "阿伟",
+        age: 25,
+        city: "长春",
+        trait: "一汽",
+        story: "汽车厂工人，流水线站到静脉曲张",
+        text: "站累了就坐，坐累了就躺，不丢人。"
+      },
+      {
+        name: "小婷",
+        age: 22,
+        city: "沈阳",
+        trait: "故宫",
+        story: "讲解员，每天讲清朝讲到做梦",
+        text: "清朝会过去，你的梦也会来。"
+      },
+      {
+        name: "阿波",
+        age: 24,
+        city: "石家庄",
+        trait: "正定古城",
+        story: "古城维护，每天修老房子",
+        text: "老房子要修，人也要修，都是时间。"
+      },
+      {
+        name: "小燕",
+        age: 20,
+        city: "太原",
+        trait: "晋祠",
+        story: "导游，客人说山西没好玩的",
+        text: "山西好不好，你说了算，不用别人说。"
+      },
+      {
+        name: "阿强",
+        age: 26,
+        city: "郑州",
+        trait: "少林寺",
+        story: "武校教练，学员打架要管",
+        text: "打架不对，但想打架的心情对。"
+      },
+      {
+        name: "小慧",
+        age: 21,
+        city: "武汉",
+        trait: "热干面",
+        story: "早餐店，凌晨三点起床和面",
+        text: "三点起床的人，不止你一个。"
+      },
+      {
+        name: "阿明",
+        age: 23,
+        city: "长沙",
+        trait: "橘子洲",
+        story: "景区保洁，每天捡垃圾捡到怀疑人生",
+        text: "垃圾会有的，但干净也会有的。"
+      },
+      {
+        name: "小琳",
+        age: 19,
+        city: "南昌",
+        trait: "滕王阁",
+        story: "背滕王阁序，背到哭",
+        text: "背到哭，但你会背了，这就是收获。"
+      },
+      {
+        name: "阿辉",
+        age: 25,
+        city: "合肥",
+        trait: "中科大",
+        story: "科研狗，实验失败第99次",
+        text: "99次失败，第100次可能就是成功。"
+      },
+      {
+        name: "小芳",
+        age: 22,
+        city: "南京",
+        trait: "夫子庙",
+        story: "卖鸭血粉丝，汤要熬八小时",
+        text: "八小时熬汤，一小时喝汤，都值得。"
+      },
+      {
+        name: "阿杰",
+        age: 24,
+        city: "杭州",
+        trait: "西湖",
+        story: "划船工，夏天晒到脱皮",
+        text: "脱皮会好的，但西湖一直在。"
+      },
+      {
+        name: "小敏",
+        age: 20,
+        city: "上海",
+        trait: "外滩",
+        story: "便利店夜班，看外滩从亮到暗",
+        text: "外滩会亮，你的心也会。"
+      },
+      {
+        name: "阿波",
+        age: 27,
+        city: "北京",
+        trait: "胡同",
+        story: "北漂七年，搬了十二次家",
+        text: "十二次搬家，十二次重新开始，你很勇敢。"
+      },
+      {
+        name: "小霞",
+        age: 21,
+        city: "天津",
+        trait: "海河",
+        story: "相声茶馆，倒茶倒到手腕疼",
+        text: "手腕会好，但茶香会留。"
+      },
+      {
+        name: "阿伟",
+        age: 23,
+        city: "重庆",
+        trait: "火锅",
+        story: "火锅店服务员，辣到咳嗽",
+        text: "辣会过去，但火锅的热闹会留。"
+      },
+      {
+        name: "小静",
+        age: 19,
+        city: "成都",
+        trait: "熊猫基地",
+        story: "志愿者，每天铲屎",
+        text: "铲屎不丢人，熊猫需要你。"
+      },
+      {
+        name: "阿强",
+        age: 25,
+        city: "昆明",
+        trait: "花市",
+        story: "花农，情人节玫瑰烂在手里",
+        text: "玫瑰会烂，但花香会留。"
+      },
+      {
+        name: "小芳",
+        age: 22,
+        city: "西安",
+        trait: "兵马俑",
+        story: "讲解员，每天讲秦始皇讲到麻木",
+        text: "秦始皇也会累，何况是你。"
+      },
+      {
+        name: "阿明",
+        age: 24,
+        city: "兰州",
+        trait: "拉面",
+        story: "拉面师傅，手腕粗得像小腿",
+        text: "手腕粗是力气，不是病。"
+      },
+      {
+        name: "小慧",
+        age: 20,
+        city: "西宁",
+        trait: "青海湖",
+        story: "环湖骑行，骑到哭",
+        text: "骑到哭，但湖很美，你也是。"
       }
     ];
 
@@ -2162,7 +2935,128 @@
       "别把每一次低落都当成失败",
       "有些日子安静，有些日子热闹，都是生活的常态",
       "当夜幕笼罩城市，喧嚣渐渐散去，灯火温柔，万物安静",
-      "白天的我们，戴着坚强的面具，藏起所有的负面情绪"
+      "白天的我们，戴着坚强的面具，藏起所有的负面情绪",
+      "深夜的脆弱从来都不是矫情",
+      "深夜的情绪本就格外脆弱敏感",
+      "最需要一个私密、安静、温柔的匿名角落",
+      "暖音树洞：最懂成年人深夜的脆弱",
+      "瑶池树洞：适合独自沉淀心事",
+      "听海树洞：适合深夜胡思乱想",
+      "花瓣树洞：擅长接住隐秘的深夜小情绪",
+      "白天是搞笑废物，晚上是抑郁怪物",
+      "枕头知道所有说不出口的心事",
+      "白天用理性活着，晚上用感性熬着",
+      "那些没说出口的委屈，最后都变成了眼泪",
+      "白天假装快乐，晚上才是真实的自己",
+      "白天是别人的开心果，晚上是自己的伤心人",
+      "白天戴上面具，晚上摘下面具",
+      "白天说着'我很好'，晚上哭着'我好累'",
+      "夜晚总是把孤独放大，把思念拉长",
+      "白天笑得没心没肺，晚上哭得撕心裂肺",
+      "熬夜不是睡不着，而是舍不得结束这一天",
+      "手机里的歌单知道我最难过的时候听什么",
+      "那些白天强忍的眼泪，晚上都会加倍偿还",
+      "深夜的孤独像潮水一样涌来",
+      "确诊为'淡淡疯感'患者",
+      "确诊为'社交电池容量不足'",
+      "确诊为'努力型废物'",
+      "确诊为'假性成年人'",
+      "确诊为'乐观型悲观主义者'",
+      "小红书正式将'抽象'列为年度关键词",
+      "以癫破局的发疯文与建设守护的内求型叙事形成二元共生",
+      "月入三万的编剧转行写发疯文",
+      "不是矫情，是生活的现实太荒诞",
+      "躺平就是我的智者运动",
+      "为什么要给明明毫无意义的存在找一些亢奋呢",
+      "我不需要为任何人做事",
+      "自嘲为'牛马'的打工人",
+      "人们一边深陷于'内卷'泥沼中无法自拔",
+      "在赚钱上内卷，在烂事上躺平",
+      "躲进小楼成一统，管他冬夏与春秋",
+      "无用人，诗酒乐天真",
+      "死生常事不须愁，且尽生前酒一瓯",
+      "生活原本沉闷，但跑起来就有风",
+      "熬过万丈孤独，藏下星辰大海",
+      "凡是过往，皆为序章",
+      "路虽远，行则将至",
+      "把烦恼清空，把好运装满",
+      "人生最好的状态，是不慌不忙",
+      "不必追光，你我皆是星辰",
+      "与其抱怨黑暗，不如提灯前行",
+      "好好吃饭，好好睡觉",
+      "烦恼天天有，不拣自然无",
+      "活着一天，就是有福气",
+      "你要做一个不动声色的大人了",
+      "笑着缺维生素，其实是在说缺钱",
+      "富二代人生被偷，从搞笑变成真实情绪出口",
+      "以前敢说走就走辞职换工作",
+      "工资刚发下来，还没见整张工资单",
+      "没工作没对象没存款还房贷",
+      "我们结婚就为了还房贷还车贷",
+      "年又快过去了，今天又被催婚了",
+      "别人的生活是故事，我的生活是事故",
+      "花钱的时候很快乐，还钱的时候很上火",
+      "看似每天忙忙碌碌，回头一看啥也没留住",
+      "购物车满到装不下，银行卡余额少到没眼看",
+      "理想生活是诗和远方，现实生活是外卖和床",
+      "每天都在好好生活，就是钱包不太配合",
+      "想做生活的主人，结果被生活追着走",
+      "老板：你怎么每天都跟没睡醒一样来上班",
+      "终于突破了事业的瓶颈，发现还有瓶盖",
+      "每天都在努力，努力让自己看起来不那么累",
+      "立志要早睡，结果熬到凌晨",
+      "别人加班：为了梦想。我加班：因为没做完",
+      "简历投了一百份，面试邀请了零",
+      "HR永远喜欢'应届生的朝气+十年老员工经验'",
+      "找工作被拒绝数次，到底哪里不够好",
+      "终于下班了，但明天还要来",
+      "周一到周五：想死。周末：怕周一",
+      "我不是不想上班，是我的身体和灵魂在罢工",
+      "上班如上坟，但还是得去",
+      "工资三千五，命比咖啡苦",
+      "没有安全感的人，怕黑却喜欢晚睡",
+      "故事自己留着就好，说浅了不感动，说深了没人信",
+      "和爱的人吵架，和陌生人讲心里话",
+      "我喜欢她九年，她也伤我九年",
+      "很庆幸，我终于可以不问归期，不用联系",
+      "愿有爱者更爱，无爱者自由",
+      "社交状态：我们又不是很熟，你叫我美女就行",
+      "二选一别选我，三缺一喊我",
+      "朋友圈最近好安静，也没人emo了",
+      "喜欢一个人藏不住的，喜欢两个人才需要藏",
+      "现在的我爱理不理，以后的我你会更加看不起",
+      "孤独是我较真实的朋友，寂寞是我较亲密的陪伴",
+      "沉默是我较大的呐喊，微笑是我较虚假的面具",
+      "熬的不是夜，是用健康置换生存空间的无奈",
+      "年轻人自嘲'人肉干电池'，电量耗尽即被更换",
+      "体检报告不敢看，看了也不敢信",
+      "凌晨三点的心跳：咚。咚。咚。我：你别停",
+      "医生说少熬夜，我说没办法",
+      "我的健康状态：活着，但随时可能死",
+      "一边熬夜一边搜'熬夜的危害'，看完继续熬",
+      "买了褪黑素、护肝片、维生素，然后继续熬夜",
+      "我的生物钟：美国时间。我的钱包：非洲水平",
+      "怕猝死，但更怕穷死",
+      "我将玫瑰藏于身后，花店老板却说拿出来店里有监控",
+      "人生应该是五颜六色的，你却卡在黄色和绿色",
+      "人生苦短，我特么又懒，简直跟我绝配",
+      "最近头好痒，不会是要长脑子了吧",
+      "没有人能利用我，因为我没有用",
+      "吾日三省吾身：吾很好，吾很棒，吾配享太庙",
+      "不要垂头丧气，显矮",
+      "做饭全靠运气，吃饭全靠勇气，洗碗全靠脾气",
+      "减肥计划天天有，美食面前秒低头",
+      "收拾屋子两小时，乱回原样十分钟",
+      "出门前精致打扮，出门后被风一吹全白费",
+      "记性越来越差，唯一记牢的是吃饭时间",
+      "衣服买了一大堆，能穿出门的没几件",
+      "立志做个自律的人，最后败给了懒惰",
+      "生活给了我很多选择，我每次都选不对",
+      "想把日子过成糖，结果处处都是小磕绊",
+      "每天都在盼周末，周末一过更发愁",
+      "轻舟已过后空翻",
+      "笑着说缺维生素，其实是在说缺钱",
+      "富二代人生被偷，从搞笑变成真实情绪出口"
     ];
 
     // 留言板帖子：30条模拟的社区留言
@@ -3336,6 +4230,21 @@
       });
     }
 
+    // 显示缓一缓的某个区域
+    function showPlaySection(sectionId) {
+      // 隐藏所有区域
+      document.querySelectorAll('.play-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      // 显示选中的区域
+      const target = document.getElementById('play-' + sectionId);
+      if (target) {
+        target.classList.add('active');
+        // 滚动到该区域
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
     // 随机留恋卡片
     function randomAttachment() {
       const text = attachmentCards[Math.floor(Math.random() * attachmentCards.length)];
@@ -3345,6 +4254,7 @@
     // 抽象生成器模板：30个模板函数
     // 接收用户输入，生成Z世代风格的抽象文案
     const abstractTemplates = [
+      // === 经典发疯（1-15）===
       (input) => input + '？' + input + '！哈哈哈哈哈哈哈哈哈哈哈哈！我精神状态挺好的呀！',
       (input) => '谁懂啊，' + input + '的时候我真的想死，但又怕死，所以决定先活着折磨世界。世界：你谁？',
       (input) => input + '？没关系！精神稳定一分钟也很厉害了！',
@@ -3360,6 +4270,25 @@
       (input) => '富二代人生被' + input + '偷了，从搞笑变成真实情绪出口。',
       (input) => '我将玫瑰藏于身后，' + input + '却说拿出来店里有监控。',
       (input) => '人生应该是五颜六色的，' + input + '却卡在黄色和绿色。',
+
+      // === 打工人专属（16-30）===
+      (input) => '只要我足够摆烂，' + input + '就追不上我。',
+      (input) => '老板说要有格局，我只想有个觉睡。' + input + '？不存在的。',
+      (input) => '天生我材必有用，我能' + input + '就不用。',
+      (input) => '上班=卖力气，下班=复活甲。' + input + '？等复活再说。',
+      (input) => '命运的齿轮一点没转，人生的链子快掉完了。' + input + '？齿轮卡死了。',
+      (input) => '别问我职业规划，我的规划是不' + input + '。',
+      (input) => '干一行恨一行，行行都能' + input + '。',
+      (input) => '上班精神出走，下班灵魂归位。' + input + '？精神还没回来。',
+      (input) => '工资没涨，脾气涨了；本事没长，' + input + '长了。',
+      (input) => '与其提升自己，不如体谅老板——他也不容易。' + input + '？老板先体谅我。',
+      (input) => '只要足够摆烂，' + input + '就伤害不了我。',
+      (input) => '我的职业规划：不' + input + '。',
+      (input) => '上班如上坟，' + input + '如渡劫。',
+      (input) => '工资三千五，' + input + '命比咖啡苦。',
+      (input) => '终于突破了' + input + '的瓶颈，发现还有瓶盖。',
+
+      // === 日常发疯（31-45）===
       (input) => '最近头好痒，不会是要长' + input + '了吧。',
       (input) => '没有人能利用我' + input + '，因为我没有用。',
       (input) => '吾日三省吾身：吾很好，吾很棒，吾' + input + '配享太庙。',
@@ -3374,7 +4303,58 @@
       (input) => '生活给了我很多选择，' + input + '每次都选不对。',
       (input) => '想把日子过成糖，' + input + '结果处处都是小磕绊。',
       (input) => '每天都在盼周末，' + input + '周末一过更发愁。',
-      (input) => '我的' + input + '：表面上"没事没事"，内心演完八十集宫斗剧。'
+      (input) => '我的' + input + '：表面上"没事没事"，内心演完八十集宫斗剧。',
+
+      // === 确诊式文学（46-60）===
+      (input) => '确诊为"淡淡疯感"患者，症状是' + input + '的时候笑着发疯。',
+      (input) => '确诊为"间歇性想死"，但持续性' + input + '。',
+      (input) => '确诊为"社交电池容量不足"，' + input + '充一次电管三天。',
+      (input) => '确诊为"情绪稳定地不稳定"，' + input + '是触发器。',
+      (input) => '确诊为"努力型废物"，每天都在努力' + input + '。',
+      (input) => '确诊为"互联网游民"，白天' + input + '晚上冲浪。',
+      (input) => '确诊为"假性成年人"，外表大人内心' + input + '。',
+      (input) => '确诊为"乐观型悲观主义者"，相信' + input + '会好，但不相信自己。',
+      (input) => '精神状态很稳定，每天' + input + '很有规律。',
+      (input) => '表面岁月静好，内心早已兵荒马乱，主打一个体面' + input + '。',
+      (input) => '我的人生：间歇性想努力，持续性想摆烂，全天候想' + input + '。',
+      (input) => '已经懒得维持正常人人设了，摊牌了，我就是纯纯' + input + '快乐选手。',
+      (input) => '生活一地鸡毛，我负责' + input + '傻笑，主打一个心态逆天。',
+      (input) => '情绪不限流，' + input + '不打烊，谁爱正经谁正经。',
+      (input) => '智商已下线，情绪已放飞，现在的我，' + input + '也不讲理。',
+
+      // === 抽象新梗（61-75）===
+      (input) => '我这不是胖，是可爱到膨胀。' + input + '？那是膨胀的副作用。',
+      (input) => '人生建议：别听建议。尤其是关于' + input + '的建议。',
+      (input) => '我保持年轻的秘诀：谎报年龄，保持糊涂。' + input + '？我糊涂着呢。',
+      (input) => '睡眠质量：跟抽奖似的，全靠运气。' + input + '？运气用完了。',
+      (input) => '我不是熬夜，是在偷偷享受夜晚的抚养权。' + input + '？夜晚是我的。',
+      (input) => '钱的问题：我不解决钱，钱解决我。' + input + '？钱先解决我。',
+      (input) => '我的社交状态：线上疯狂输出，线下低头找缝。' + input + '？线上说的。',
+      (input) => '没房没车，但我有一肚子没处说的' + input + '。',
+      (input) => '美貌加载中，暂时只完成一半：没貌。' + input + '？美貌加载失败。',
+      (input) => '别人 you happy 我 happy，我是 you 不 happy 我更' + input + '。',
+      (input) => '人间不值得，但是' + input + '值得，快乐第一，其他随意。',
+      (input) => '不内耗、不纠结，该' + input + '该笑笑，我的人生我做主。',
+      (input) => '多面孔、美少女也好、皇帝病也好，都是用' + input + '演一场自救剧。',
+      (input) => '这种自嘲文化越来越像心理防护罩。' + input + '？防护罩升级中。',
+      (input) => '敬自己一杯，不是矫情，是' + input + '的体面。',
+
+      // === 黑色幽默（76-90）===
+      (input) => '以前总想改变世界，现在只想' + input + '不被世界改变。',
+      (input) => '成年人的崩溃从' + input + '开始，我的崩溃从早开始。',
+      (input) => '我不是社恐，我只是' + input + '选择性社恐。',
+      (input) => '我的钱包比我的脸还干净，' + input + '？钱包先不同意。',
+      (input) => '人生就像一盒巧克力，我这块是' + input + '味的。',
+      (input) => '我不是不想社交，我只是' + input + '电量不足。',
+      (input) => '我的拖延症已经到了' + input + '都要拖延的地步。',
+      (input) => '别人都在往前走，我在' + input + '原地踏步。',
+      (input) => '我的优点：知错就改。我的缺点：' + input + '改了再犯。',
+      (input) => '生活不止眼前的苟且，还有' + input + '和远方的苟且。',
+      (input) => '我不是胖，我只是' + input + '对生活妥协了。',
+      (input) => '我的运动方式：' + input + '的时候深呼吸。',
+      (input) => '别人精致生活，我' + input + '精致穷。',
+      (input) => '我的时间管理：' + input + '的时候时间飞逝，工作的时候时间静止。',
+      (input) => '人生目标：' + input + '的时候不焦虑，焦虑的时候不' + input + '。'
     ];
 
     // 抽象生成器：根据用户输入生成抽象文案
