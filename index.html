@@ -54,7 +54,7 @@
     }
 
     /* ═══════════════════════════════════════
-       背景层：文字溶解装置
+       背景层：引力场中的词汇
        ═══════════════════════════════════════ */
     #gravity-canvas {
       position: fixed;
@@ -64,7 +64,6 @@
       width: 393px;
       height: 100%;
       z-index: 0;
-      opacity: 0.5;
       pointer-events: all;
     }
 
@@ -109,10 +108,6 @@
       font-size: 16px;
       color: var(--ink);
       letter-spacing: 0.04em;
-    }
-
-    .nav-links {
-      display: none;
     }
 
     /* 底部 Tab 栏 */
@@ -181,42 +176,44 @@
     }
 
     /* ═══════════════════════════════════════
-       首页：Hero + 功能入口
+       首页：纯文字艺术展示
        ═══════════════════════════════════════ */
-    .hero {
+
+    .home-hint {
       text-align: center;
-      padding: 32px 0 24px;
+      padding: 120px 20px 40px;
+      position: relative;
+      z-index: 2;
     }
 
-    .hero-label {
+    .home-hint-text {
       font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 18px;
+      color: var(--ink);
+      margin-bottom: 8px;
+      letter-spacing: 0.05em;
+      text-shadow: 0 1px 2px rgba(249,248,244,0.8);
+    }
+
+    .home-hint-sub {
       font-size: 12px;
       color: var(--cocoa);
-      letter-spacing: 0.1em;
-      margin-bottom: 12px;
-      display: block;
-    }
-
-    .hero-title {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 28px;
-      font-weight: 400;
-      line-height: 1.3;
-      margin-bottom: 10px;
-      color: var(--ink);
-    }
-
-    .hero-subtitle {
-      font-size: 14px;
-      color: var(--cocoa);
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    .hero-hint {
-      font-size: 11px;
-      color: var(--cocoa-light);
       letter-spacing: 0.04em;
+      text-shadow: 0 1px 2px rgba(249,248,244,0.8);
+    }
+
+    .home-hint-combo {
+      font-family: 'ZCOOL XiaoWei', serif;
+      font-size: 14px;
+      color: var(--accent);
+      margin-top: 16px;
+      min-height: 20px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .home-hint-combo.show {
+      opacity: 1;
     }
 
     /* 紧急入口 */
@@ -249,94 +246,6 @@
     .emergency-sub {
       font-size: 11px;
       color: var(--cocoa);
-    }
-
-    /* 功能卡片网格 */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .feature-card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      min-height: 100px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .feature-card:active {
-      transform: scale(0.96);
-      background: rgba(255, 255, 255, 0.95);
-    }
-
-    .feature-icon {
-      width: 28px;
-      height: 28px;
-      margin: 0 auto 8px;
-      color: var(--cocoa);
-    }
-
-    .feature-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--ink);
-      margin-bottom: 3px;
-    }
-
-    .feature-desc {
-      font-size: 10px;
-      color: var(--cocoa-light);
-      line-height: 1.4;
-    }
-
-    /* 今日抽象 */
-    .quote-section {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-
-    .quote-text {
-      font-size: 15px;
-      line-height: 1.8;
-      color: var(--ink);
-      margin-bottom: 14px;
-      font-style: italic;
-    }
-
-    .quote-refresh {
-      font-size: 12px;
-      color: var(--cocoa);
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 8px 18px;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.3s ease;
-      min-height: 36px;
-      min-width: 80px;
-    }
-
-    .quote-refresh:active {
-      background: var(--canvas-warm);
-      color: var(--ink);
-      transform: scale(0.95);
     }
 
     /* 免责声明 */
@@ -465,119 +374,7 @@
     }
 
     /* ═══════════════════════════════════════
-       测评页面
-       ═══════════════════════════════════════ */
-    .quiz-card {
-      cursor: pointer;
-      min-height: 80px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .quiz-card:active {
-      border-color: var(--accent);
-      background: rgba(115, 138, 229, 0.05);
-    }
-
-    .quiz-card-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .quiz-card-desc {
-      font-size: 11px;
-      color: var(--cocoa);
-      line-height: 1.5;
-    }
-
-    .quiz-question {
-      font-size: 16px;
-      line-height: 1.6;
-      margin-bottom: 20px;
-      text-align: center;
-      padding: 16px 0;
-    }
-
-    .quiz-options {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .quiz-option {
-      padding: 16px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.8);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      text-align: left;
-      font-size: 14px;
-      color: var(--ink);
-      font-family: inherit;
-      min-height: 48px;
-    }
-
-    .quiz-option:active {
-      border-color: var(--accent);
-      background: rgba(115, 138, 229, 0.05);
-      transform: scale(0.98);
-    }
-
-    .quiz-progress {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .quiz-progress-bar {
-      flex: 1;
-      height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .quiz-progress-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 2px;
-      transition: width 0.3s ease;
-    }
-
-    /* 结果 */
-    .result-icon {
-      font-size: 40px;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-
-    .result-title {
-      font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 22px;
-      text-align: center;
-      margin-bottom: 6px;
-    }
-
-    .result-tagline {
-      text-align: center;
-      color: var(--cocoa);
-      font-size: 13px;
-      margin-bottom: 16px;
-    }
-
-    .result-desc {
-      font-size: 13px;
-      line-height: 1.8;
-      color: var(--ink-light);
-      margin-bottom: 16px;
-    }
-
-    /* ═══════════════════════════════════════
-       互助页面
+       陪伴页面
        ═══════════════════════════════════════ */
     .help-card-draw {
       text-align: center;
@@ -602,7 +399,7 @@
     }
 
     .danmu-container {
-      height: 160px;
+      height: 200px;
       overflow: hidden;
       position: relative;
       background: rgba(0, 0, 0, 0.03);
@@ -618,7 +415,8 @@
       padding: 4px 10px;
       background: rgba(255, 255, 255, 0.9);
       border-radius: 12px;
-      animation: danmu-float 15s linear infinite;
+      animation: danmu-float linear infinite;
+      will-change: transform;
     }
 
     @keyframes danmu-float {
@@ -671,7 +469,7 @@
     }
 
     /* ═══════════════════════════════════════
-       急救页面
+       缓冲站页面
        ═══════════════════════════════════════ */
     .timer-display {
       font-family: 'ZCOOL XiaoWei', serif;
@@ -757,19 +555,161 @@
     }
 
     /* ═══════════════════════════════════════
-       开心页面
+       缓一缓页面（原开心页面重构）
        ═══════════════════════════════════════ */
-    .feed-display {
+
+    /* 呼吸气泡动画 */
+    .breath-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 0;
+    }
+
+    .breath-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(115, 138, 229, 0.15);
+      border: 2px solid rgba(115, 138, 229, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .breath-circle.active {
+      animation: breath-expand 6s ease-in-out infinite;
+    }
+
+    @keyframes breath-expand {
+      0%, 100% { transform: scale(1); background: rgba(115, 138, 229, 0.15); }
+      50% { transform: scale(1.5); background: rgba(115, 138, 229, 0.25); }
+    }
+
+    .breath-text {
+      font-size: 14px;
+      color: var(--cocoa);
+      text-align: center;
+    }
+
+    /* 五感 grounding */
+    .grounding-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .grounding-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .grounding-item:active {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .grounding-item.checked {
+      background: rgba(99, 166, 72, 0.1);
+      border-color: rgba(99, 166, 72, 0.3);
+      opacity: 0.7;
+    }
+
+    .grounding-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--canvas-warm);
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    /* 延迟清单 */
+    .delay-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .delay-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 10px;
+      font-size: 14px;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .delay-item:active {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .delay-checkbox {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--cocoa-light);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .delay-item.checked .delay-checkbox {
+      background: var(--success);
+      border-color: var(--success);
+    }
+
+    .delay-item.checked .delay-checkbox::after {
+      content: '✓';
+      color: white;
+      font-size: 12px;
+    }
+
+    .delay-item.checked {
+      opacity: 0.6;
+      text-decoration: line-through;
+    }
+
+    /* 留恋卡片 */
+    .attachment-card {
+      text-align: center;
+      padding: 32px 20px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 10px;
+    }
+
+    .attachment-text {
       font-size: 16px;
       line-height: 1.8;
-      text-align: center;
-      padding: 32px 16px;
-      min-height: 100px;
+      color: var(--ink);
+      margin-bottom: 16px;
+      min-height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
+    /* 生成器输出 */
     .generator-output {
       margin-top: 14px;
       padding: 14px;
@@ -809,11 +749,233 @@
       margin-top: -8px;
       margin-bottom: 8px;
     }
+
+    /* ═══════════════════════════════════════
+       小缓对话式检测样式
+       ═══════════════════════════════════════ */
+    .chat-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 16px 0;
+      min-height: 60vh;
+    }
+
+    .chat-bubble {
+      max-width: 85%;
+      padding: 14px 18px;
+      border-radius: 18px;
+      font-size: 15px;
+      line-height: 1.7;
+      word-wrap: break-word;
+      opacity: 0;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .chat-bubble-xiaohuan {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      border-bottom-left-radius: 4px;
+    }
+
+    .chat-bubble-user {
+      align-self: flex-end;
+      background: var(--ink);
+      color: var(--canvas);
+      border-bottom-right-radius: 4px;
+    }
+
+    .chat-avatar {
+      font-size: 20px;
+      margin-right: 6px;
+    }
+
+    .chat-name {
+      font-size: 12px;
+      color: var(--cocoa);
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .chat-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 8px;
+      opacity: 0;
+      animation: fadeIn 0.4s ease 0.2s forwards;
+    }
+
+    .chat-option-btn {
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      font-size: 14px;
+      color: var(--ink);
+      font-family: inherit;
+      min-height: 48px;
+    }
+
+    .chat-option-btn:active,
+    .chat-option-btn.selected {
+      border-color: var(--accent);
+      background: rgba(115, 138, 229, 0.05);
+    }
+
+    .chat-slider-container {
+      margin-top: 8px;
+      opacity: 0;
+      animation: fadeIn 0.4s ease 0.2s forwards;
+    }
+
+    .chat-slider-track {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: var(--border);
+      -webkit-appearance: none;
+      appearance: none;
+      outline: none;
+      margin: 16px 0;
+    }
+
+    .chat-slider-track::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(115, 138, 229, 0.3);
+    }
+
+    .chat-slider-track::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 6px rgba(115, 138, 229, 0.3);
+    }
+
+    .chat-slider-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--cocoa);
+    }
+
+    .chat-slider-value {
+      text-align: center;
+      font-size: 18px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .chat-next-btn {
+      margin-top: 12px;
+      opacity: 0;
+      animation: fadeIn 0.4s ease 0.3s forwards;
+    }
+
+    .chat-result-section {
+      margin-top: 8px;
+      opacity: 0;
+      animation: fadeIn 0.4s ease forwards;
+    }
+
+    .chat-result-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .chat-result-action {
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: left;
+      font-size: 14px;
+      color: var(--ink);
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+    }
+
+    .chat-result-action:active {
+      border-color: var(--accent);
+      background: rgba(115, 138, 229, 0.05);
+    }
+
+    .chat-result-action-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    /* 打字机效果 */
+    .typing-cursor::after {
+      content: '|';
+      animation: blink 1s infinite;
+      color: var(--accent);
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* 陪伴卡具象化人物样式 */
+    .companion-card {
+      text-align: left;
+      padding: 24px 20px;
+    }
+
+    .companion-quote {
+      font-size: 17px;
+      line-height: 1.8;
+      color: var(--ink);
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      font-style: italic;
+    }
+
+    .companion-info {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--cocoa);
+    }
+
+    .companion-name {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .companion-detail {
+      color: var(--cocoa-light);
+      font-size: 12px;
+      margin-top: 4px;
+    }
   </style>
 </head>
 <body>
   <div id="mobile-wrapper">
-    <!-- 背景：文字溶解装置 -->
+    <!-- 背景：引力场中的词汇 -->
     <div id="gravity-canvas"></div>
 
     <!-- 主应用 -->
@@ -821,130 +983,60 @@
       <!-- 顶部导航 -->
       <nav class="top-nav">
         <div class="logo">Soul Soother</div>
-        <div class="nav-links">
-          <button class="nav-link active" onclick="showPage('home')">首页</button>
-          <button class="nav-link" onclick="showPage('quiz')">测评</button>
-          <button class="nav-link" onclick="showPage('mutual')">互助</button>
-          <button class="nav-link" onclick="showPage('kit')">急救</button>
-          <button class="nav-link" onclick="showPage('play')">开心</button>
-        </div>
       </nav>
 
       <!-- ═══════════════════════════════════════
-           首页
+           首页 —— 纯文字艺术展示与交互
            ═══════════════════════════════════════ -->
       <div class="page active" id="page-home">
-        <div class="hero">
-          <span class="hero-label">用抽象接住崩溃 · 用玩笑降低痛感</span>
-          <h1 class="hero-title">你现在不用变好</h1>
-          <p class="hero-subtitle">先在这里待一会儿<br>笑一笑，喘口气</p>
-          <p class="hero-hint">点击背景文字，看它们被引力吸走</p>
+        <!-- 首页只保留极简提示，所有交互在背景文字中 -->
+        <div class="home-hint">
+          <div class="home-hint-text">点击彩色词汇，抓住一点光</div>
+          <div class="home-hint-sub">点击灰色词汇，让黑暗退散</div>
+          <div class="home-hint-combo" id="home-combo"></div>
         </div>
 
-        <!-- 紧急入口 -->
+        <!-- 紧急入口 —— 始终可见 -->
         <div class="emergency-banner" onclick="showPage('kit')">
           <div class="emergency-text">我现在很难受，需要帮忙</div>
-          <div class="emergency-sub">30秒缓冲 · 求救卡 · 紧急热线</div>
-        </div>
-
-        <!-- 功能入口 -->
-        <div class="feature-grid">
-          <div class="feature-card" onclick="showPage('quiz')">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
-            <div class="feature-title">精神状态测评</div>
-            <div class="feature-desc">SBTI式抽象测试<br>测测你有多疯</div>
-          </div>
-          <div class="feature-card" onclick="showPage('mutual')">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-            <div class="feature-title">互助卡 & 弹幕</div>
-            <div class="feature-desc">抽一张治愈卡片<br>看看陌生人的留言</div>
-          </div>
-          <div class="feature-card" onclick="showPage('play')">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            <div class="feature-title">发疯文学</div>
-            <div class="feature-desc">输入情绪生成文案<br>坏念头翻译机</div>
-          </div>
-          <div class="feature-card" onclick="showPage('kit')">
-            <svg class="feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-            <div class="feature-title">深夜急救包</div>
-            <div class="feature-desc">30秒呼吸缓冲<br>求救卡 & 热线</div>
-          </div>
-        </div>
-
-        <!-- 今日抽象 -->
-        <div class="quote-section">
-          <div class="quote-text" id="dailyQuote">"我的精神状态：一边想死，一边怕死，一边觉得自己不配死，最后决定先活着，因为死了就看不到这么抽象的自己了。"</div>
-          <button class="quote-refresh" onclick="refreshQuote()">换一句</button>
+          <div class="emergency-sub">30秒呼吸空间 · 缓冲卡 · 温暖资源</div>
         </div>
 
         <div class="disclaimer">
-          内容仅供娱乐放松，不能替代专业医疗建议<br>
+          内容仅供情绪舒缓，不能替代专业医疗建议<br>
           如果你正处于危险中，请立即拨打 120 或 110
         </div>
       </div>
 
       <!-- ═══════════════════════════════════════
-           测评页面
+           快速检测页面（小缓对话式）
            ═══════════════════════════════════════ -->
-      <div class="page" id="page-quiz">
+      <div class="page" id="page-checkin">
         <div class="page-header">
-          <h1 class="page-title">精神状态测评</h1>
-          <p class="page-subtitle">了解你的精神状态，不是给你贴标签</p>
+          <h1 class="page-title">快速检测</h1>
+          <p class="page-subtitle">和小缓聊聊天，看看现在的状态</p>
         </div>
 
-        <div id="quiz-list">
-          <div class="card quiz-card" onclick="startQuiz('sbti')">
-            <div class="quiz-card-title">SBTI 抽象型格测试</div>
-            <div class="quiz-card-desc">8道题测出你的精神动物：ATM-er / ZZZZ / MALO / 阴暗爬行型</div>
-          </div>
-          <div class="card quiz-card" onclick="startQuiz('energy')">
-            <div class="quiz-card-title">今日能量检测</div>
-            <div class="quiz-card-desc">5道题快速评估你今天的精神状态等级</div>
-          </div>
-          <div class="card quiz-card" onclick="startQuiz('coping')">
-            <div class="quiz-card-title"> coping 风格测评</div>
-            <div class="quiz-card-desc">你面对崩溃时的默认应对模式是什么？</div>
-          </div>
-        </div>
-
-        <div id="quiz-taking" class="hidden">
-          <div class="quiz-progress">
-            <div class="quiz-progress-bar">
-              <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
-            </div>
-            <span id="quiz-progress-text">1/8</span>
-          </div>
-          <div class="quiz-question" id="quiz-question"></div>
-          <div class="quiz-options" id="quiz-options"></div>
-        </div>
-
-        <div id="quiz-result" class="hidden">
-          <div class="result-icon" id="result-icon"></div>
-          <div class="result-title" id="result-title"></div>
-          <div class="result-tagline" id="result-tagline"></div>
-          <div class="result-desc" id="result-desc"></div>
-          <div style="display: flex; gap: 8px; margin-top: 16px;">
-            <button class="btn btn-ghost" onclick="showQuizList()">再测一次</button>
-            <button class="btn btn-primary" onclick="showPage('mutual')">去互助区</button>
-          </div>
+        <div id="checkin-chat" class="chat-container">
+          <!-- 对话内容由 JS 动态生成 -->
         </div>
       </div>
 
       <!-- ═══════════════════════════════════════
-           互助页面
+           陪伴页面
            ═══════════════════════════════════════ -->
       <div class="page" id="page-mutual">
         <div class="page-header">
-          <h1 class="page-title">互助</h1>
+          <h1 class="page-title">陪伴</h1>
           <p class="page-subtitle">你不是一个人，这里有人陪你</p>
         </div>
 
         <div class="section">
-          <div class="section-title">抽一张互助卡</div>
-          <div class="card help-card-draw">
-            <div class="help-card-content" id="help-card-text">点击抽一张属于你的互助卡</div>
-            <div class="help-card-source" id="help-card-source"></div>
-            <button class="btn btn-primary" onclick="drawHelpCard()">抽一张</button>
+          <div class="section-title">抽一张陪伴卡</div>
+          <div class="card companion-card">
+            <div class="companion-quote" id="help-card-text">点击抽一张属于你的陪伴卡</div>
+            <div class="companion-info" id="help-card-source"></div>
+            <button class="btn btn-primary" style="margin-top: 16px;" onclick="drawHelpCard()">抽一张</button>
           </div>
         </div>
 
@@ -962,16 +1054,16 @@
       </div>
 
       <!-- ═══════════════════════════════════════
-           急救页面
+           缓冲站页面
            ═══════════════════════════════════════ -->
       <div class="page" id="page-kit">
         <div class="page-header">
-          <h1 class="page-title">深夜急救包</h1>
-          <p class="page-subtitle">危机时刻的缓冲系统</p>
+          <h1 class="page-title">缓冲站</h1>
+          <p class="page-subtitle">先缓一缓，不急着变好</p>
         </div>
 
         <div class="section">
-          <div class="section-title">30秒缓冲</div>
+          <div class="section-title">30秒呼吸空间</div>
           <div class="card">
             <div class="timer-display" id="timer-display">30</div>
             <div class="timer-text" id="timer-text">深呼吸，跟着数字倒数</div>
@@ -980,7 +1072,7 @@
         </div>
 
         <div class="section">
-          <div class="section-title">求救卡</div>
+          <div class="section-title">缓冲卡</div>
           <div class="sos-tabs">
             <button class="sos-tab active" onclick="switchSos('mild', this)">轻度</button>
             <button class="sos-tab" onclick="switchSos('moderate', this)">中度</button>
@@ -993,12 +1085,12 @@
               <div>· 走到窗边看看外面</div>
               <div>· 给一个信任的人发消息</div>
             </div>
-            <button class="btn btn-ghost" style="margin-top: 14px;" onclick="copySos()">复制求救卡</button>
+            <button class="btn btn-ghost" style="margin-top: 14px;" onclick="copySos()">复制缓冲卡</button>
           </div>
         </div>
 
         <div class="section">
-          <div class="section-title">紧急资源</div>
+          <div class="section-title">温暖资源</div>
           <div class="card">
             <div class="resource-item">
               <span class="resource-name">全国心理援助热线</span>
@@ -1020,35 +1112,123 @@
       </div>
 
       <!-- ═══════════════════════════════════════
-           开心页面
+           缓一缓页面 —— 三层递进式情绪急救
            ═══════════════════════════════════════ -->
       <div class="page" id="page-play">
         <div class="page-header">
-          <h1 class="page-title">开心一秒</h1>
-          <p class="page-subtitle">低能量也能玩的治愈内容</p>
+          <h1 class="page-title">缓一缓</h1>
+          <p class="page-subtitle">不是让人开心，而是让人缓一缓</p>
         </div>
 
+        <!-- 第一层：身体着陆 —— 当情绪淹没认知时，先回到身体 -->
         <div class="section">
-          <div class="section-title">随机投喂</div>
+          <div class="section-title" style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:18px;">🫁</span> 第一层：身体着陆
+          </div>
+          <p style="font-size:12px;color:var(--cocoa);margin-bottom:12px;">当脑子转不动的时候，先让身体回来</p>
+
+          <!-- 呼吸气泡 -->
+          <div class="card" style="margin-bottom:10px;">
+            <div class="breath-container">
+              <div class="breath-circle" id="breath-circle">
+                <span style="font-size: 24px;">🫁</span>
+              </div>
+              <div class="breath-text" id="breath-text">点击开始，跟着圆圈呼吸</div>
+            </div>
+            <button class="btn btn-primary" id="breath-btn" onclick="toggleBreath()">开始呼吸</button>
+          </div>
+
+          <!-- 五感 grounding -->
           <div class="card">
-            <div class="feed-display" id="feed-display">点击按钮，随机获得一份快乐</div>
-            <button class="btn btn-primary" onclick="randomFeed()">投喂我</button>
+            <div style="font-size:13px;color:var(--cocoa);margin-bottom:10px;">说出你感知到的：</div>
+            <div class="grounding-list">
+              <div class="grounding-item" onclick="this.classList.toggle('checked')">
+                <div class="grounding-icon">👁</div>
+                <div><strong>3</strong> 个看到的：环顾四周，说出3样东西</div>
+              </div>
+              <div class="grounding-item" onclick="this.classList.toggle('checked')">
+                <div class="grounding-icon">👂</div>
+                <div><strong>2</strong> 个听到的：仔细听，说出2种声音</div>
+              </div>
+              <div class="grounding-item" onclick="this.classList.toggle('checked')">
+                <div class="grounding-icon">✋</div>
+                <div><strong>1</strong> 个摸到的：触摸身边物体，感受质地</div>
+              </div>
+            </div>
           </div>
         </div>
 
+        <!-- 第二层：时间延迟 —— 给冲动一个缓冲带 -->
         <div class="section">
-          <div class="section-title">发疯文学生成器</div>
+          <div class="section-title" style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:18px;">⏳</span> 第二层：时间延迟
+          </div>
+          <p style="font-size:12px;color:var(--cocoa);margin-bottom:12px;">先做完这些，再决定要不要做那个决定</p>
+
           <div class="card">
-            <input type="text" class="input" id="fengwen-input" placeholder="例如：加班、失恋、没钱...">
-            <button class="btn btn-primary" onclick="generateFengwen()">生成发疯文学</button>
+            <div class="delay-list" id="delay-list">
+              <div class="delay-item" onclick="toggleDelay(this)">
+                <div class="delay-checkbox"></div>
+                <span>喝一口水</span>
+              </div>
+              <div class="delay-item" onclick="toggleDelay(this)">
+                <div class="delay-checkbox"></div>
+                <span>打开窗户，看看外面</span>
+              </div>
+              <div class="delay-item" onclick="toggleDelay(this)">
+                <div class="delay-checkbox"></div>
+                <span>给一个人发消息（说什么都行）</span>
+              </div>
+              <div class="delay-item" onclick="toggleDelay(this)">
+                <div class="delay-checkbox"></div>
+                <span>等 10 分钟</span>
+              </div>
+              <div class="delay-item" onclick="toggleDelay(this)">
+                <div class="delay-checkbox"></div>
+                <span>洗把脸，用冷水</span>
+              </div>
+              <div class="delay-item" onclick="toggleDelay(this)">
+                <div class="delay-checkbox"></div>
+                <span>把此刻的感受写下来（哪怕只有一个字）</span>
+              </div>
+            </div>
+            <button class="btn btn-ghost" style="margin-top: 14px;" onclick="resetDelay()">重置清单</button>
+          </div>
+        </div>
+
+        <!-- 第三层：意义锚定 —— 找到留下来的理由 -->
+        <div class="section">
+          <div class="section-title" style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:18px;">⚓</span> 第三层：意义锚定
+          </div>
+          <p style="font-size:12px;color:var(--cocoa);margin-bottom:12px;">还有什么让你舍不得？</p>
+
+          <!-- 留恋卡片 -->
+          <div class="attachment-card" style="margin-bottom:10px;">
+            <div class="attachment-text" id="attachment-text">还有什么让你舍不得？</div>
+            <button class="btn btn-primary" onclick="randomAttachment()">抽一张</button>
+          </div>
+        </div>
+
+        <!-- 第四层：情绪出口 —— 把毒素倒出来 -->
+        <div class="section">
+          <div class="section-title" style="display:flex;align-items:center;gap:6px;">
+            <span style="font-size:18px;">🌀</span> 第四层：情绪出口
+          </div>
+          <p style="font-size:12px;color:var(--cocoa);margin-bottom:12px;">不用变好，先把情绪倒出来</p>
+
+          <!-- 抽象生成器 -->
+          <div class="card" style="margin-bottom:10px;">
+            <div style="font-size:13px;color:var(--cocoa);margin-bottom:10px;">输入你的烦恼，生成抽象文案：</div>
+            <input type="text" class="input" id="fengwen-input" placeholder="例如：加班、失恋、没钱、房贷...">
+            <button class="btn btn-primary" onclick="generateFengwen()">生成抽象文案</button>
             <div class="generator-output" id="fengwen-output"></div>
           </div>
-        </div>
 
-        <div class="section">
-          <div class="section-title">坏念头翻译机</div>
+          <!-- 情绪翻译器 -->
           <div class="card">
-            <input type="text" class="input" id="thought-input" placeholder="我脑子里现在有一句很坏的话...">
+            <div style="font-size:13px;color:var(--cocoa);margin-bottom:10px;">把坏念头翻译成真实需求：</div>
+            <input type="text" class="input" id="thought-input" placeholder="我现在感觉很糟，想说...">
             <button class="btn btn-primary" onclick="translateThought()">翻译</button>
             <div class="generator-output" id="thought-output"></div>
           </div>
@@ -1062,234 +1242,368 @@
         <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         <span class="tab-label">首页</span>
       </button>
-      <button class="tab-item" data-page="quiz" onclick="showPage('quiz')">
-        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-        <span class="tab-label">测评</span>
+      <button class="tab-item" data-page="checkin" onclick="showPage('checkin')">
+        <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+        <span class="tab-label">检测</span>
       </button>
       <button class="tab-item" data-page="mutual" onclick="showPage('mutual')">
         <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-        <span class="tab-label">互助</span>
+        <span class="tab-label">陪伴</span>
       </button>
       <button class="tab-item" data-page="kit" onclick="showPage('kit')">
         <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-        <span class="tab-label">急救</span>
+        <span class="tab-label">缓冲</span>
       </button>
       <button class="tab-item" data-page="play" onclick="showPage('play')">
         <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
-        <span class="tab-label">开心</span>
+        <span class="tab-label">缓一缓</span>
       </button>
     </nav>
   </div>
 
   <script>
     // ═══════════════════════════════════════
-    //  文字溶解装置（背景）
+    //  引力场中的词汇（背景）
     // ═══════════════════════════════════════
+
+    // ═══════════════════════════════════════
+    //  词汇库（大幅扩展）
+    // ═══════════════════════════════════════
+
+    // 丧词汇库：60+条，灰色，较小，缓慢漂浮
+    const sadWords = [
+      '崩溃', '想死', '没意义', '孤独', '绝望', '焦虑',
+      '失眠', '自伤', '痛苦', '空虚', '麻木', '疲惫',
+      '无助', '自责', '恐惧', '愤怒', '悲伤', '失落',
+      '窒息', '窒息感', '无力', '迷茫', '厌倦', '压抑',
+      '被抛弃', '被遗忘', '被误解', '被否定', '被忽视',
+      '撑不住', '扛不动', '走不出', '放不下', '忘不了',
+      '活够了', '没意思', '没劲', '没力气', '没胃口',
+      '睡不着', '醒不来', '起不来', '动不了', '说不出',
+      '想哭', '想逃', '想消失', '想安静', '想结束',
+      '为什么', '凭什么', '怎么办', '好难', '好累',
+      '好痛', '好怕', '好烦', '好闷', '好空'
+    ];
+
+    // 积极词汇库：60+条，彩色，较大，可点击
+    const positiveWords = [
+      '呼吸', '存在', '陪伴', '温暖', '允许', '休息',
+      '喝水', '活着', '等待', '希望', '接纳', '缓慢',
+      '柔软', '安静', '停留', '被看见', '值得', '足够',
+      '呼吸', '吐气', '吸气', '放松', '放下', '松开',
+      '暂停', '停一下', '慢慢来', '不急', '没关系',
+      '可以', '好的', '行', '嗯', '哦', '啊',
+      '抱抱', '摸摸', '拍拍', '牵牵', '靠靠',
+      '存在', '在场', '在此', '此刻', '现在',
+      '光', '亮', '暖', '热', '温', '软',
+      '轻', '松', '空', '静', '定', '安',
+      '睡', '梦', '醒', '起', '坐', '站',
+      '走', '跑', '跳', '动', '活', '生'
+    ];
+
+    // 连击反馈语
+    const comboTexts = [
+      '抓住了一点光', '又抓住一点', '光越来越多了', '你在发光',
+      '好厉害', '继续', '更多', '越来越亮',
+      '黑暗在退散', '世界变亮了', '你做到了', '光之使者'
+    ];
+
+    // 积极词汇颜色
+    const positiveColors = ['#63a648', '#738ae5', '#e6a23c', '#8ec492', '#d4a574', '#9b8ec7', '#e87878', '#7db9a8'];
+
+    // 引力场配置
     const GRAVITY_CONFIG = {
-      text: {
-        content: '用抽象接住崩溃\n用玩笑降低痛感\n\n我的精神状态：\n一边想死 一边怕死\n一边觉得自己不配死\n最后决定先活着\n\n因为死了就看不到\n这么抽象的自己了',
-        fontSize: 12,
-        color: '#472425',
-        letterSpacing: 1.2,
-        lineSpacing: 22,
-        margin: { top: 80, right: 30, bottom: 100, left: 30 },
+      sadWord: {
+        fontSize: 14,
+        color: '#a09588',
+        opacity: 0.35,
+        floatSpeed: 0.3
       },
-      dot: {
-        color: '#80705f',
-        size: 3,
-        positionRange: { x: [40, 353], y: [60, 500] },
-        generationInterval: 120,
-        maxDots: 5,
+      positiveWord: {
+        fontSize: 18,
+        opacity: 0.85,
+        floatSpeed: 0.5
       },
       attraction: {
-        countRange: [3, 5],
-        safeDistance: 20,
-        speed: 0.03,
-        targetFontSize: 16,
-        targetColors: ['#63a648', '#8ec492', '#e6efb3'],
-      },
-      line: {
-        color: '#d4c4b0',
-        thickness: 0.6,
-        lengthRange: [50, 150],
-        opacity: 0.3,
-      },
+        speed: 0.04,
+        targetScale: 2.5,
+        repelForce: 80
+      }
     };
 
-    let gravityChars = [];
-    let gravityDots = [];
-    let gravityLines = [];
+    let gravityWords = [];
     let gravityFrame = 0;
+    let activeWord = null;
+    let comboCount = 0;
+    let comboTimer = null;
+    let particles = [];
 
     function gravitySetup(p) {
       const canvas = p.createCanvas(393, p.windowHeight);
       canvas.parent('gravity-canvas');
       p.textFont('Noto Serif SC');
-      p.textAlign(p.LEFT, p.TOP);
-      initGravityText(p);
+      initGravityWords(p);
     }
 
     function gravityDraw(p) {
       p.clear();
       gravityFrame++;
-      if (gravityFrame % GRAVITY_CONFIG.dot.generationInterval === 0 && gravityDots.length < GRAVITY_CONFIG.dot.maxDots) {
-        spawnGravityDot(p);
-      }
-      updateGravityChars(p);
-      drawGravityLines(p);
-      drawGravityDots(p);
-      drawGravityChars(p);
+      updateGravityWords(p);
+      drawGravityWords(p);
+      updateAndDrawParticles(p);
     }
 
     function gravityMousePressed(p) {
       if (p.mouseX > 0 && p.mouseX < p.width && p.mouseY > 0 && p.mouseY < p.height) {
-        spawnGravityDotAt(p, p.mouseX, p.mouseY);
+        handleWordClick(p, p.mouseX, p.mouseY);
       }
     }
 
-    function initGravityText(p) {
-      gravityChars = [];
-      const cfg = GRAVITY_CONFIG.text;
-      p.textSize(cfg.fontSize);
-      const maxW = 393 - cfg.margin.left - cfg.margin.right;
-      let cx = cfg.margin.left;
-      let cy = cfg.margin.top;
-      cfg.content.split('\n').forEach(line => {
-        if (line === '') { cy += cfg.lineSpacing; return; }
-        let cl = '';
-        for (let ch of line) {
-          const tw = p.textWidth(cl + ch) + (cl.length) * cfg.letterSpacing;
-          if (tw > maxW && cl !== '') {
-            outputGravityLine(p, cl, cx, cy, cfg.fontSize, cfg.letterSpacing);
-            cy += cfg.lineSpacing;
-            cl = ch;
-          } else cl += ch;
-        }
-        if (cl) outputGravityLine(p, cl, cx, cy, cfg.fontSize, cfg.letterSpacing);
-        cy += cfg.lineSpacing;
-      });
-    }
+    function initGravityWords(p) {
+      gravityWords = [];
+      const allWords = [...sadWords, ...positiveWords];
 
-    function outputGravityLine(p, line, sx, y, fs, ls) {
-      let x = sx;
-      for (let ch of line) {
-        const cw = p.textWidth(ch);
-        gravityChars.push({
-          char: ch, originX: x, originY: y, x, y,
-          fontSize: fs, color: GRAVITY_CONFIG.text.color,
-          targetX: null, targetY: null, targetFontSize: fs, targetColor: null,
-          isAttracted: false, attractedBy: null, floatOffset: p.random(p.TWO_PI)
+      allWords.forEach((text, i) => {
+        const isPositive = positiveWords.includes(text);
+        const x = p.random(30, 363);
+        const y = p.random(60, p.height - 60);
+
+        gravityWords.push({
+          text: text,
+          x: x,
+          y: y,
+          originX: x,
+          originY: y,
+          vx: p.random(-0.3, 0.3),
+          vy: p.random(-0.2, 0.2),
+          isPositive: isPositive,
+          fontSize: isPositive ? p.random(16, 22) : p.random(12, 16),
+          color: isPositive ? p.random(positiveColors) : GRAVITY_CONFIG.sadWord.color,
+          opacity: isPositive ? GRAVITY_CONFIG.positiveWord.opacity : GRAVITY_CONFIG.sadWord.opacity,
+          floatOffset: p.random(p.TWO_PI),
+          isAttracted: false,
+          targetX: null,
+          targetY: null,
+          scale: 1,
+          targetScale: 1,
+          isFading: false,
+          fadeOpacity: 1,
+          replacedBy: null
         });
-        x += cw + ls;
-      }
-    }
-
-    function spawnGravityDot(p) {
-      const r = GRAVITY_CONFIG.dot.positionRange;
-      spawnGravityDotAt(p, p.random(r.x[0], r.x[1]), p.random(r.y[0], r.y[1]));
-    }
-
-    function spawnGravityDotAt(p, x, y) {
-      const dot = { x, y, size: GRAVITY_CONFIG.dot.size, color: GRAVITY_CONFIG.dot.color, attractedChars: [], birthFrame: p.frameCount, pulsePhase: p.random(p.TWO_PI) };
-      gravityDots.push(dot);
-      const ll = p.random(GRAVITY_CONFIG.line.lengthRange[0], GRAVITY_CONFIG.line.lengthRange[1]);
-      gravityLines.push({ x, y, length: ll, currentLength: 0, growthSpeed: p.random(0.5, 2), color: GRAVITY_CONFIG.line.color, thickness: GRAVITY_CONFIG.line.thickness, opacity: GRAVITY_CONFIG.line.opacity, birthFrame: p.frameCount });
-      attractGravityChars(p, dot);
-    }
-
-    function attractGravityChars(p, dot) {
-      const cr = GRAVITY_CONFIG.attraction.countRange;
-      const tc = p.floor(p.random(cr[0], cr[1] + 1));
-      const avail = gravityChars.filter(c => !c.isAttracted);
-      if (!avail.length) return;
-      const shuffled = avail.sort(() => p.random() - 0.5);
-      const selected = shuffled.slice(0, p.min(tc, shuffled.length));
-      selected.forEach((ch, i) => {
-        const angle = (p.TWO_PI / selected.length) * i + p.random(-0.3, 0.3);
-        const radius = p.random(12, 28);
-        ch.isAttracted = true;
-        ch.attractedBy = dot;
-        ch.targetX = dot.x + p.cos(angle) * radius;
-        ch.targetY = dot.y + p.sin(angle) * radius;
-        ch.targetFontSize = GRAVITY_CONFIG.attraction.targetFontSize;
-        ch.targetColor = p.random(GRAVITY_CONFIG.attraction.targetColors);
-        dot.attractedChars.push(ch);
       });
     }
 
-    function updateGravityChars(p) {
-      for (let ch of gravityChars) {
-        if (ch.isAttracted && ch.targetX !== null) {
-          ch.x += (ch.targetX - ch.x) * GRAVITY_CONFIG.attraction.speed;
-          ch.y += (ch.targetY - ch.y) * GRAVITY_CONFIG.attraction.speed;
-          ch.fontSize += (ch.targetFontSize - ch.fontSize) * GRAVITY_CONFIG.attraction.speed * 0.5;
-          for (let other of gravityChars) {
-            if (other === ch || !other.isAttracted || other.attractedBy !== ch.attractedBy) continue;
-            const dx = other.x - ch.x, dy = other.y - ch.y;
+    function updateGravityWords(p) {
+      for (let word of gravityWords) {
+        if (word.isAttracted && word.targetX !== null) {
+          // 被引力点吸引，向目标移动
+          word.x += (word.targetX - word.x) * GRAVITY_CONFIG.attraction.speed;
+          word.y += (word.targetY - word.y) * GRAVITY_CONFIG.attraction.speed;
+          word.scale += (word.targetScale - word.scale) * GRAVITY_CONFIG.attraction.speed;
+
+          // 推开其他词汇
+          for (let other of gravityWords) {
+            if (other === word) continue;
+            const dx = other.x - word.x;
+            const dy = other.y - word.y;
             const dist = p.sqrt(dx * dx + dy * dy);
-            if (dist < GRAVITY_CONFIG.attraction.safeDistance && dist > 0) {
-              const force = (GRAVITY_CONFIG.attraction.safeDistance - dist) / dist * 0.5;
-              ch.x -= dx * force; ch.y -= dy * force;
+            if (dist < GRAVITY_CONFIG.attraction.repelForce && dist > 0) {
+              const force = (GRAVITY_CONFIG.attraction.repelForce - dist) / dist * 0.3;
+              other.x += dx * force;
+              other.y += dy * force;
+            }
+          }
+        } else if (word.isFading) {
+          // 丧词汇被点击后淡出
+          word.fadeOpacity -= 0.02;
+          if (word.fadeOpacity <= 0) {
+            word.fadeOpacity = 0;
+            // 在旁边生成一个积极词汇替代
+            if (!word.replacedBy) {
+              const newWord = positiveWords[Math.floor(Math.random() * positiveWords.length)];
+              word.replacedBy = {
+                text: newWord,
+                x: word.x + p.random(-30, 30),
+                y: word.y + p.random(-30, 30),
+                scale: 0,
+                opacity: 0,
+                color: p.random(positiveColors)
+              };
+            }
+            if (word.replacedBy) {
+              word.replacedBy.scale += (1 - word.replacedBy.scale) * 0.05;
+              word.replacedBy.opacity += (1 - word.replacedBy.opacity) * 0.05;
             }
           }
         } else {
-          ch.y += p.sin(p.frameCount * 0.008 + ch.floatOffset) * 0.1;
-          ch.x += p.cos(p.frameCount * 0.006 + ch.floatOffset) * 0.08;
+          // 正常漂浮
+          word.x += word.vx + p.sin(gravityFrame * 0.005 + word.floatOffset) * 0.1;
+          word.y += word.vy + p.cos(gravityFrame * 0.003 + word.floatOffset) * 0.08;
+
+          // 边界反弹
+          if (word.x < 20 || word.x > 373) word.vx *= -1;
+          if (word.y < 40 || word.y > p.height - 40) word.vy *= -1;
+
+          // 保持在边界内
+          word.x = p.constrain(word.x, 20, 373);
+          word.y = p.constrain(word.y, 40, p.height - 40);
         }
       }
     }
 
-    function drawGravityLines(p) {
-      for (let line of gravityLines) {
-        if (line.currentLength < line.length) {
-          line.currentLength += line.growthSpeed;
-          line.currentLength = p.min(line.currentLength, line.length);
+    function drawGravityWords(p) {
+      for (let word of gravityWords) {
+        if (word.isFading && word.fadeOpacity <= 0) {
+          // 绘制替代的积极词汇
+          if (word.replacedBy) {
+            p.push();
+            p.translate(word.replacedBy.x, word.replacedBy.y);
+            p.scale(word.replacedBy.scale);
+            p.textSize(18);
+            const c = p.color(word.replacedBy.color);
+            p.fill(p.red(c), p.green(c), p.blue(c), word.replacedBy.opacity * 255);
+            p.noStroke();
+            p.textAlign(p.CENTER, p.CENTER);
+            p.text(word.replacedBy.text, 0, 0);
+            p.pop();
+          }
+          continue;
         }
-        const age = p.frameCount - line.birthFrame;
-        const fadeIn = p.min(age / 60, 1);
-        const col = p.color(line.color);
-        p.stroke(p.red(col), p.green(col), p.blue(col), line.opacity * 255 * fadeIn);
-        p.strokeWeight(line.thickness);
-        p.line(line.x, line.y, line.x, line.y + line.currentLength);
+
+        p.push();
+        p.translate(word.x, word.y);
+        p.scale(word.scale);
+        p.textSize(word.fontSize);
+        p.textAlign(p.CENTER, p.CENTER);
+
+        const c = p.color(word.color);
+        let alpha = word.opacity * 255;
+        if (word.isFading) alpha *= word.fadeOpacity;
+        p.fill(p.red(c), p.green(c), p.blue(c), alpha);
+        p.noStroke();
+        p.text(word.text, 0, 0);
+        p.pop();
       }
     }
 
-    function drawGravityDots(p) {
-      for (let dot of gravityDots) {
-        const age = p.frameCount - dot.birthFrame;
-        const fadeIn = p.min(age / 40, 1);
-        const pulse = p.sin(p.frameCount * 0.03 + dot.pulsePhase) * 0.3 + 0.7;
-        const c = p.color(dot.color);
-        p.noStroke();
-        p.fill(p.red(c), p.green(c), p.blue(c), 12 * fadeIn * pulse);
-        p.ellipse(dot.x, dot.y, dot.size * 4);
-        p.fill(p.red(c), p.green(c), p.blue(c), 35 * fadeIn * pulse);
-        p.ellipse(dot.x, dot.y, dot.size * 2);
-        p.fill(p.red(c), p.green(c), p.blue(c), 160 * fadeIn);
-        p.ellipse(dot.x, dot.y, dot.size);
+    // 创建粒子特效
+    function createParticles(p, x, y, color, count) {
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: x,
+          y: y,
+          vx: p.random(-3, 3),
+          vy: p.random(-3, 3),
+          life: 1,
+          decay: p.random(0.02, 0.05),
+          size: p.random(2, 6),
+          color: color
+        });
       }
     }
 
-    function drawGravityChars(p) {
-      for (let ch of gravityChars) {
-        p.textSize(ch.fontSize);
-        let c;
-        if (ch.isAttracted && ch.targetColor) {
-          const targetC = p.color(ch.targetColor);
-          const originC = p.color(GRAVITY_CONFIG.text.color);
-          const distToTarget = p.dist(ch.x, ch.y, ch.targetX, ch.targetY);
-          const progress = p.constrain(1 - distToTarget / 100, 0, 1);
-          c = p.lerpColor(originC, targetC, progress);
-        } else c = p.color(ch.color);
+    // 更新和绘制粒子
+    function updateAndDrawParticles(p) {
+      for (let i = particles.length - 1; i >= 0; i--) {
+        let pt = particles[i];
+        pt.x += pt.vx;
+        pt.y += pt.vy;
+        pt.life -= pt.decay;
+        pt.vy += 0.05; // 轻微重力
+
+        if (pt.life <= 0) {
+          particles.splice(i, 1);
+          continue;
+        }
+
+        p.push();
+        p.translate(pt.x, pt.y);
+        const c = p.color(pt.color);
+        p.fill(p.red(c), p.green(c), p.blue(c), pt.life * 255);
         p.noStroke();
-        p.fill(c);
-        p.text(ch.char, ch.x, ch.y);
+        p.ellipse(0, 0, pt.size * pt.life, pt.size * pt.life);
+        p.pop();
+      }
+    }
+
+    // 更新连击显示
+    function updateComboDisplay() {
+      const comboEl = document.getElementById('home-combo');
+      if (!comboEl) return;
+
+      if (comboCount > 1) {
+        const text = comboTexts[Math.min(comboCount - 2, comboTexts.length - 1)];
+        comboEl.textContent = '✨ ' + text + ' x' + comboCount;
+        comboEl.classList.add('show');
+      } else {
+        comboEl.classList.remove('show');
+      }
+
+      // 清除旧的计时器
+      if (comboTimer) clearTimeout(comboTimer);
+      comboTimer = setTimeout(() => {
+        comboCount = 0;
+        comboEl.classList.remove('show');
+      }, 2000);
+    }
+
+    function handleWordClick(p, mx, my) {
+      let clicked = false;
+
+      for (let word of gravityWords) {
+        const d = p.dist(mx, my, word.x, word.y);
+        const threshold = word.fontSize * word.scale * 1.5;
+
+        if (d < threshold) {
+          clicked = true;
+          if (word.isPositive) {
+            // 点击积极词汇：被吸引放大，变色，粒子特效
+            word.isAttracted = true;
+            word.targetX = p.width / 2;
+            word.targetY = p.height / 2;
+            word.targetScale = GRAVITY_CONFIG.attraction.targetScale;
+            activeWord = word;
+
+            // 连击计数
+            comboCount++;
+            updateComboDisplay();
+
+            // 粒子特效
+            createParticles(p, word.x, word.y, word.color, 8 + comboCount * 2);
+          } else {
+            // 点击丧词汇：淡出，被积极词汇替代，粒子特效
+            word.isFading = true;
+            comboCount = 0;
+            updateComboDisplay();
+
+            // 灰色粒子
+            createParticles(p, word.x, word.y, '#a09588', 5);
+          }
+          break;
+        }
+      }
+
+      // 如果没有点击到词汇，随机激活一个积极词汇飞过来
+      if (!clicked) {
+        const positive = gravityWords.filter(w => w.isPositive && !w.isAttracted);
+        if (positive.length > 0) {
+          const word = positive[Math.floor(Math.random() * positive.length)];
+          word.isAttracted = true;
+          word.targetX = mx;
+          word.targetY = my;
+          word.targetScale = GRAVITY_CONFIG.attraction.targetScale;
+          activeWord = word;
+
+          comboCount++;
+          updateComboDisplay();
+          createParticles(p, mx, my, word.color, 6);
+        }
       }
     }
 
     function gravityWindowResized(p) {
       p.resizeCanvas(393, p.windowHeight);
-      initGravityText(p);
+      initGravityWords(p);
     }
 
     // 启动 p5.js 背景
@@ -1303,9 +1617,14 @@
     // ═══════════════════════════════════════
     //  页面切换
     // ═══════════════════════════════════════
-    const pages = ['home', 'quiz', 'mutual', 'kit', 'play'];
+
+    // 页面列表，用于滑动切换时确定顺序
+    const pages = ['home', 'checkin', 'mutual', 'kit', 'play'];
     let currentPageIndex = 0;
 
+    // 切换页面
+    // pageName: 目标页面标识（home/checkin/mutual/kit/play）
+    // 隐藏所有页面，显示目标页面，更新底部tab激活状态
     function showPage(pageName) {
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + pageName).classList.add('active');
@@ -1313,24 +1632,33 @@
       document.querySelectorAll('.tab-item[data-page="' + pageName + '"]').forEach(l => l.classList.add('active'));
       document.getElementById('app').scrollTop = 0;
       currentPageIndex = pages.indexOf(pageName);
+
+      // 进入检测页面时，重置小缓对话
+      if (pageName === 'checkin') {
+        resetXiaohuanChat();
+      }
     }
 
     // ═══════════════════════════════════════
     //  左右滑动切换页面
     // ═══════════════════════════════════════
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let touchEndX = 0;
-    let isSwiping = false;
+
+    // 触摸滑动状态
+    let touchStartX = 0;   // 触摸开始X坐标
+    let touchStartY = 0;   // 触摸开始Y坐标
+    let touchEndX = 0;     // 触摸结束X坐标
+    let isSwiping = false; // 是否正在滑动
 
     const app = document.getElementById('app');
 
+    // 触摸开始：记录起始坐标
     app.addEventListener('touchstart', function(e) {
       touchStartX = e.changedTouches[0].screenX;
       touchStartY = e.changedTouches[0].screenY;
       isSwiping = true;
     }, { passive: true });
 
+    // 触摸移动：检测垂直滑动，如果是垂直滚动则取消滑动切换
     app.addEventListener('touchmove', function(e) {
       if (!isSwiping) return;
       const currentX = e.changedTouches[0].screenX;
@@ -1342,6 +1670,7 @@
       }
     }, { passive: true });
 
+    // 触摸结束：根据滑动距离判断是否切换页面
     app.addEventListener('touchend', function(e) {
       if (!isSwiping) return;
       touchEndX = e.changedTouches[0].screenX;
@@ -1357,8 +1686,14 @@
       isSwiping = false;
     }, { passive: true });
 
-    // 数据
+    // ═══════════════════════════════════════
+    //  内容数据仓库
+    // ═══════════════════════════════════════
+
+    // 今日抽象语录：100+条Z世代抽象/自嘲/黑色幽默语录
+    // 涵盖房贷压力、工作压力、情感压力、健康焦虑等当代年轻人痛点
     const quotes = [
+      // === 经典保留 ===
       "我的精神状态：一边想死，一边怕死，一边觉得自己不配死，最后决定先活着，因为死了就看不到这么抽象的自己了。",
       "今天活着的理由：外卖快到了。",
       "我不是懒，我只是在节能模式。",
@@ -1367,30 +1702,236 @@
       "我的脑子：80%的水，20%的想死。",
       "别人：为梦想奋斗。我：为活着奋斗。",
       "凌晨三点的我：哲学大师。早上的我：废物。",
-      "我想死，但我的快递还没到，我的剧还没追完，我的猫还没喂，所以我决定先活着，等这些都做完了再死——结果发现，永远做不完，所以我永远死不了，真抽象。",
-      "我的精神状态就像WiFi信号，满格的时候觉得自己能征服世界，一格的时候觉得自己连呼吸都是错的。",
+      "我想死，但我的快递还没到，我的剧还没追完，我的猫还没喂，所以我决定先活着...",
+      "我的精神状态就像WiFi信号，满格的时候觉得自己能征服世界。",
       "生活给我一巴掌，我说谢谢，正好我这边脸比较肿。",
-      "我在努力和摆烂之间选择了努力摆烂。"
+      "我在努力和摆烂之间选择了努力摆烂。",
+      "又活了一天，已经很厉害了。",
+      "今天没死，明天再说。",
+      "允许自己不营业。",
+      "阴暗爬行也算移动。",
+      "先喝水，其他的以后再说。",
+      "崩溃是合法的，发疯是合理的。",
+      "我的 coping 机制：睡觉、吃饭、等死。",
+      "不是我不想好，是我的大脑在罢工。",
+      "今天的心情：想死但怕疼。",
+      "我在'算了'和'再试试'之间反复横跳。",
+      "人生建议：不要给人生建议。",
+      "我的能量条：□□□□□□□□□□ 0%。",
+      "正在加载中... 加载失败，请重试。",
+      "今日成就：呼吸了。",
+      "我不是在发呆，我是在节能。",
+      "世界以痛吻我，我痛死。",
+      "先活着吧，其他的我再想办法。",
+      "我的 Plan B：没有 Plan B。",
+
+      // === 房贷/经济压力 ===
+      "买了房，灵魂就被抵押了三十年。",
+      "工资刚发下来，还没见整张工资单，钱已经分成'房贷'、'家用'、'备用金'等几小份。",
+      "以前敢说走就走辞职换工作，现在就算被领导刁难也只能咬着牙忍下去，因为每个月固定那一天，银行卡里必须转出3500。",
+      "没工作没对象没存款还房贷，偏偏又赶上裁员，生活从未如此艰辛。",
+      "我们结婚就为了还房贷还车贷，然后再弄出来个孩子供他上学，真的不知道这辈子在图什么。",
+      "年又快过去了，今天又被催婚了。没钱，没女朋友，还要还房贷车贷，真的是很无奈。",
+      "别人的生活是故事，我的生活是事故。",
+      "花钱的时候很快乐，还钱的时候很上火。",
+      "看似每天忙忙碌碌，回头一看啥也没留住。",
+      "购物车满到装不下，银行卡余额少到没眼看。",
+      "理想生活是诗和远方，现实生活是外卖和床。",
+      "每天都在好好生活，就是钱包不太配合。",
+      "想做生活的主人，结果被生活追着走。",
+
+      // === 工作压力/职场 ===
+      "老板：你怎么每天都跟没睡醒一样来上班？我：我睡醒了来上班不就迟到了吗？",
+      "终于突破了事业的瓶颈，发现还有瓶盖。",
+      "每天都在努力，努力让自己看起来不那么累。",
+      "立志要早睡，结果熬到凌晨，手机比我还精神。",
+      "别人加班：为了梦想。我加班：因为没做完。",
+      "简历投了一百份，面试邀请了零。",
+      "HR永远喜欢'应届生的朝气+十年老员工经验'。",
+      "找工作被拒绝数次，到底哪里不够好？",
+      "终于下班了，但明天还要来。",
+      "周一到周五：想死。周末：怕周一。",
+      "我不是不想上班，是我的身体和灵魂在罢工。",
+      "上班如上坟，但还是得去。",
+      "工资三千五，命比咖啡苦。",
+
+      // === 情感/社交压力 ===
+      "没有安全感的人，怕黑却喜欢晚睡。",
+      "故事自己留着就好，说浅了不感动，说深了没人信。",
+      "和爱的人吵架，和陌生人讲心里话。",
+      "我喜欢她九年，她也伤我九年。她的名字叫九年义务教育。",
+      "很庆幸，我终于可以不问归期，不用联系。",
+      "愿有爱者更爱，无爱者自由。",
+      "社交状态：我们又不是很熟，你叫我美女就行。",
+      "二选一别选我，三缺一喊我。",
+      "朋友圈最近好安静，也没人emo了，怎么了，都过上好日子了？",
+      "喜欢一个人藏不住的，喜欢两个人才需要藏。",
+      "现在的我爱理不理，以后的我你会更加看不起。",
+      "孤独是我较真实的朋友，寂寞是我较亲密的陪伴。",
+      "沉默是我较大的呐喊，微笑是我较虚假的面具。",
+
+      // === 健康焦虑/熬夜 ===
+      "熬的不是夜，是用健康置换生存空间的无奈。",
+      "年轻人自嘲'人肉干电池'，电量耗尽即被更换。",
+      "体检报告不敢看，看了也不敢信。",
+      "凌晨三点的心跳：咚。咚。咚。我：你别停。",
+      "医生说少熬夜，我说没办法，医生说那吃点好的，我说没钱。",
+      "我的健康状态：活着，但随时可能死。",
+      "一边熬夜一边搜'熬夜的危害'，看完继续熬。",
+      "买了褪黑素、护肝片、维生素，然后继续熬夜。",
+      "我的生物钟：美国时间。我的钱包：非洲水平。",
+      "怕猝死，但更怕穷死。",
+
+      // === 抽象/发疯文学2025 ===
+      "我将玫瑰藏于身后，花店老板却说拿出来店里有监控。",
+      "人生应该是五颜六色的，你却卡在黄色和绿色。",
+      "人生苦短，我特么又懒，简直跟我绝配。",
+      "最近头好痒，不会是要长脑子了吧。",
+      "没有人能利用我，因为我没有用。",
+      "吾日三省吾身：吾很好，吾很棒，吾配享太庙。",
+      "不要垂头丧气，显矮。",
+      "做饭全靠运气，吃饭全靠勇气，洗碗全靠脾气。",
+      "减肥计划天天有，美食面前秒低头。",
+      "收拾屋子两小时，乱回原样十分钟。",
+      "出门前精致打扮，出门后被风一吹全白费。",
+      "记性越来越差，唯一记牢的是吃饭时间。",
+      "衣服买了一大堆，能穿出门的没几件。",
+      "立志做个自律的人，最后败给了懒惰。",
+      "生活给了我很多选择，我每次都选不对。",
+      "想把日子过成糖，结果处处都是小磕绊。",
+      "每天都在盼周末，周末一过更发愁。",
+      "轻舟已过后空翻。",
+      "笑着说缺维生素，其实是在说缺钱。",
+      "富二代人生被偷，从搞笑变成真实情绪出口。"
     ];
 
-    const helpCards = [
-      { text: "你今天已经做得很好了，真的。", source: "来自一个陌生人" },
-      { text: "我知道很难，但请再坚持一下。", source: "来自一个曾经想放弃的人" },
-      { text: "你的存在本身就是一种胜利。", source: "来自一个理解你的人" },
-      { text: "哭吧，没关系，我在这里。", source: "来自一个愿意倾听的人" },
-      { text: "明天不一定会更好，但你会更强大。", source: "来自一个走过来的人" }
+    // 具象化陪伴人物库：15个有真实故事的人
+    // 每个人有名字、年龄、城市、特征、故事和一句话
+    const companions = [
+      {
+        name: "小张",
+        age: 21,
+        city: "石家庄",
+        trait: "喜欢周杰伦",
+        story: "考研二战失败，现在在便利店打工",
+        text: "你今天已经做得很好了，真的。"
+      },
+      {
+        name: "阿琳",
+        age: 24,
+        city: "成都",
+        trait: "养了三只猫",
+        story: "被裁员后在家接设计私活",
+        text: "我知道很难，但请再坚持一下。"
+      },
+      {
+        name: "老周",
+        age: 19,
+        city: "武汉",
+        trait: "凌晨三点还在画画",
+        story: "美院大一，经常画到想撕画纸",
+        text: "你的存在本身就是一种胜利。"
+      },
+      {
+        name: "小满",
+        age: 26,
+        city: "杭州",
+        trait: "喜欢下雨天",
+        story: "互联网运营，每天想辞职一百次",
+        text: "哭吧，没关系，我在这里。"
+      },
+      {
+        name: "大壮",
+        age: 22,
+        city: "沈阳",
+        trait: "健身但还是很丧",
+        story: "体院毕业，现在在做外卖骑手",
+        text: "明天不一定会更好，但你会更强大。"
+      },
+      {
+        name: "阿雅",
+        age: 20,
+        city: "长沙",
+        trait: "奶茶续命",
+        story: "大二，刚和谈了四年的对象分手",
+        text: "允许自己不营业。"
+      },
+      {
+        name: "小林",
+        age: 25,
+        city: "南京",
+        trait: "收集落叶",
+        story: "社工，每天听别人的痛苦，自己的没人听",
+        text: "先喝水，其他的以后再说。"
+      },
+      {
+        name: "阿杰",
+        age: 23,
+        city: "西安",
+        trait: "会弹吉他但很少弹",
+        story: "音乐专业毕业，现在在教培机构",
+        text: "阴暗爬行也算移动。"
+      },
+      {
+        name: "小雨",
+        age: 18,
+        city: "重庆",
+        trait: "恐高但住28楼",
+        story: "高三，每天睡四小时，经常想从窗户跳下去",
+        text: "你今天呼吸了，已经很棒了。"
+      },
+      {
+        name: "大伟",
+        age: 27,
+        city: "郑州",
+        trait: "会做好吃的面",
+        story: "程序员，996，上周刚提离职",
+        text: "不是每一天都需要有意义。"
+      },
+      {
+        name: "阿紫",
+        age: 22,
+        city: "厦门",
+        trait: "海边长大但不会游泳",
+        story: "旅游管理毕业，疫情后一直在做客服",
+        text: "崩溃是合法的，发疯是合理的。"
+      },
+      {
+        name: "小北",
+        age: 19,
+        city: "哈尔滨",
+        trait: "怕冷但喜欢雪",
+        story: "大一，第一次离家这么远，每天晚上偷偷哭",
+        text: "你已经撑过了很多个今天。"
+      },
+      {
+        name: "阿东",
+        age: 24,
+        city: "深圳",
+        trait: "租房独居",
+        story: "跨境电商，上个月店铺被封了",
+        text: "不需要变好，只需要待着。"
+      },
+      {
+        name: "小西",
+        age: 21,
+        city: "昆明",
+        trait: "喜欢种多肉",
+        story: "护理专业实习，第一次面对病人死亡",
+        text: "你的痛苦是真实的，但也会过去的。"
+      },
+      {
+        name: "阿南",
+        age: 26,
+        city: "青岛",
+        trait: "啤酒过敏",
+        story: "海员，出海三个月，刚上岸",
+        text: "想死是大脑在求救，不是你的错。"
+      }
     ];
 
-    const feeds = [
-      "小狗正在给你盖被子，请查收。",
-      "你今天呼吸了，已经很棒了。",
-      "一只猫正在远处看着你，觉得你很有趣。",
-      "你的存在让这个世界多了一种可能性。",
-      "有人在想你，即使你不知道。",
-      "你今天喝够水了吗？没有的话现在去喝一口。",
-      "你的大脑正在努力保护你，它很爱你。"
-    ];
-
+    // 弹幕墙：50条滚动的温暖弹幕
+    // 涵盖各种压力场景下的共鸣与安慰
     const danmus = [
       "今天还活着，已经很厉害了",
       "凌晨三点的你并不孤单",
@@ -1399,117 +1940,629 @@
       "想死是大脑在求救，不是你的错",
       "明天可能会好一点",
       "你值得被温柔对待",
-      "包括被你自己"
+      "包括被你自己",
+      "允许自己不营业",
+      "阴暗爬行也算移动",
+      "先喝水，其他的以后再说",
+      "崩溃是合法的",
+      "不需要变好，只需要待着",
+      "你的存在本身就是一种胜利",
+      "今天没死，明天再说",
+      "不是每一天都需要有意义",
+      "你已经撑过了很多个今天",
+      "允许自己是一块没用的石头",
+      "不需要努力，只需要存在",
+      "你的存在让这个世界多了一种可能性",
+      "房贷会还完的，你也会好起来的",
+      "被裁员不是你的错，是市场的问题",
+      "失恋了说明更好的还在后面",
+      "体检报告上的箭头不代表你的人生",
+      "熬夜不好，但偶尔熬一下也不会死",
+      "社交很累的话，不社交也可以",
+      "没有对象没关系，自己也是完整的",
+      "工资低不代表你价值低",
+      "租房也挺好，至少不用还三十年",
+      "催婚的人不懂你，但有人懂你",
+      "考不上研不代表人生完了",
+      "gap year 不是罪，休息是权利",
+      "你不是懒，是真的累了",
+      "情绪崩溃不代表你脆弱",
+      "想哭就哭，眼泪是心灵的洗澡水",
+      "焦虑的时候，深呼吸三次",
+      "你不需要对所有人微笑",
+      "拒绝别人不是你的错",
+      "做不到的事，放一放也可以",
+      "别人的评价不能定义你",
+      "你已经尽力了，真的",
+      "慢一点没关系，地球转得不快",
+      "今天不营业，明天再说",
+      "你的感受很重要，不要忽略它",
+      "就算全世界都不理解你，我也理解",
+      "撑不住的时候，停下来不是错",
+      "你不需要完美，你只需要是你",
+      "过去的就让它过去，你值得新的开始",
+      "就算现在很糟，也不会永远这么糟"
     ];
 
+    // 留言板帖子：30条模拟的社区留言
+    // 涵盖房贷、工作、情感、健康等各种压力场景
     const posts = [
       { text: "今天凌晨三点还没睡，但看到这句话突然觉得没那么孤单了", time: "刚刚", hugs: 3 },
       { text: "又自伤了，但比上次少了一道，算进步吗", time: "5分钟前", hugs: 5 },
-      { text: "测出来我是阴暗爬行型，笑死，确实", time: "10分钟前", hugs: 2 }
+      { text: "刚刚做了快速检测，原来我只是累了", time: "10分钟前", hugs: 2 },
+      { text: "今天没死，明天再说", time: "15分钟前", hugs: 8 },
+      { text: "允许自己不营业的一天", time: "20分钟前", hugs: 4 },
+      { text: "刚刚哭完，现在有点饿", time: "25分钟前", hugs: 6 },
+      { text: "我的 coping 机制：睡觉", time: "30分钟前", hugs: 3 },
+      { text: "今天也撑过来了，虽然不知道明天怎么办", time: "35分钟前", hugs: 7 },
+      { text: "有人抱抱我吗？虚拟的也行", time: "40分钟前", hugs: 9 },
+      { text: "我的精神状态：想死但怕疼", time: "45分钟前", hugs: 5 },
+      { text: "房贷又扣了，看着余额发呆半小时", time: "1小时前", hugs: 12 },
+      { text: "被裁员了，不敢告诉爸妈", time: "1小时前", hugs: 15 },
+      { text: "体检报告出来了，三个箭头，我笑了", time: "2小时前", hugs: 8 },
+      { text: "失恋一个月，今天终于没哭", time: "2小时前", hugs: 10 },
+      { text: "加班到凌晨，地铁停运了，打车要80块", time: "3小时前", hugs: 14 },
+      { text: "催婚电话又来了，我说我喜欢女生，我妈哭了", time: "3小时前", hugs: 11 },
+      { text: "考研二战又失败了，我不知道还要不要三战", time: "4小时前", hugs: 9 },
+      { text: "房租涨了500，准备搬到六环外", time: "4小时前", hugs: 7 },
+      { text: "今天面试又被拒了，说我经验不够", time: "5小时前", hugs: 6 },
+      { text: "凌晨四点胸痛，搜了一下心梗症状，然后继续刷手机", time: "5小时前", hugs: 13 },
+      { text: "朋友圈都在结婚生娃，我还在为下个月的房租发愁", time: "6小时前", hugs: 10 },
+      { text: "今天把抗抑郁药断了，因为医保不报销了", time: "6小时前", hugs: 16 },
+      { text: "和对象冷战三天，谁也不想先开口", time: "7小时前", hugs: 5 },
+      { text: "老板说今年没有年终奖，但工作量翻倍", time: "7小时前", hugs: 18 },
+      { text: "我妈问我存了多少钱，我说负的", time: "8小时前", hugs: 8 },
+      { text: "今天第一次自伤，但划完就后悔了", time: "8小时前", hugs: 20 },
+      { text: "连续失眠两周，白天还要装正常人", time: "9小时前", hugs: 11 },
+      { text: "看到前任官宣了，我点了赞然后拉黑", time: "9小时前", hugs: 7 },
+      { text: "医生说再熬夜真的会猝死，但我睡不着", time: "10小时前", hugs: 14 },
+      { text: "今天想从窗户跳下去，但想到猫没人喂", time: "10小时前", hugs: 22 }
     ];
 
-    // 首页
-    function refreshQuote() {
-      const q = quotes[Math.floor(Math.random() * quotes.length)];
-      document.getElementById('dailyQuote').textContent = '"' + q + '"';
-    }
+    // 留恋卡片：50条用微小的留恋来对抗绝望
+    const attachmentCards = [
+      "你的猫还在等你回家",
+      "那部剧还没看完，想知道结局吗",
+      "明天的外卖已经点好了",
+      "你的植物还需要浇水",
+      "那首喜欢的歌还没听够",
+      "窗外的天空有时候很好看",
+      "有人还记得你的生日",
+      "你还没试过那家新开的店",
+      "你的被子很软，再睡一次吧",
+      "有人因为你而觉得世界好一点",
+      "你的存在本身就是一种奇迹",
+      "明天可能会有好事发生",
+      "你还没看过今年的樱花",
+      "有人正在想你，即使你不知道",
+      "你的故事还没讲完",
+      "你还没学会那道想做的菜",
+      "你的游戏存档还没通关",
+      "那本书看到一半，想知道后面吗",
+      "你的快递还在路上",
+      "明天的日出可能会很美",
+      "你还没去过那个想去的地方",
+      "你的耳机里还有一首没听的歌",
+      "有人还在等你的消息",
+      "你的枕头知道你的所有秘密",
+      "那部电影的续集明年上映",
+      "你还没吃到今年的第一口西瓜",
+      "你的拖鞋还在床边等你",
+      "有人因为你的一句话开心了一整天",
+      "你还没学会骑自行车/游泳/滑板",
+      "明天的奶茶可能是全糖的好喝",
+      "你的相册里还有很多回忆没整理",
+      "那件衣服你穿很好看，再穿一次吧",
+      "你的牙刷还在等你晚上用",
+      "有人偷偷羡慕你的生活",
+      "你还没养过一只狗",
+      "明天的天气预报说会下雨，听雨声很解压",
+      "你的笔记本里还有几页空白",
+      "那杯咖啡还没喝到",
+      "你的影子一直陪着你",
+      "有人因为你的存在而感谢这个世界",
+      "你还没看过海",
+      "明天的早餐可能会很好吃",
+      "你的鞋子还想带你去更多地方",
+      "那首歌的评论区有很多和你一样的人",
+      "你的窗帘还没被今天的阳光照到",
+      "有人正在努力，为了有一天能遇见你",
+      "你还没学会弹那首喜欢的曲子",
+      "明天的风可能会很温柔",
+      "你的水杯还在等你喝水",
+      "你的存在，是某个人的幸运"
+    ];
 
-    // 测评
-    let currentQuiz = null;
-    let currentQuestion = 0;
-    let quizAnswers = [];
+    // ═══════════════════════════════════════
+    //  小缓对话式快速检测（游戏化人格化）
+    // ═══════════════════════════════════════
 
-    const quizzes = {
-      sbti: {
-        title: "SBTI 抽象型格测试",
-        questions: [
-          { q: "凌晨三点，你正在：", options: ["刷手机傻笑", "思考人生意义","搜索'怎么无痛'","已经睡了"] },
-          { q: "朋友问你'最近怎么样'，你会：", options: ["'挺好的'（实际想死）","直接发疯","转移话题","真的挺好的"] },
-          { q: "你的 coping 方式是：", options: ["睡觉逃避","暴饮暴食","伤害自己","找人倾诉"] },
-          { q: "看到治愈内容，你的反应是：", options: ["更想哭了","毫无感觉","稍微好点","觉得虚伪"] }
-        ],
-        results: {
-          atmer: { icon: "🌀", title: "ATM-er 型", tagline: "随时在崩溃边缘取钱", desc: "你的精神状态就像 ATM 机——随时可能吐钱（眼泪），但更多时候是余额不足。" },
-          zzzz: { icon: "💤", title: "ZZZZ 型", tagline: "用睡眠逃避一切", desc: "你的默认应对模式是睡觉。不是懒，是节能。不是逃避，是战略性撤退。" },
-          malo: { icon: "🌑", title: "MALO 型", tagline: "阴暗但还在爬行", desc: "你在阴暗的角落里爬行，但至少还在移动。不是前进，是蠕动，但蠕动也是动。" },
-          shadow: { icon: "👻", title: "阴暗爬行型", tagline: "已经放弃挣扎", desc: "你已经接受了阴暗的事实，并在此状态下找到了一种诡异的平静。" }
+    // 检测数据存储
+    let checkInData = {
+      energy: 50,
+      thought: '',
+      body: ''
+    };
+
+    // 当前对话步骤
+    let chatStep = 0;
+
+    // 小缓的对话内容配置
+    const xiaohuanDialogues = {
+      // 开场
+      opening: {
+        text: "嗨，我是小缓。我不太会安慰人，但我们可以一起待一会儿。",
+        button: "好"
+      },
+      // 第一题：能量检测
+      energy: {
+        question: "你现在感觉怎么样？",
+        responses: {
+          low: "能量很低啊... 像被掏空了一样。没关系，我们可以慢慢来。",
+          mid: "有点累，但还能撑。这种感觉很熟悉吧？",
+          high: "哇，今天状态不错！要珍惜这种感觉。"
+        }
+      },
+      // 第二题：念头检测
+      thought: {
+        question: "脑子里最多的念头是什么？",
+        options: ["想死", "想逃", "想睡", "想吃", "想动", "空白"],
+        responses: {
+          "想死": "...（停顿一下）想死是大脑在求救，不是你的错。",
+          "想逃": "想逃是因为现在的环境让你太难受了。",
+          "想睡": "想睡是因为你真的需要休息，不是懒。",
+          "想吃": "想吃就吃点什么吧，胃和心有时候是连着的。",
+          "想动": "想动说明你的身体还想做点什么，这很好。",
+          "空白": "空白也是一种状态，什么都不想也挺好的。"
+        }
+      },
+      // 第三题：身体检测
+      body: {
+        question: "身体有什么感觉？",
+        options: ["紧绷", "沉重", "麻木", "轻盈", "疼痛"],
+        responses: {
+          "紧绷": "身体比大脑诚实。它在说：我撑太久了。",
+          "沉重": "像背着什么东西... 也许是一些说不出口的情绪。",
+          "麻木": "麻木是身体的自我保护，它在帮你挡住一些痛苦。",
+          "轻盈": "这种感觉真好，身体在告诉你它很放松。",
+          "疼痛": "疼痛是身体在说话，它在告诉你需要被照顾。"
         }
       }
     };
 
-    function startQuiz(type) {
-      currentQuiz = quizzes[type];
-      currentQuestion = 0;
-      quizAnswers = [];
-      document.getElementById('quiz-list').classList.add('hidden');
-      document.getElementById('quiz-taking').classList.remove('hidden');
-      document.getElementById('quiz-result').classList.add('hidden');
-      showQuestion();
+    // 创建小缓的对话气泡
+    // text: 对话内容
+    // 返回DOM元素
+    function createXiaohuanBubble(text) {
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble chat-bubble-xiaohuan';
+      bubble.innerHTML = '<div class="chat-name">🌿 小缓</div><div class="typing-text"></div>';
+      return bubble;
     }
 
-    function showQuestion() {
-      const q = currentQuiz.questions[currentQuestion];
-      document.getElementById('quiz-question').textContent = q.q;
-      document.getElementById('quiz-progress-text').textContent = (currentQuestion + 1) + '/' + currentQuiz.questions.length;
-      document.getElementById('quiz-progress-fill').style.width = ((currentQuestion + 1) / currentQuiz.questions.length * 100) + '%';
-      const opts = document.getElementById('quiz-options');
-      opts.innerHTML = '';
-      q.options.forEach((opt, i) => {
+    // 创建用户的选择气泡
+    // text: 用户选择的内容
+    // 返回DOM元素
+    function createUserBubble(text) {
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble chat-bubble-user';
+      bubble.textContent = text;
+      return bubble;
+    }
+
+    // 打字机效果：逐字显示文字
+    // element: 要显示文字的元素
+    // text: 要显示的文字
+    // speed: 打字速度（毫秒/字）
+    // callback: 打字完成后的回调函数
+    function typeWriter(element, text, speed, callback) {
+      let i = 0;
+      element.classList.add('typing-cursor');
+      const timer = setInterval(() => {
+        if (i < text.length) {
+          element.textContent = text.substring(0, i + 1);
+          i++;
+        } else {
+          clearInterval(timer);
+          element.classList.remove('typing-cursor');
+          if (callback) callback();
+        }
+      }, speed);
+    }
+
+    // 显示开场对话
+    function showOpening() {
+      const container = document.getElementById('checkin-chat');
+      container.innerHTML = '';
+
+      const bubble = createXiaohuanBubble(xiaohuanDialogues.opening.text);
+      container.appendChild(bubble);
+
+      const textEl = bubble.querySelector('.typing-text');
+      typeWriter(textEl, xiaohuanDialogues.opening.text, 40, () => {
+        // 打字完成后显示按钮
+        const btnContainer = document.createElement('div');
+        btnContainer.className = 'chat-options';
         const btn = document.createElement('button');
-        btn.className = 'quiz-option';
-        btn.textContent = opt;
-        btn.onclick = () => answerQuestion(i);
-        opts.appendChild(btn);
+        btn.className = 'btn btn-primary chat-next-btn';
+        btn.textContent = xiaohuanDialogues.opening.button;
+        btn.onclick = showEnergyQuestion;
+        btnContainer.appendChild(btn);
+        container.appendChild(btnContainer);
+
+        // 滚动到底部
+        container.scrollTop = container.scrollHeight;
       });
     }
 
-    function answerQuestion(ans) {
-      quizAnswers.push(ans);
-      if (currentQuestion < currentQuiz.questions.length - 1) {
-        currentQuestion++;
-        showQuestion();
+    // 显示能量检测问题
+    function showEnergyQuestion() {
+      const container = document.getElementById('checkin-chat');
+
+      // 用户回复
+      const userBubble = createUserBubble("好");
+      container.appendChild(userBubble);
+
+      // 小缓的问题
+      setTimeout(() => {
+        const bubble = createXiaohuanBubble(xiaohuanDialogues.energy.question);
+        container.appendChild(bubble);
+
+        const textEl = bubble.querySelector('.typing-text');
+        typeWriter(textEl, xiaohuanDialogues.energy.question, 40, () => {
+          // 显示滑动条
+          const sliderContainer = document.createElement('div');
+          sliderContainer.className = 'chat-slider-container';
+          sliderContainer.innerHTML =
+            '<div class="chat-slider-value" id="energy-slider-value">50%</div>' +
+            '<input type="range" class="chat-slider-track" id="energy-slider" min="0" max="100" value="50" oninput="updateEnergySlider(this.value)">' +
+            '<div class="chat-slider-labels"><span>耗尽了</span><span>很充沛</span></div>';
+          container.appendChild(sliderContainer);
+
+          // 显示下一步按钮
+          const btnContainer = document.createElement('div');
+          btnContainer.className = 'chat-options';
+          const btn = document.createElement('button');
+          btn.className = 'btn btn-primary chat-next-btn';
+          btn.textContent = '下一步';
+          btn.onclick = confirmEnergy;
+          btnContainer.appendChild(btn);
+          container.appendChild(btnContainer);
+
+          container.scrollTop = container.scrollHeight;
+        });
+      }, 300);
+    }
+
+    // 更新能量滑动条显示
+    function updateEnergySlider(value) {
+      document.getElementById('energy-slider-value').textContent = value + '%';
+      checkInData.energy = parseInt(value);
+    }
+
+    // 确认能量选择，显示小缓的回应
+    function confirmEnergy() {
+      const container = document.getElementById('checkin-chat');
+      const value = checkInData.energy;
+
+      // 用户回复
+      const userBubble = createUserBubble(value + '%');
+      container.appendChild(userBubble);
+
+      // 小缓的回应
+      setTimeout(() => {
+        let responseText = '';
+        if (value < 30) {
+          responseText = xiaohuanDialogues.energy.responses.low;
+        } else if (value < 70) {
+          responseText = xiaohuanDialogues.energy.responses.mid;
+        } else {
+          responseText = xiaohuanDialogues.energy.responses.high;
+        }
+
+        const bubble = createXiaohuanBubble(responseText);
+        container.appendChild(bubble);
+
+        const textEl = bubble.querySelector('.typing-text');
+        typeWriter(textEl, responseText, 40, () => {
+          // 显示下一步按钮
+          const btnContainer = document.createElement('div');
+          btnContainer.className = 'chat-options';
+          const btn = document.createElement('button');
+          btn.className = 'btn btn-primary chat-next-btn';
+          btn.textContent = '下一步';
+          btn.onclick = showThoughtQuestion;
+          btnContainer.appendChild(btn);
+          container.appendChild(btnContainer);
+
+          container.scrollTop = container.scrollHeight;
+        });
+      }, 300);
+    }
+
+    // 显示念头检测问题
+    function showThoughtQuestion() {
+      const container = document.getElementById('checkin-chat');
+
+      // 小缓的问题
+      const bubble = createXiaohuanBubble(xiaohuanDialogues.thought.question);
+      container.appendChild(bubble);
+
+      const textEl = bubble.querySelector('.typing-text');
+      typeWriter(textEl, xiaohuanDialogues.thought.question, 40, () => {
+        // 显示选项
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'chat-options';
+
+        xiaohuanDialogues.thought.options.forEach(option => {
+          const btn = document.createElement('button');
+          btn.className = 'chat-option-btn';
+          btn.textContent = option;
+          btn.onclick = function() { selectThought(option, this); };
+          optionsContainer.appendChild(btn);
+        });
+
+        container.appendChild(optionsContainer);
+        container.scrollTop = container.scrollHeight;
+      });
+    }
+
+    // 选择念头
+    function selectThought(thought, btn) {
+      const container = document.getElementById('checkin-chat');
+      checkInData.thought = thought;
+
+      // 移除所有选中状态
+      document.querySelectorAll('.chat-option-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+
+      // 用户回复
+      const userBubble = createUserBubble(thought);
+      container.appendChild(userBubble);
+
+      // 移除选项
+      const options = container.querySelector('.chat-options');
+      if (options) options.remove();
+
+      // 小缓的回应
+      setTimeout(() => {
+        const responseText = xiaohuanDialogues.thought.responses[thought];
+        const bubble = createXiaohuanBubble(responseText);
+        container.appendChild(bubble);
+
+        const textEl = bubble.querySelector('.typing-text');
+        typeWriter(textEl, responseText, 40, () => {
+          // 显示下一步按钮
+          const btnContainer = document.createElement('div');
+          btnContainer.className = 'chat-options';
+          const nextBtn = document.createElement('button');
+          nextBtn.className = 'btn btn-primary chat-next-btn';
+          nextBtn.textContent = '下一步';
+          nextBtn.onclick = showBodyQuestion;
+          btnContainer.appendChild(nextBtn);
+          container.appendChild(btnContainer);
+
+          container.scrollTop = container.scrollHeight;
+        });
+      }, 300);
+    }
+
+    // 显示身体检测问题
+    function showBodyQuestion() {
+      const container = document.getElementById('checkin-chat');
+
+      // 小缓的问题
+      const bubble = createXiaohuanBubble(xiaohuanDialogues.body.question);
+      container.appendChild(bubble);
+
+      const textEl = bubble.querySelector('.typing-text');
+      typeWriter(textEl, xiaohuanDialogues.body.question, 40, () => {
+        // 显示选项
+        const optionsContainer = document.createElement('div');
+        optionsContainer.className = 'chat-options';
+
+        xiaohuanDialogues.body.options.forEach(option => {
+          const btn = document.createElement('button');
+          btn.className = 'chat-option-btn';
+          btn.textContent = option;
+          btn.onclick = function() { selectBody(option, this); };
+          optionsContainer.appendChild(btn);
+        });
+
+        container.appendChild(optionsContainer);
+        container.scrollTop = container.scrollHeight;
+      });
+    }
+
+    // 选择身体感觉
+    function selectBody(body, btn) {
+      const container = document.getElementById('checkin-chat');
+      checkInData.body = body;
+
+      // 移除所有选中状态
+      document.querySelectorAll('.chat-option-btn').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+
+      // 用户回复
+      const userBubble = createUserBubble(body);
+      container.appendChild(userBubble);
+
+      // 移除选项
+      const options = container.querySelector('.chat-options');
+      if (options) options.remove();
+
+      // 小缓的回应
+      setTimeout(() => {
+        const responseText = xiaohuanDialogues.body.responses[body];
+        const bubble = createXiaohuanBubble(responseText);
+        container.appendChild(bubble);
+
+        const textEl = bubble.querySelector('.typing-text');
+        typeWriter(textEl, responseText, 40, () => {
+          // 显示结果按钮
+          const btnContainer = document.createElement('div');
+          btnContainer.className = 'chat-options';
+          const resultBtn = document.createElement('button');
+          resultBtn.className = 'btn btn-primary chat-next-btn';
+          resultBtn.textContent = '看看结果';
+          resultBtn.onclick = showChatResult;
+          btnContainer.appendChild(resultBtn);
+          container.appendChild(btnContainer);
+
+          container.scrollTop = container.scrollHeight;
+        });
+      }, 300);
+    }
+
+    // 显示检测结果
+    function showChatResult() {
+      const container = document.getElementById('checkin-chat');
+
+      // 用户回复
+      const userBubble = createUserBubble("看看结果");
+      container.appendChild(userBubble);
+
+      // 生成状态描述
+      let feeling = '';
+      let suggestion = '';
+
+      if (checkInData.energy < 30) {
+        feeling = '你现在感觉能量很低，像是被掏空了一样。';
+        if (checkInData.thought === '想死') {
+          feeling += '脑子里有很多"想死"的念头，但这些念头不是你的错，是大脑在发出求救信号。';
+          suggestion = '小缓可以陪你：\n1. 去"缓冲站"做30秒呼吸\n2. 去"缓一缓"看看留恋卡片\n3. 如果感觉撑不住，请拨打 400-161-9995';
+        } else if (checkInData.thought === '想逃') {
+          feeling += '你想逃，是因为现在的环境让你太难受了。';
+          suggestion = '小缓可以陪你：\n1. 去窗边看看外面\n2. 给一个信任的人发消息\n3. 告诉自己："我现在很难受，但这会过去"';
+        } else {
+          feeling += '你感觉' + checkInData.body + '，身体在告诉你需要休息。';
+          suggestion = '小缓可以陪你：\n1. 喝一口水\n2. 做三次深呼吸\n3. 允许自己什么都不做';
+        }
+      } else if (checkInData.energy < 70) {
+        feeling = '你现在感觉能量中等，有点累但还能撑。';
+        if (checkInData.thought === '想睡') {
+          feeling += '你想睡，是因为你的身体真的需要休息。';
+          suggestion = '小缓可以陪你：\n1. 小睡20分钟\n2. 听一首喜欢的歌\n3. 告诉自己："累了就休息，不用硬撑"';
+        } else {
+          feeling += '你感觉' + checkInData.body + '，需要一点放松。';
+          suggestion = '小缓可以陪你：\n1. 去"缓一缓"做呼吸气泡\n2. 抽一张陪伴卡\n3. 看看弹幕墙，知道有人陪你';
+        }
       } else {
-        showResult();
+        feeling = '你现在感觉能量还不错，这很好。';
+        suggestion = '小缓可以陪你：\n1. 记录下这个感觉，以后低落时回看\n2. 去陪伴区给陌生人留一句温暖的话\n3. 享受这个时刻';
       }
+
+      // 小缓的结果
+      setTimeout(() => {
+        const resultText = '根据你的回答，你现在的感觉是...\n\n' + feeling;
+        const bubble = createXiaohuanBubble(resultText);
+        container.appendChild(bubble);
+
+        const textEl = bubble.querySelector('.typing-text');
+        typeWriter(textEl, resultText, 30, () => {
+          // 显示建议
+          setTimeout(() => {
+            const suggestionBubble = createXiaohuanBubble(suggestion);
+            container.appendChild(suggestionBubble);
+
+            const suggestionEl = suggestionBubble.querySelector('.typing-text');
+            typeWriter(suggestionEl, suggestion, 30, () => {
+              // 显示操作按钮
+              const actionsContainer = document.createElement('div');
+              actionsContainer.className = 'chat-result-actions';
+
+              const actions = [
+                { icon: '🫁', text: '去缓冲站做30秒呼吸', page: 'kit' },
+                { icon: '💌', text: '抽一张陪伴卡', page: 'mutual' },
+                { icon: '💬', text: '看看弹幕墙', page: 'mutual' }
+              ];
+
+              actions.forEach(action => {
+                const btn = document.createElement('button');
+                btn.className = 'chat-result-action';
+                btn.innerHTML = '<span class="chat-result-action-icon">' + action.icon + '</span><span>' + action.text + '</span>';
+                btn.onclick = () => showPage(action.page);
+                actionsContainer.appendChild(btn);
+              });
+
+              container.appendChild(actionsContainer);
+
+              // 显示底部按钮
+              const bottomContainer = document.createElement('div');
+              bottomContainer.className = 'chat-options';
+              bottomContainer.style.marginTop = '20px';
+
+              const restartBtn = document.createElement('button');
+              restartBtn.className = 'btn btn-ghost chat-next-btn';
+              restartBtn.textContent = '再测一次';
+              restartBtn.onclick = resetXiaohuanChat;
+              bottomContainer.appendChild(restartBtn);
+
+              container.appendChild(bottomContainer);
+              container.scrollTop = container.scrollHeight;
+            });
+          }, 400);
+        });
+      }, 300);
     }
 
-    function showResult() {
-      document.getElementById('quiz-taking').classList.add('hidden');
-      document.getElementById('quiz-result').classList.remove('hidden');
-      const results = Object.keys(currentQuiz.results);
-      const r = currentQuiz.results[results[Math.floor(Math.random() * results.length)]];
-      document.getElementById('result-icon').textContent = r.icon;
-      document.getElementById('result-title').textContent = r.title;
-      document.getElementById('result-tagline').textContent = r.tagline;
-      document.getElementById('result-desc').textContent = r.desc;
+    // 重置小缓对话
+    function resetXiaohuanChat() {
+      checkInData = { energy: 50, thought: '', body: '' };
+      showOpening();
     }
 
-    function showQuizList() {
-      document.getElementById('quiz-list').classList.remove('hidden');
-      document.getElementById('quiz-taking').classList.add('hidden');
-      document.getElementById('quiz-result').classList.add('hidden');
+    // 初始化小缓对话
+    function initXiaohuanChat() {
+      showOpening();
     }
 
-    // 互助
+    // ═══════════════════════════════════════
+    //  陪伴页面功能
+    // ═══════════════════════════════════════
+
+    // 抽取一张陪伴卡
+    // 从companions数组中随机选择一个具象化人物
     function drawHelpCard() {
-      const card = helpCards[Math.floor(Math.random() * helpCards.length)];
-      document.getElementById('help-card-text').textContent = card.text;
-      document.getElementById('help-card-source').textContent = '— ' + card.source;
+      const companion = companions[Math.floor(Math.random() * companions.length)];
+      const quoteEl = document.getElementById('help-card-text');
+      const sourceEl = document.getElementById('help-card-source');
+
+      // 显示语录
+      quoteEl.textContent = '"' + companion.text + '"';
+
+      // 显示人物信息
+      sourceEl.innerHTML =
+        '<div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);">' +
+        '<div class="companion-name">— ' + companion.name + '，' + companion.age + '岁，' + companion.city + '</div>' +
+        '<div class="companion-detail">' + companion.trait + '，' + companion.story + '</div>' +
+        '</div>';
     }
 
+    // 初始化弹幕墙
+    // 为每条弹幕创建DOM元素并设置动画参数
     function initDanmu() {
       const container = document.getElementById('danmu-container');
+      const trackHeight = 24; // 每条轨道高度
+      const maxTracks = Math.floor(200 / trackHeight); // 约8条轨道
+
       danmus.forEach((text, i) => {
         const el = document.createElement('div');
         el.className = 'danmu-item';
         el.textContent = text;
-        el.style.top = (16 + i * 26) + 'px';
-        el.style.animationDelay = (i * 2) + 's';
-        el.style.animationDuration = (12 + Math.random() * 8) + 's';
+        // 分配到不同轨道，相邻弹幕错开轨道避免重叠
+        const track = i % maxTracks;
+        el.style.top = (4 + track * trackHeight) + 'px';
+        // 随机延迟，让弹幕分散出现
+        el.style.animationDelay = (i * 1.5 + Math.random() * 3) + 's';
+        // 随机速度，让弹幕有快有慢
+        el.style.animationDuration = (10 + Math.random() * 12) + 's';
         container.appendChild(el);
       });
     }
 
+    // 发布留言
+    // 获取输入框内容并添加到留言列表顶部
     function postHelp() {
       const input = document.getElementById('post-input');
       const text = input.value.trim();
@@ -1522,14 +2575,21 @@
       input.value = '';
     }
 
+    // 发送抱抱
+    // 点击抱抱按钮后改变按钮样式和文字
     function sendHug(btn) {
-      btn.textContent = '已抱抱 ❤';
+      btn.textContent = '已抱抱 \u2764';
       btn.style.background = '#fef2f2';
       btn.style.color = '#e73737';
       btn.style.borderColor = 'rgba(231,55,55,0.2)';
     }
 
-    // 急救
+    // ═══════════════════════════════════════
+    //  缓冲站功能
+    // ═══════════════════════════════════════
+
+    // 30秒呼吸计时器
+    // 提供30秒的缓冲倒计时，帮助用户平复情绪
     let timerInterval = null;
     function startTimer() {
       if (timerInterval) return;
@@ -1545,86 +2605,190 @@
         if (count <= 0) {
           clearInterval(timerInterval);
           timerInterval = null;
-          display.textContent = '✓';
+          display.textContent = '\u2713';
           text.textContent = '你做得很好，这30秒你撑过来了';
           btn.textContent = '再来一次';
         }
       }, 1000);
     }
 
-    const sosContents = {
-      mild: { title: "我现在有点难受", actions: ["先喝一口水", "走到窗边看看外面", "给一个信任的人发消息"] },
-      moderate: { title: "我现在很难受", actions: ["深呼吸10次", "用冷水洗把脸", "拨打心理热线 400-161-9995", "告诉身边的人"] },
-      severe: { title: "我快撑不住了", actions: ["立刻拨打 120 或 110", "联系最近的人", "去最近的医院急诊科", "你不是一个人"] }
+    // 缓冲卡内容：三个等级的缓冲建议
+    // 用于缓冲站页面，根据用户状态提供分级支持
+    const bufferCards = {
+      mild: {
+        title: "我现在有点难受",
+        subtitle: "没关系，先缓一缓",
+        actions: ["先喝一口水", "走到窗边看看外面", "给一个信任的人发消息", "深呼吸三次"]
+      },
+      moderate: {
+        title: "我现在很难受",
+        subtitle: "你需要被看见",
+        actions: ["深呼吸10次", "用冷水洗把脸", "拨打心理热线 400-161-9995", "告诉身边的人"]
+      },
+      severe: {
+        title: "我快撑不住了",
+        subtitle: "这不是你的错",
+        actions: ["立刻拨打 120 或 110", "联系最近的人", "去最近的医院急诊科", "你不是一个人"]
+      }
     };
 
+    // 切换缓冲卡等级
+    // level: 'mild'|'moderate'|'severe' - 缓冲等级
+    // btn: 点击的按钮元素，用于切换激活状态
     function switchSos(level, btn) {
       document.querySelectorAll('.sos-tab').forEach(t => t.classList.remove('active'));
       btn.classList.add('active');
-      const content = sosContents[level];
-      document.getElementById('sos-content').innerHTML = '<div style="font-size: 14px; font-weight: 600; margin-bottom: 10px;">' + content.title + '</div><div style="font-size: 13px; line-height: 2; color: var(--cocoa);">' + content.actions.map(a => '<div>· ' + a + '</div>').join('') + '</div><button class="btn btn-ghost" style="margin-top: 14px;" onclick="copySos()">复制求救卡</button>';
+      const content = bufferCards[level];
+      document.getElementById('sos-content').innerHTML =
+        '<div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">' + content.title + '</div>' +
+        '<div style="font-size: 12px; color: var(--cocoa); margin-bottom: 10px;">' + content.subtitle + '</div>' +
+        '<div style="font-size: 13px; line-height: 2; color: var(--cocoa);">' + content.actions.map(a => '<div>· ' + a + '</div>').join('') + '</div>' +
+        '<button class="btn btn-ghost" style="margin-top: 14px;" onclick="copySos()">复制缓冲卡</button>';
     }
 
+    // 复制缓冲卡内容到剪贴板
+    // 方便用户保存或分享给信任的人
     function copySos() {
-      const text = document.querySelector('#sos-content div:first-child').textContent + '\n' + Array.from(document.querySelectorAll('#sos-content div:nth-child(2) div')).map(d => d.textContent).join('\n');
+      const text = document.querySelector('#sos-content div:first-child').textContent + '\n' + Array.from(document.querySelectorAll('#sos-content div:nth-child(3) div')).map(d => d.textContent).join('\n');
       navigator.clipboard.writeText(text).then(() => alert('已复制到剪贴板'));
     }
 
-    // 开心
-    function randomFeed() {
-      const feed = feeds[Math.floor(Math.random() * feeds.length)];
-      document.getElementById('feed-display').textContent = feed;
+    // ═══════════════════════════════════════
+    //  缓一缓页面功能（原开心页面重构）
+    // ═══════════════════════════════════════
+
+    // 呼吸气泡控制
+    let breathActive = false;
+    function toggleBreath() {
+      const circle = document.getElementById('breath-circle');
+      const text = document.getElementById('breath-text');
+      const btn = document.getElementById('breath-btn');
+
+      if (!breathActive) {
+        breathActive = true;
+        circle.classList.add('active');
+        text.textContent = '吸气... 呼气... 跟着圆圈的节奏';
+        btn.textContent = '停止';
+      } else {
+        breathActive = false;
+        circle.classList.remove('active');
+        text.textContent = '点击开始，跟着圆圈呼吸';
+        btn.textContent = '开始呼吸';
+      }
     }
 
+    // 延迟清单勾选
+    function toggleDelay(item) {
+      item.classList.toggle('checked');
+    }
+
+    // 重置延迟清单
+    function resetDelay() {
+      document.querySelectorAll('.delay-item').forEach(item => {
+        item.classList.remove('checked');
+      });
+    }
+
+    // 随机留恋卡片
+    function randomAttachment() {
+      const text = attachmentCards[Math.floor(Math.random() * attachmentCards.length)];
+      document.getElementById('attachment-text').textContent = text;
+    }
+
+    // 抽象生成器模板：30个模板函数
+    // 接收用户输入，生成Z世代风格的抽象文案
+    const abstractTemplates = [
+      (input) => input + '？' + input + '！哈哈哈哈哈哈哈哈哈哈哈哈！我精神状态挺好的呀！',
+      (input) => '谁懂啊，' + input + '的时候我真的想死，但又怕死，所以决定先活着折磨世界。世界：你谁？',
+      (input) => input + '？没关系！精神稳定一分钟也很厉害了！',
+      (input) => '我想死，但我的' + input + '还没到，我的剧还没追完，我的猫还没喂，所以我决定先活着...',
+      (input) => '关于' + input + '，我的评价是：人哪有不疯的？硬撑罢了！',
+      (input) => input + '让我意识到，我的人生就像一部烂片，但我是主角，所以还得继续演。',
+      (input) => '别人' + input + '：优雅从容。我' + input + '：先崩溃再发疯最后发现还得自己处理。',
+      (input) => '如果' + input + '是一种超能力，那我一定是副作用型英雄。',
+      (input) => '我的' + input + '状态：表面上"没事没事"，内心演完八十集宫斗剧。',
+      (input) => input + '教会了我：人生就像打电话，希望电信先倒闭。',
+      (input) => '轻舟已过' + input + '，后空翻。',
+      (input) => '笑着说缺' + input + '，其实是在说缺钱。',
+      (input) => '富二代人生被' + input + '偷了，从搞笑变成真实情绪出口。',
+      (input) => '我将玫瑰藏于身后，' + input + '却说拿出来店里有监控。',
+      (input) => '人生应该是五颜六色的，' + input + '却卡在黄色和绿色。',
+      (input) => '最近头好痒，不会是要长' + input + '了吧。',
+      (input) => '没有人能利用我' + input + '，因为我没有用。',
+      (input) => '吾日三省吾身：吾很好，吾很棒，吾' + input + '配享太庙。',
+      (input) => '不要垂头丧气，' + input + '显矮。',
+      (input) => '做饭全靠运气，' + input + '全靠勇气，洗碗全靠脾气。',
+      (input) => '减肥计划天天有，' + input + '面前秒低头。',
+      (input) => '收拾屋子两小时，' + input + '乱回原样十分钟。',
+      (input) => '出门前精致打扮，出门后' + input + '被风一吹全白费。',
+      (input) => '记性越来越差，唯一记牢的是' + input + '时间。',
+      (input) => '衣服买了一大堆，能' + input + '的没几件。',
+      (input) => '立志做个自律的人，最后败给了' + input + '。',
+      (input) => '生活给了我很多选择，' + input + '每次都选不对。',
+      (input) => '想把日子过成糖，' + input + '结果处处都是小磕绊。',
+      (input) => '每天都在盼周末，' + input + '周末一过更发愁。',
+      (input) => '我的' + input + '：表面上"没事没事"，内心演完八十集宫斗剧。'
+    ];
+
+    // 抽象生成器：根据用户输入生成抽象文案
     function generateFengwen() {
       const input = document.getElementById('fengwen-input').value.trim() || '生活';
-      const templates = [
-        input + '？' + input + '！哈哈哈哈哈哈哈哈哈哈哈哈！我精神状态挺好的呀！我精神挺好的呀！挺好的呀！',
-        '谁懂啊，' + input + '的时候我真的想死，但又怕死，所以决定先活着折磨世界。世界：你谁？',
-        input + '？没关系！精神稳定一分钟也很厉害了！精神稳定一小时那更是超级无敌厉害了！',
-        '我想死，但我的' + input + '还没到，我的剧还没追完，我的猫还没喂，所以我决定先活着，等这些都做完了再死——结果发现，永远做不完，所以我永远死不了，真抽象。',
-        '关于' + input + '，我的评价是：人哪有不疯的？硬撑罢了！人上没关系精神稳定一分钟也很厉害了！',
-        input + '让我意识到，我的人生就像一部烂片，但我是主角，所以还得继续演下去，因为片酬还没拿到。',
-        '别人' + input + '：优雅、从容、解决。我' + input + '：先崩溃、再发疯、最后发现还得自己处理，于是边哭边做。',
-        '如果' + input + '是一种超能力，那我一定是那种"每次使用都会让自己更想死"的副作用型英雄。',
-        '我的' + input + '状态：表面上"没事没事"，实际上内心已经演完了八十集宫斗剧，最后主角（我）死了。',
-        input + '教会了我一个道理：人生就像打电话，不是你先挂就是我先挂，但我希望是电信先倒闭。'
-      ];
+      const template = abstractTemplates[Math.floor(Math.random() * abstractTemplates.length)];
       const output = document.getElementById('fengwen-output');
-      output.textContent = templates[Math.floor(Math.random() * templates.length)];
+      output.textContent = template(input);
       output.classList.add('show');
     }
 
+    // 情绪翻译器映射：将负面自我表达转译为需求信号
+    // 帮助用户理解负面想法背后的真实需求
+    const emotionTranslations = {
+      '想死': '我现在很难受，需要被看见',
+      '自杀': '我需要帮助，请陪陪我',
+      '自伤': '我需要释放压力，可以捏冰块',
+      '没意义': '我现在很累，需要暂停一下',
+      '崩溃': '我需要空间，让我待一会儿',
+      '焦虑': '我的大脑在过度保护我',
+      '孤独': '我需要连接，但不知道怎么说',
+      '绝望': '我暂时看不到希望，但这会过去',
+      '我没用': '我现在很累，不是我没用',
+      '我不配': '我值得被温柔对待',
+      '想逃': '现在的环境让我太难受了',
+      '累': '我的身体需要休息',
+      '烦': '我需要一点空间',
+      '痛': '我需要被照顾'
+    };
+
+    // 情绪翻译器：将用户的负面表达翻译为背后的需求
     function translateThought() {
       const input = document.getElementById('thought-input').value.trim();
       if (!input) return;
-      const translations = {
-        '想死': '我现在很难受，需要休息',
-        '自杀': '我需要帮助，请陪陪我',
-        '自伤': '我需要释放压力，可以捏冰块',
-        '没意义': '我现在很累，需要暂停一下'
-      };
-      let result = '翻译："' + input + '" → "我现在很难受，但我会试着撑过去"';
-      for (let [key, val] of Object.entries(translations)) {
-        if (input.includes(key)) { result = '翻译："' + input + '" → "' + val + '"'; break; }
+      let result = '翻译："' + input + '" \u2192 "我现在很难受，但我会试着撑过去"';
+      for (let [key, val] of Object.entries(emotionTranslations)) {
+        if (input.includes(key)) { result = '翻译："' + input + '" \u2192 "' + val + '"'; break; }
       }
       const output = document.getElementById('thought-output');
       output.textContent = result;
       output.classList.add('show');
     }
 
-    // 初始化
+    // ═══════════════════════════════════════
+    //  初始化
+    // ═══════════════════════════════════════
+
+    // 应用初始化
+    // 初始化弹幕、渲染留言板帖子、初始化小缓对话
     function init() {
-      refreshQuote();
       initDanmu();
       // 渲染帖子
       const postsList = document.getElementById('posts-list');
       posts.forEach(p => {
         const el = document.createElement('div');
         el.className = 'post-item';
-        el.innerHTML = '<div class="post-text">' + p.text + '</div><div class="post-meta"><span>' + p.time + '</span><button class="hug-btn" onclick="sendHug(this)">抱抱</button></div>';
+        el.innerHTML = '<div class="post-text">' + p.text + '</div><div class="post-meta"><span>' + p.time + '</span><button class="hug-btn" onclick="sendHug(this)">抱抱 ' + p.hugs + '</button></div>';
         postsList.appendChild(el);
       });
+      // 初始化小缓对话
+      initXiaohuanChat();
     }
 
     init();
