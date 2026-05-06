@@ -1,6 +1,6 @@
 /**
  * Soul Soother App - SPA Controller
- * 单页应用控制器，处理页面切换和交互
+ * 状态导向的单页应用控制器
  */
 
 (function() {
@@ -12,7 +12,7 @@
   var isScrolling = false;
 
   // 页面名称
-  var pageNames = ['首页', '测评', '合集', '工具', '关于'];
+  var pageNames = ['首页', '开心', '测评', '互助', '急救'];
 
   document.addEventListener('DOMContentLoaded', function() {
     container = document.getElementById('pagesContainer');
@@ -25,8 +25,8 @@
 
     // 初始化引力场
     setTimeout(function() {
-      if (window.GravityField) {
-        window.GravityField.init('#gravityContainer');
+      if (window.GravityP5) {
+        window.GravityP5.init('gravityCanvas');
       }
     }, 500);
   });
@@ -92,23 +92,24 @@
         initHomePage();
         break;
       case 1:
-        initQuizPage();
+        initPlayPage();
         break;
       case 2:
-        initCollectionPage();
+        initQuizPage();
         break;
       case 3:
-        initToolsPage();
+        initMutualPage();
         break;
       case 4:
-        initAboutPage();
+        initKitPage();
         break;
     }
   }
 
-  /**
-   * 初始化首页
-   */
+  // ========================================
+  // 首页
+  // ========================================
+
   function initHomePage() {
     // 加载每日引言
     if (typeof getDailyQuote === 'function') {
@@ -132,68 +133,28 @@
     // 检查深夜模式
     checkNightTime();
 
-    // 初始化弹幕
-    initDanmu();
+    // 初始化精神天气
+    initWeather();
   }
 
-  /**
-   * 初始化测评页
-   */
-  function initQuizPage() {
-    if (typeof quizzes === 'undefined') return;
+  function initWeather() {
+    var weatherEmoji = document.getElementById('weatherEmoji');
+    var weatherLabel = document.getElementById('weatherLabel');
+    var weatherDesc = document.getElementById('weatherDesc');
 
-    var cardsContainer = document.getElementById('quizCards');
-    if (!cardsContainer || cardsContainer.children.length > 0) return;
-
-    var html = '';
-    for (var i = 0; i < quizzes.length; i++) {
-      var q = quizzes[i];
-      html += '<div class="quiz-card" onclick="startQuiz(\'' + q.id + '\')">' +
-        '<div class="quiz-card-header">' +
-          '<svg class="quiz-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">' +
-            '<path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>' +
-          '</svg>' +
-          '<div class="quiz-card-title">' + q.name + '</div>' +
-        '</div>' +
-        '<div class="quiz-card-desc">' + q.description + '</div>' +
-        '<div class="quiz-card-meta">' +
-          '<span class="quiz-card-time">' + q.duration + '</span>' +
-          '<span style="font-size: 12px; color: var(--text-tertiary);">' + q.questions.length + '题</span>' +
-        '</div>' +
-      '</div>';
+    if (weatherEmoji && !weatherEmoji.textContent) {
+      var weather = getWeather();
+      weatherEmoji.textContent = weather.emoji;
+      weatherLabel.textContent = weather.label;
+      weatherDesc.textContent = weather.desc;
     }
-    cardsContainer.innerHTML = html;
   }
 
-  /**
-   * 初始化合集页
-   */
-  function initCollectionPage() {
-    if (typeof collections === 'undefined') return;
+  window.showWeatherDetail = function() {
+    var weather = getWeather();
+    alert('今日精神天气：' + weather.label + '\n' + weather.desc + '\n\n点击"开心一秒"获取对应推荐');
+  };
 
-    var grid = document.getElementById('collectionGrid');
-    if (!grid || grid.children.length > 0) return;
-
-    renderCollections();
-  }
-
-  /**
-   * 初始化工具页
-   */
-  function initToolsPage() {
-    // 工具页内容已内联在HTML中
-  }
-
-  /**
-   * 初始化关于页
-   */
-  function initAboutPage() {
-    // 关于页内容已内联在HTML中
-  }
-
-  /**
-   * 检查深夜时间
-   */
   function checkNightTime() {
     if (typeof isNightTime !== 'function' || typeof getNightRescue !== 'function') return;
 
@@ -204,26 +165,6 @@
     }
   }
 
-  /**
-   * 初始化弹幕
-   */
-  function initDanmu() {
-    if (typeof danmuList === 'undefined') return;
-
-    var track = document.getElementById('danmuTrack');
-    if (!track || track.children.length > 0) return;
-
-    var html = '';
-    var allDanmu = danmuList.concat(danmuList);
-    for (var i = 0; i < allDanmu.length; i++) {
-      html += '<span class="danmu-item">' + allDanmu[i] + '</span>';
-    }
-    track.innerHTML = html;
-  }
-
-  /**
-   * 刷新引言
-   */
   window.refreshQuote = function() {
     if (typeof getRandomQuote !== 'function') return;
 
@@ -236,79 +177,127 @@
     }, 250);
   };
 
-  /**
-   * 抽取互助卡
-   */
-  window.drawHelpCard = function() {
-    if (typeof tools === 'undefined') return;
+  // ========================================
+  // 开心一秒
+  // ========================================
 
-    var cards = tools.helpCards;
-    var card = cards[Math.floor(Math.random() * cards.length)];
-    var textEl = document.getElementById('helpCardText');
-    textEl.style.opacity = '0';
+  function initPlayPage() {
+    // 渲染治愈网页
+    renderPlayCollections();
+  }
+
+  window.randomFeed = function() {
+    if (typeof getRandomFeed !== 'function') return;
+
+    var feed = getRandomFeed();
+    var contentEl = document.getElementById('feedContent');
+    contentEl.style.opacity = '0';
     setTimeout(function() {
-      textEl.textContent = card.text;
-      textEl.style.opacity = '1';
-    }, 300);
+      contentEl.textContent = feed.content;
+      contentEl.style.opacity = '1';
+    }, 250);
   };
 
-  /**
-   * 发布互助
-   */
-  window.postHelp = function() {
-    var content = document.getElementById('helpPost').value.trim();
-    if (!content) {
-      alert('写点什么吧，哪怕只有一个字');
-      return;
-    }
-
-    var crisisWords = ['自杀', '想死', '自残', '跳楼', '割腕', '上吊', '毒药'];
-    var hasCrisis = false;
-    for (var i = 0; i < crisisWords.length; i++) {
-      if (content.indexOf(crisisWords[i]) !== -1) {
-        hasCrisis = true;
+  window.playGame = function(game) {
+    switch(game) {
+      case 'blanket':
+        alert('🐕 你给小狗盖好了被子！\n\n小狗说：谢谢你，我很暖和。');
         break;
-      }
+      case 'trash':
+        alert('🗑️ 你把坏念头拖进了垃圾桶！\n\n垃圾桶说：又满了，但我还能装。');
+        break;
+      case 'light':
+        alert('💡 你给脑子关了一盏灯！\n\n脑子说：终于可以休息一下了。');
+        break;
+      case 'settle':
+        var achievements = [
+          '✅ 今天还活着',
+          '✅ 今天喝了水',
+          '✅ 今天呼吸了',
+          '✅ 今天没爆炸'
+        ];
+        alert('📊 今日活着结算：\n\n' + achievements.join('\n') + '\n\n总计：+100 生存分');
+        break;
     }
+  };
 
-    if (hasCrisis) {
-      alert('检测到你可能处于危机中。\n\n请立即联系：\n全国心理援助热线：400-161-9995\n北京回龙观医院危机干预：010-82951332\n生命热线：400-821-1215\n\n你并不孤单，帮助是可获得的。');
+  window.generateFengwen = function() {
+    if (typeof generateFengwen !== 'function') return;
+
+    var input = document.getElementById('fengwenInput').value.trim();
+    if (!input) {
+      alert('输入一个情绪关键词，比如"加班"、"失恋"');
       return;
     }
 
-    var postsContainer = document.getElementById('helpPosts');
-    var newPost = document.createElement('div');
-    newPost.className = 'help-post fade-in';
-    newPost.innerHTML = '<div class="help-post-text">' + content + '</div><div class="help-post-footer"><span class="help-post-time">刚刚</span><button class="hug-btn" onclick="sendHug(this)">抱抱</button></div>';
-    postsContainer.insertBefore(newPost, postsContainer.firstChild);
-    document.getElementById('helpPost').value = '';
-
-    // 保存到本地
-    var posts = JSON.parse(localStorage.getItem('helpPosts') || '[]');
-    posts.unshift({ content: content, time: new Date().toISOString() });
-    if (posts.length > 50) posts = posts.slice(0, 50);
-    localStorage.setItem('helpPosts', JSON.stringify(posts));
+    var result = generateFengwen(input);
+    var output = document.getElementById('fengwenOutput');
+    output.textContent = result;
+    output.classList.add('show');
   };
 
-  /**
-   * 发送抱抱
-   */
-  window.sendHug = function(btn) {
-    btn.classList.add('hugged');
-    btn.textContent = '已抱抱';
-    btn.disabled = true;
+  window.translateThought = function() {
+    if (typeof translateBadThought !== 'function') return;
+
+    var input = document.getElementById('thoughtInput').value.trim();
+    if (!input) {
+      alert('输入你脑子里的坏念头');
+      return;
+    }
+
+    var result = translateBadThought(input);
+    var output = document.getElementById('thoughtOutput');
+    output.innerHTML = '<strong>翻译结果：</strong><br>' + result;
+    output.classList.add('show');
   };
 
-  /**
-   * 跳转到测评
-   */
-  window.scrollToQuiz = function() {
-    goToPage(1);
-  };
+  function renderPlayCollections() {
+    if (typeof collections === 'undefined') return;
+
+    var grid = document.getElementById('playCollectionGrid');
+    if (!grid || grid.children.length > 0) return;
+
+    var html = '';
+    for (var i = 0; i < collections.length; i++) {
+      var item = collections[i];
+      html += '<a href="' + item.url + '" target="_blank" rel="noopener" class="collection-item">' +
+        '<div style="font-size: 20px; margin-right: var(--space-2);">' + item.icon + '</div>' +
+        '<div class="collection-item-content">' +
+          '<div class="collection-item-title">' + item.name + '</div>' +
+          '<div class="collection-item-desc">' + item.description + '</div>' +
+        '</div>' +
+      '</a>';
+    }
+    grid.innerHTML = html;
+  }
 
   // ========================================
-  // QUIZ LOGIC
+  // 测评
   // ========================================
+
+  function initQuizPage() {
+    if (typeof quizzes === 'undefined') return;
+
+    var cardsContainer = document.getElementById('quizCards');
+    if (!cardsContainer || cardsContainer.children.length > 0) return;
+
+    var html = '';
+    for (var i = 0; i < quizzes.length; i++) {
+      var q = quizzes[i];
+      html += '<div class="quiz-card" onclick="startQuiz(\'' + q.id + '\')">' +
+        '<div class="quiz-card-header">' +
+          '<div class="quiz-card-icon">' + q.icon + '</div>' +
+          '<div class="quiz-card-title">' + q.name + '</div>' +
+        '</div>' +
+        '<div class="quiz-card-desc">' + q.description + '</div>' +
+        '<div class="quiz-card-meta">' +
+          '<span class="quiz-card-time">' + q.duration + '</span>' +
+          '<span style="font-size: 12px; color: var(--color-slate);">' + q.questions.length + '题</span>' +
+        '</div>' +
+      '</div>';
+    }
+    cardsContainer.innerHTML = html;
+  }
 
   var currentQuiz = null;
   var currentQuestion = 0;
@@ -398,7 +387,10 @@
       'atmer': '💸',
       'zzzz': '💤',
       'malo': '🐒',
-      'shadow-roach': '🪳'
+      'shadow-roach': '🪳',
+      'safe': '🔋',
+      'warning': '🌡️',
+      'crisis': '🚨'
     };
 
     document.getElementById('resultEmoji').textContent = resultEmojis[result.id] || '🎭';
@@ -416,8 +408,8 @@
     ];
     for (var k = 0; k < recommendations.length; k++) {
       var r = recommendations[k];
-      recHtml += '<div class="collection-item" onclick="goToPage(2)" style="cursor: pointer;">' +
-        '<div style="font-size: 24px; margin-right: var(--space-sm);">' + r.icon + '</div>' +
+      recHtml += '<div class="collection-item" onclick="goToPage(1)" style="cursor: pointer;">' +
+        '<div style="font-size: 20px; margin-right: var(--space-2);">' + r.icon + '</div>' +
         '<div class="collection-item-content">' +
           '<div class="collection-item-title">' + r.name + '</div>' +
           '<div class="collection-item-desc">' + r.desc + '</div>' +
@@ -451,95 +443,34 @@
   };
 
   // ========================================
-  // COLLECTION LOGIC
+  // 互助
   // ========================================
 
-  var currentCategory = 'all';
-
-  window.filterCategory = function(category, el) {
-    currentCategory = category;
-    var tabs = document.querySelectorAll('.category-tab');
-    for (var i = 0; i < tabs.length; i++) {
-      tabs[i].classList.remove('active');
-    }
-    el.classList.add('active');
-    renderCollections();
-  };
-
-  function renderCollections() {
-    if (typeof collections === 'undefined') return;
-
-    var grid = document.getElementById('collectionGrid');
-    var filtered = [];
-    if (currentCategory === 'all') {
-      filtered = collections;
-    } else {
-      for (var i = 0; i < collections.length; i++) {
-        if (collections[i].category === currentCategory) {
-          filtered.push(collections[i]);
-        }
-      }
-    }
-
-    var html = '';
-    for (var j = 0; j < filtered.length; j++) {
-      var item = filtered[j];
-      var tagsHtml = '';
-      for (var t = 0; t < item.tags.length; t++) {
-        tagsHtml += '<span class="tag">' + item.tags[t] + '</span>';
-      }
-      html += '<a href="' + item.url + '" target="_blank" rel="noopener" class="collection-item">' +
-        '<svg class="collection-item-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>' +
-        '<div class="collection-item-content">' +
-          '<div class="collection-item-title">' + item.name + '</div>' +
-          '<div class="collection-item-desc">' + item.description + '</div>' +
-          '<div class="collection-item-tags">' + tagsHtml + '</div>' +
-          (item.mood ? '<div class="collection-item-mood">' + item.mood + '</div>' : '') +
-        '</div>' +
-      '</a>';
-    }
-    grid.innerHTML = html;
+  function initMutualPage() {
+    // 初始化弹幕
+    initDanmu();
   }
 
-  // ========================================
-  // TOOLS LOGIC
-  // ========================================
+  function initDanmu() {
+    if (typeof danmuList === 'undefined') return;
 
-  window.generateFengwen = function() {
-    if (typeof tools === 'undefined') return;
+    var track = document.getElementById('danmuTrack');
+    if (!track || track.children.length > 0) return;
 
-    var input = document.getElementById('fengwenInput').value.trim();
-    if (!input) {
-      alert('输入一个情绪关键词，比如"加班"、"失恋"');
-      return;
+    var html = '';
+    var allDanmu = danmuList.concat(danmuList);
+    for (var i = 0; i < allDanmu.length; i++) {
+      html += '<span class="danmu-item">' + allDanmu[i] + '</span>';
     }
+    track.innerHTML = html;
+  }
 
-    var templates = tools.fengwenTemplates;
-    var template = templates[Math.floor(Math.random() * templates.length)];
-    var result = template.template.replace(/\{keyword\}/g, input);
-
-    var output = document.getElementById('fengwenOutput');
-    output.textContent = result;
-    output.classList.add('show');
-  };
-
-  window.generateAltPlan = function() {
-    if (typeof tools === 'undefined') return;
-
-    var plans = tools.alternativePlans;
-    var plan = plans[Math.floor(Math.random() * plans.length)];
-
-    var output = document.getElementById('altPlanOutput');
-    output.innerHTML = '<strong style="color: var(--text-primary);">' + plan.type + '</strong><br><br>' + plan.plan.join('<br>');
-    output.classList.add('show');
-  };
-
-  window.drawToolHelpCard = function() {
+  window.drawHelpCard = function() {
     if (typeof tools === 'undefined') return;
 
     var cards = tools.helpCards;
     var card = cards[Math.floor(Math.random() * cards.length)];
-    var textEl = document.getElementById('toolHelpCardText');
+    var textEl = document.getElementById('helpCardText');
     textEl.style.opacity = '0';
     setTimeout(function() {
       textEl.textContent = card.text;
@@ -547,18 +478,125 @@
     }, 300);
   };
 
-  window.checkEnergy = function() {
-    var levels = [
-      { level: '满格', desc: '今天状态不错，继续保持' },
-      { level: '半格', desc: '有点累了，记得休息' },
-      { level: '低电量', desc: '需要充电，早点睡吧' },
-      { level: '关机边缘', desc: '立刻去休息，什么都别想了' }
-    ];
-    var energy = levels[Math.floor(Math.random() * levels.length)];
+  window.postHelp = function() {
+    var content = document.getElementById('helpPost').value.trim();
+    if (!content) {
+      alert('写点什么吧，哪怕只有一个字');
+      return;
+    }
 
-    var output = document.getElementById('energyOutput');
-    output.innerHTML = '<strong>今日能量：' + energy.level + '</strong><br>' + energy.desc;
-    output.classList.add('show');
+    var crisisWords = ['自杀', '想死', '自残', '跳楼', '割腕', '上吊', '毒药'];
+    var hasCrisis = false;
+    for (var i = 0; i < crisisWords.length; i++) {
+      if (content.indexOf(crisisWords[i]) !== -1) {
+        hasCrisis = true;
+        break;
+      }
+    }
+
+    if (hasCrisis) {
+      alert('检测到你可能处于危机中。\n\n请立即联系：\n全国心理援助热线：400-161-9995\n北京回龙观医院危机干预：010-82951332\n生命热线：400-821-1215\n\n你并不孤单，帮助是可获得的。');
+      return;
+    }
+
+    var postsContainer = document.getElementById('helpPosts');
+    var newPost = document.createElement('div');
+    newPost.className = 'help-post fade-in';
+    newPost.innerHTML = '<div class="help-post-text">' + content + '</div><div class="help-post-footer"><span class="help-post-time">刚刚</span><button class="hug-btn" onclick="sendHug(this)">抱抱</button></div>';
+    postsContainer.insertBefore(newPost, postsContainer.firstChild);
+    document.getElementById('helpPost').value = '';
+
+    // 保存到本地
+    var posts = JSON.parse(localStorage.getItem('helpPosts') || '[]');
+    posts.unshift({ content: content, time: new Date().toISOString() });
+    if (posts.length > 50) posts = posts.slice(0, 50);
+    localStorage.setItem('helpPosts', JSON.stringify(posts));
+  };
+
+  window.sendHug = function(btn) {
+    btn.classList.add('hugged');
+    btn.textContent = '已抱抱';
+    btn.disabled = true;
+  };
+
+  // ========================================
+  // 急救包
+  // ========================================
+
+  function initKitPage() {
+    // 初始化求救卡
+    renderSosCard('mild');
+  }
+
+  var currentSosLevel = 'mild';
+
+  window.switchSos = function(level, el) {
+    currentSosLevel = level;
+    var tabs = document.querySelectorAll('.sos-tab');
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].classList.remove('active');
+    }
+    el.classList.add('active');
+    renderSosCard(level);
+  };
+
+  function renderSosCard(level) {
+    if (typeof getSosCard !== 'function') return;
+
+    var card = getSosCard(level);
+    var contentHtml = '<div class="sos-title">' + card.title + '</div>' +
+      '<div class="sos-actions">';
+    for (var i = 0; i < card.actions.length; i++) {
+      contentHtml += '<div class="sos-action">' + card.actions[i] + '</div>';
+    }
+    contentHtml += '</div>';
+    document.getElementById('sosContent').innerHTML = contentHtml;
+  }
+
+  window.copySos = function() {
+    if (typeof getSosCard !== 'function') return;
+
+    var card = getSosCard(currentSosLevel);
+    var text = card.title + '\n' + card.actions.join('\n');
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() {
+        alert('求救卡已复制到剪贴板');
+      });
+    } else {
+      alert(text);
+    }
+  };
+
+  var bufferInterval = null;
+
+  window.startBuffer = function() {
+    var timerEl = document.getElementById('bufferTimer');
+    var textEl = document.getElementById('bufferText');
+    var btnEl = document.getElementById('bufferBtn');
+
+    if (bufferInterval) {
+      clearInterval(bufferInterval);
+      bufferInterval = null;
+    }
+
+    var count = 30;
+    btnEl.textContent = '缓冲中...';
+    btnEl.disabled = true;
+
+    bufferInterval = setInterval(function() {
+      count--;
+      timerEl.textContent = count;
+
+      if (count <= 0) {
+        clearInterval(bufferInterval);
+        bufferInterval = null;
+        timerEl.textContent = '✓';
+        textEl.textContent = '你撑过了30秒，已经很厉害了';
+        btnEl.textContent = '再缓冲一次';
+        btnEl.disabled = false;
+      }
+    }, 1000);
   };
 
 })();

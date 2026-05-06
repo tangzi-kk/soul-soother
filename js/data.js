@@ -1,6 +1,8 @@
-// Soul Soother - 数据文件（全面升级版）
+// Soul Soother - 数据文件（状态导向版）
 
+// ========================================
 // 今日抽象文案库
+// ========================================
 var dailyQuotes = [
   "我的精神状态：一边想死，一边怕死，一边觉得自己不配死，最后决定先活着，因为死了就看不到这么抽象的自己了",
   "确诊了：我是'想死但不敢'综合征晚期患者，病程：从出生到现在",
@@ -33,7 +35,9 @@ var dailyQuotes = [
   "我不是不想社交，我是社交恐惧症晚期，准确说是'社交恐惧症+社恐+社恐+社恐'叠加态",
 ];
 
+// ========================================
 // 深夜急救包文案
+// ========================================
 var nightRescue = [
   "凌晨3点还没睡？恭喜你，你正在经历'深夜哲学家'模式",
   "凌晨4点的想法不是真实的，是你的大脑在骗你",
@@ -47,7 +51,35 @@ var nightRescue = [
   "再坚持一下，等早餐店开门，先吃个包子再说",
 ];
 
+// ========================================
+// 弹幕列表
+// ========================================
+var danmuList = [
+  "今天还活着，已经很厉害了",
+  "凌晨三点，有人在陪你",
+  "你不是废物，你是加载中",
+  "撑不住就躺会儿，不丢人",
+  "世界很吵，你可以先静音",
+  "阴暗爬行也算移动",
+  "没有发光也没事，萤火虫也不是天天营业",
+  "今日份活着已打卡",
+  "人生先别优化，先保活",
+  "你不用重启人生，先重启浏览器",
+  "今天只要没爆炸，就算系统稳定运行",
+  "先这样也可以",
+  "哭完记得喝水",
+  "你不是废物，你是加载中",
+  "你的问题不是废，是启动成本高",
+  "又活了一天，已经很棒了",
+  "累了就歇，困了就睡",
+  "你的存在本身就是意义",
+  "撑不住就躺会儿，不丢人",
+  "世界很吵，你可以先静音",
+];
+
+// ========================================
 // 互动工具数据
+// ========================================
 var tools = {
   // 发疯文学生成模板
   fengwenTemplates: [
@@ -60,71 +92,108 @@ var tools = {
     { template: "我{e}的样子一定很狼狈，但没关系，因为我不在乎了——因为我{e}到已经不在乎{e}这件事了", weight: 1 },
   ],
 
-  // "想死"替代方案
-  alternativesToDeath: [
-    { text: "先吃完这顿外卖再死", type: "食物" },
-    { text: "等这部剧更新完再死", type: "追剧" },
-    { text: "先把花呗还完再死", type: "现实" },
-    { text: "等猫找到新主人再死", type: "牵挂" },
-    { text: "先看完明天的日出再死——然后发现每天都能看到日出，所以每天都不能死", type: "诗意" },
-    { text: "等快递到了再死", type: "日常" },
-    { text: "先把冰箱里的东西吃完再死，不能浪费", type: "食物" },
-    { text: "等这个月的工资发了再死", type: "现实" },
-    { text: "先把游戏通关再死", type: "游戏" },
-    { text: "等喜欢的人回复消息再死——然后发现永远等不到，所以永远死不了", type: "情感" },
-    { text: "先把作业写完再死——然后发现永远写不完", type: "现实" },
-    { text: "等天气好了再死——然后发现天气永远不会好", type: "自然" },
-    { text: "先把存款花完再死——然后发现存款永远花不完（因为根本没有）", type: "扎心" },
-    { text: "等头发长出来再死——然后发现永远长不出来", type: "自嘲" },
-    { text: "先把体重减到100斤再死——然后发现永远减不到", type: "自嘲" },
-    { text: "等喜欢的UP主更新再死", type: "追更" },
-    { text: "先把购物车清空再死——然后发现永远清不完", type: "消费" },
-    { text: "等春天来了再死——然后发现冬天还没过完", type: "自然" },
-    { text: "先把想骂的人骂完再死——然后发现骂不完", type: "发泄" },
-    { text: "先把今天熬过去再死——然后发现明天更难熬，所以明天也不能死", type: "循环" },
+  // 坏念头翻译机
+  thoughtTranslations: [
+    { keyword: "想死", translation: "先离开当前场景，去倒一杯水" },
+    { keyword: "想消失", translation: "先离开当前场景，去窗边站一会儿" },
+    { keyword: "完蛋", translation: "我现在电量太低，需要充电" },
+    { keyword: "没人懂", translation: "我先发一张求救卡，会有人看到的" },
+    { keyword: "撑不住", translation: "进入30秒缓冲，深呼吸" },
+    { keyword: "自残", translation: "先把手放在冷水下冲30秒" },
+    { keyword: "跳楼", translation: "先离开高处，去一楼或平地" },
+    { keyword: "割腕", translation: "先把刀/利器放到另一个房间" },
+    { keyword: "上吊", translation: "先离开绳子/绳索附近，去开阔空间" },
+    { keyword: "毒药", translation: "先把药物收起来，去喝水" },
+  ],
+
+  // 替代方案（兼容旧版）
+  alternativePlans: [
+    { type: "食物", plan: ["先吃完这顿外卖", "外卖永远吃不完，所以永远死不了"] },
+    { type: "追剧", plan: ["等这部剧更新完", "剧永远更新不完，所以永远死不了"] },
+    { type: "现实", plan: ["先把花呗还完", "花呗永远还不完，所以永远死不了"] },
+    { type: "牵挂", plan: ["等猫找到新主人", "猫永远找不到比你更好的主人"] },
+    { type: "诗意", plan: ["先看完明天的日出", "每天都能看到日出，所以每天都不能死"] },
+    { type: "日常", plan: ["等快递到了", "快递永远到不完，所以永远死不了"] },
+    { type: "游戏", plan: ["先把游戏通关", "游戏永远通不完，所以永远死不了"] },
+    { type: "情感", plan: ["等喜欢的人回复消息", "永远等不到，所以永远死不了"] },
+    { type: "扎心", plan: ["先把存款花完", "存款永远花不完（因为根本没有）"] },
+    { type: "自嘲", plan: ["等头发长出来", "头发永远长不出来，所以永远死不了"] },
   ],
 
   // 互助卡
   helpCards: [
-    { icon: "🤗", text: "给今天的你一个抱抱" },
-    { icon: "💚", text: "你不用马上好起来" },
-    { icon: "", text: "先喝水，别跟人生硬刚" },
-    { icon: "🆘", text: "如果你现在很危险，请立刻联系现实中的人" },
-    { icon: "😴", text: "允许自己今天不营业" },
-    { icon: "⭐", text: "你已经做得很好了" },
-    { icon: "️", text: "累了就歇，困了就睡" },
-    { icon: "✨", text: "你的存在本身就是意义" },
-    { icon: "🛋️", text: "撑不住就躺会儿，不丢人" },
-    { icon: "🔇", text: "世界很吵，你可以先静音" },
-    { icon: "🐛", text: "阴暗爬行也算移动" },
-    { icon: "🌟", text: "没有发光也没事，萤火虫也不是天天营业" },
-    { icon: "✓", text: "今日份活着已打卡" },
-    { icon: "💪", text: "人生先别优化，先保活" },
-    { icon: "🔄", text: "你不用重启人生，先重启浏览器" },
-    { icon: "", text: "今天只要没爆炸，就算系统稳定运行" },
-    { icon: "", text: "先这样也可以" },
-    { icon: "💧", text: "哭完记得喝水" },
-    { icon: "", text: "你不是废物，你是加载中" },
-    { icon: "🎯", text: "你的问题不是废，是启动成本高" },
+    { text: "给今天的你一个抱抱" },
+    { text: "你不用马上好起来" },
+    { text: "先喝水，别跟人生硬刚" },
+    { text: "如果你现在很危险，请立刻联系现实中的人" },
+    { text: "允许自己今天不营业" },
+    { text: "你已经做得很好了" },
+    { text: "累了就歇，困了就睡" },
+    { text: "你的存在本身就是意义" },
+    { text: "撑不住就躺会儿，不丢人" },
+    { text: "世界很吵，你可以先静音" },
+    { text: "阴暗爬行也算移动" },
+    { text: "没有发光也没事，萤火虫也不是天天营业" },
+    { text: "今日份活着已打卡" },
+    { text: "人生先别优化，先保活" },
+    { text: "你不用重启人生，先重启浏览器" },
+    { text: "今天只要没爆炸，就算系统稳定运行" },
+    { text: "先这样也可以" },
+    { text: "哭完记得喝水" },
+    { text: "你不是废物，你是加载中" },
+    { text: "你的问题不是废，是启动成本高" },
   ],
 
-  // 情绪颜色测试数据
-  emotionColors: {
-    questions: [
-      { text: "你最喜欢哪个颜色？", options: [{ text: "蓝色", color: "#4a90d9" }, { text: "绿色", color: "#7ed321" }, { text: "紫色", color: "#9013fe" }, { text: "橙色", color: "#f5a623" }] },
-      { text: "你现在的心情更接近？", options: [{ text: "阴天", color: "#8e8e93" }, { text: "雨天", color: "#5ac8fa" }, { text: "晴天", color: "#ffcc00" }, { text: "雾天", color: "#d1d1d6" }] },
-      { text: "如果用一个词形容今天？", options: [{ text: "平静", color: "#34c759" }, { text: "疲惫", color: "#ff3b30" }, { text: "迷茫", color: "#af52de" }, { text: "还行", color: "#ff9500" }] },
-    ],
-    results: [
-      { name: "深海蓝", desc: "你的情绪像深海，表面平静，底下暗流涌动。你不是不难过，你只是习惯了把难过藏在别人看不到的地方。", color: "#4a90d9" },
-      { name: "迷雾灰", desc: "你的情绪像一场大雾，看不清方向，也不想看清。你不是没有目标，你是觉得目标太远了，不如原地待着。", color: "#8e8e93" },
-      { name: "余烬橙", desc: "你的情绪像快要熄灭的火，偶尔还会闪一下。你不是没有热情，你是把热情藏在了一个很深的地方，只有特别的时候才会拿出来。", color: "#f5a623" },
-      { name: "暗夜紫", desc: "你的情绪像深夜的天空，看起来很暗，但其实藏着无数星星。你不是没有希望，你是把希望藏在了夜里，等一个愿意抬头看天的人。", color: "#9013fe" },
-    ]
-  }
+  // 随机投喂内容
+  feeds: [
+    { type: "quote", content: "今天还活着，已经很厉害了" },
+    { type: "quote", content: "你不是废物，你是加载中" },
+    { type: "quote", content: "撑不住就躺会儿，不丢人" },
+    { type: "quote", content: "阴暗爬行也算移动" },
+    { type: "quote", content: "没有发光也没事，萤火虫也不是天天营业" },
+    { type: "quote", content: "今日份活着已打卡" },
+    { type: "quote", content: "人生先别优化，先保活" },
+    { type: "quote", content: "你不用重启人生，先重启浏览器" },
+    { type: "quote", content: "今天只要没爆炸，就算系统稳定运行" },
+    { type: "quote", content: "先这样也可以" },
+    { type: "quote", content: "哭完记得喝水" },
+    { type: "action", content: "现在，深呼吸三次" },
+    { type: "action", content: "现在，喝一口水" },
+    { type: "action", content: "现在，看看窗外" },
+    { type: "action", content: "现在，摸一下身边的物体" },
+    { type: "action", content: "现在，告诉自己：我还活着" },
+  ],
+
+  // 求救卡内容
+  sosCards: {
+    mild: {
+      title: "我现在有点难受",
+      actions: ["先喝一口水", "走到窗边看看外面", "给一个信任的人发消息", "做三次深呼吸"]
+    },
+    moderate: {
+      title: "我现在很难受，需要帮助",
+      actions: ["离开当前环境，去安全的地方", "拨打心理援助热线 400-161-9995", "给信任的人打电话", "打开音乐，调大音量"]
+    },
+    severe: {
+      title: "我现在很危险，需要立即帮助",
+      actions: ["拨打 120 或 110", "拨打心理危机热线 400-161-9995", "联系最近的亲友", "前往最近的医院急诊科", "不要独处，去人多的地方"]
+    }
+  },
+
+  // 精神天气
+  weather: [
+    { emoji: "☀️", label: "晴天", desc: "今天状态不错，继续保持" },
+    { emoji: "🌤️", label: "多云", desc: "有点低落，但还能撑" },
+    { emoji: "🌧️", label: "小雨", desc: "想哭就哭，哭完记得喝水" },
+    { emoji: "⛈️", label: "暴雨", desc: "需要有人陪，抽张互助卡吧" },
+    { emoji: "🌫️", label: "雾霾", desc: "麻木也是正常的，先休息" },
+    { emoji: "🌋", label: "火山", desc: "很危险，去急救包看看" },
+  ]
 };
 
-// 趣味测评数据 - SBTI 抽象风格
+// ========================================
+// 趣味测评数据
+// ========================================
 var quizzes = [
   {
     id: "mental-state",
@@ -212,7 +281,7 @@ var quizzes = [
         name: "ATM-er（提款机型）",
         tagline: "燃烧自己，照亮别人的钱包；持续性输出资源，间歇性怀疑人生",
         description: "你不是没有自我，你只是把自我当成了提款机。你总在付出，总在照顾别人，但没人问过你累不累。你的善良是一种病——一种很贵的病。",
-        advice: "今天试试把\"好\"字从字典里删掉。别人找你帮忙，先说\"让我想想\"——想三天也行。你不是提款机，你是人。",
+        advice: "今天试试把'好'字从字典里删掉。别人找你帮忙，先说'让我想想'——想三天也行。你不是提款机，你是人。",
         minScore: 8,
         maxScore: 12,
         type: "付出型",
@@ -250,321 +319,213 @@ var quizzes = [
     ],
   },
   {
-    id: "social-mask",
-    name: "你的社交面具是什么？",
-    description: "了解你在不同人面前戴的哪副面具，以及面具下的真实模样",
-    icon: "🎭",
-    duration: "2分钟",
+    id: "safety-check",
+    name: "我现在安全吗？",
+    description: "不是娱乐测试，是一个快速自检工具",
+    icon: "🛡️",
+    duration: "1分钟",
     questions: [
       {
         id: 1,
-        text: "你最近一次崩溃是因为？",
+        text: "过去24小时，你有没有想过伤害自己？",
         options: [
-          { text: "外卖迟到了", value: 1 },
-          { text: "发现自己还活着", value: 2 },
-          { text: "以上都是", value: 3 },
-          { text: "我不崩溃，我直接发疯", value: 4 },
+          { text: "没有", value: 1 },
+          { text: "偶尔闪过", value: 2 },
+          { text: "经常想", value: 3 },
+          { text: "已经有具体计划", value: 4 },
         ],
       },
       {
         id: 2,
-        text: "朋友带了 ta 的朋友一起来玩，你最可能的状态是？",
+        text: "你现在身边有人吗？",
         options: [
-          { text: "对'朋友的朋友'天然有点距离感", value: 4 },
-          { text: "看对方，能玩就玩", value: 2 },
-          { text: "朋友的朋友应该也算朋友！要热情聊天", value: 1 },
+          { text: "有，有人在陪我", value: 1 },
+          { text: "没有，但随时可以联系到", value: 2 },
+          { text: "没有，也不想联系", value: 3 },
+          { text: "没有，也不想有", value: 4 },
         ],
       },
       {
         id: 3,
-        text: "我在不同人面前会表现出不一样的自己",
+        text: "如果用一个词形容现在的状态？",
         options: [
-          { text: "认同（我是变色龙）", value: 4 },
-          { text: "中立（看情况）", value: 2 },
-          { text: "不认同（我就是我）", value: 1 },
-        ],
-      },
-      {
-        id: 4,
-        text: "有时候你对一件事有不同的、负面的看法，但最后没说出来。多数情况下原因是？",
-        options: [
-          { text: "这种情况较少", value: 1 },
-          { text: "可能碍于情面或者关系", value: 2 },
-          { text: "不想让别人知道自己是个阴暗的人", value: 3 },
-        ],
-      },
-      {
-        id: 5,
-        text: "我在感情里经常担心被对方抛弃",
-        options: [
-          { text: "是的（焦虑型依恋）", value: 4 },
-          { text: "偶尔", value: 2 },
-          { text: "不是（我很独立）", value: 1 },
-        ],
-      },
-      {
-        id: 6,
-        text: "大多数人是善良的",
-        options: [
-          { text: "其实邪恶的人心比世界上的痔疮更多", value: 4 },
-          { text: "也许吧", value: 2 },
-          { text: "是的，我愿相信好人更多", value: 1 },
+          { text: "还行", value: 1 },
+          { text: "低落", value: 2 },
+          { text: "痛苦", value: 3 },
+          { text: "绝望", value: 4 },
         ],
       },
     ],
     results: [
       {
-        id: "hedgehog",
-        name: "电子刺猬型",
-        tagline: "我和人相处主打一个电子围栏，靠太近会自动报警",
-        description: "你不是不想被爱，你是怕被爱之后再失去。你的社交策略是先拒绝，再慢慢接受。像一只刺猬，远看可爱，近看全是刺。但那些刺不是用来伤人的，是用来保护自己的。",
-        advice: "刺猬的刺可以收起来。试试在安全的人面前，把刺收一根。不用全部收，一根就行。",
+        id: "safe",
+        name: "你现在像低电量手机",
+        tagline: "需要充电，但不是紧急情况",
+        description: "你的状态需要关注，但不是危机。试试去'开心一秒'页面，或者抽一张互助卡。",
+        advice: "推荐：随机开心一秒 / 互助卡",
+        minScore: 3,
+        maxScore: 5,
+        type: "轻度",
+      },
+      {
+        id: "warning",
+        name: "你现在像系统过热",
+        tagline: "需要散热，建议立即降温",
+        description: "你的状态需要重视。建议立即使用30秒缓冲，或者联系信任的人。",
+        advice: "推荐：30秒缓冲 / 找人说话 / 求救卡（轻度）",
         minScore: 6,
-        maxScore: 10,
-        type: "防御型",
+        maxScore: 8,
+        type: "中度",
       },
       {
-        id: "chameleon",
-        name: "变色龙型",
-        tagline: "我在每个人面前都是不同的我，但到底哪个才是真正的我？",
-        description: "你的社交能力很强，强到你自己都不知道哪个是真实的你。你会根据场合、对象、氛围自动切换人设。这不是虚伪，这是生存技能。但偶尔，你也会觉得累——因为你一直在演，而且没有剧本。",
-        advice: "不用急着找\"真正的自己\"。你可能就是由无数个面具组成的，而这也是真实的你。今天试着做一件事：对一个人说一句你真实想说的话。",
-        minScore: 11,
-        maxScore: 15,
-        type: "适应型",
-      },
-      {
-        id: "ghost",
-        name: "透明人型",
-        tagline: "我就像一张加载失败的网页——一片空白，但偶尔还会闪一下",
-        description: "你习惯在人群中隐身。你不主动说话，不主动做事，不主动存在。你不是没有想法，你是觉得自己的想法不重要。你的存在感被你自己按了静音键。",
-        advice: "透明人也可以有颜色。今天试试发出一点声音——哪怕只是在群里发一个表情包。你的存在本身就是有意义的，不需要任何人来证明。",
-        minScore: 16,
-        maxScore: 19,
-        type: "隐身型",
-      },
-      {
-        id: "blackhole",
-        name: "黑洞型",
-        tagline: "我的情绪是一个黑洞，靠近的人都会被吸进去",
-        description: "你不是没有朋友，你是有朋友但觉得他们迟早会离开。你渴望亲密，但又害怕亲密。你把每个人都推开，然后说\"看吧，果然没人爱我\"。这不是你的错，是你的心太怕受伤了。",
-        advice: "黑洞也可以是温暖的。你不需要变得完美才值得被爱。你可以带着你的黑洞，找到一个愿意被吸引的人。在此之前，先学会和自己待在一起。",
-        minScore: 20,
-        maxScore: 24,
-        type: "矛盾型",
+        id: "crisis",
+        name: "你现在不适合一个人硬扛",
+        tagline: "这不是软弱，这是需要专业支持的时刻",
+        description: "你的状态表明你可能处于危机中。请立即联系危机热线或紧急资源。",
+        advice: "立即：拨打 400-161-9995 / 复制求救卡（高危）/ 联系紧急资源",
+        minScore: 9,
+        maxScore: 12,
+        type: "高危",
       },
     ],
   },
 ];
 
-// 治愈合集数据 - 增加测评维度
+// ========================================
+// 治愈合集数据
+// ========================================
 var collections = [
   {
     id: "pixel-thoughts",
     name: "Pixel Thoughts",
-    description: "60秒冥想，把烦恼放进星星里。对着大海发呆，看着星星消失，你会觉得自己的烦恼也挺小的",
+    description: "60秒冥想，把烦恼放进星星里",
     url: "https://www.pixelthoughts.co/",
-    category: "tools",
+    category: "websites",
     tags: ["放松", "专注", "深夜"],
     icon: "✨",
-    ratings: { fun: 3, ease: 5, relief: 5, safety: 5, lowEnergy: 5 },
-    mood: "适合想哭的时候",
-    review: "像有人安静地陪你坐了60秒，什么都不说，但什么都懂",
   },
   {
     id: "fluid-simulation",
     name: "流体模拟",
-    description: "鼠标划过产生美丽的色彩流动，像把颜料倒进水里。不需要任何技巧，随便划拉都好看",
+    description: "鼠标划过产生美丽的色彩流动",
     url: "https://paveldogreat.github.io/WebGL-Fluid-Simulation/",
     category: "games",
     tags: ["放松", "解压", "无聊"],
-    icon: "",
-    ratings: { fun: 5, ease: 5, relief: 4, safety: 5, lowEnergy: 5 },
-    mood: "适合无聊+烦躁的时候",
-    review: "划了半小时，感觉自己像个不会画画的画家——但画出来的东西比画家还好看",
+    icon: "🌊",
   },
   {
     id: "weave-silk",
     name: "Weave Silk",
-    description: "对称绘画工具，画出美丽的光影图案。不需要艺术天赋，鼠标随便动都能出大片",
+    description: "对称绘画工具，画出美丽的光影图案",
     url: "http://weavesilk.com/",
     category: "games",
     tags: ["放松", "专注", "无聊"],
     icon: "🎨",
-    ratings: { fun: 4, ease: 5, relief: 4, safety: 5, lowEnergy: 4 },
-    mood: "适合需要一点成就感的时候",
-    review: "我以为我是个废物，但用它画出来的东西让我觉得我可能是个天才废物",
   },
   {
     id: "window-swap",
     name: "Window Swap",
-    description: "看世界各地陌生人窗外的风景。上一秒在伦敦下雨，下一秒在东京看夜景",
+    description: "看世界各地陌生人窗外的风景",
     url: "https://window-swap.com/",
     category: "websites",
     tags: ["放松", "开心", "失眠"],
     icon: "🪟",
-    ratings: { fun: 4, ease: 5, relief: 3, safety: 5, lowEnergy: 5 },
-    mood: "适合想逃离现在的地方",
-    review: "看了10个窗口后我觉得世界还挺大的，我的房间虽然小但至少是个窗口",
   },
   {
     id: "rainy-mood",
     name: "Rainy Mood",
-    description: "经典雨声背景音。打开就是一扇窗+一场雨，配合深呼吸效果拔群",
+    description: "经典雨声背景音",
     url: "https://rainymood.com/",
     category: "websites",
     tags: ["放松", "睡眠", "深夜"],
-    icon: "️",
-    ratings: { fun: 2, ease: 5, relief: 4, safety: 5, lowEnergy: 5 },
-    mood: "适合睡不着的时候",
-    review: "听着雨声感觉自己住在一个不会漏雨的房子里，外面下多大雨都无所谓",
+    icon: "🌧️",
   },
   {
     id: "soft-murmur",
     name: "A Soft Murmur",
-    description: "自定义环境音，雨声、雷声、鸟鸣、咖啡店的噪音……想听什么调什么",
+    description: "自定义环境音",
     url: "https://asoftmurmur.com/",
     category: "websites",
     tags: ["放松", "睡眠", "专注"],
     icon: "🎵",
-    ratings: { fun: 3, ease: 4, relief: 4, safety: 5, lowEnergy: 4 },
-    mood: "适合需要白噪音的时候",
-    review: "调了一个雨天+咖啡店的组合，感觉自己是个在咖啡馆躲雨的孤独作家",
-  },
-  {
-    id: "little-alchemy",
-    name: "Little Alchemy 2",
-    description: "组合元素创造新物品。水+火=蒸汽，土+火=岩浆……像在玩一个没有终点的化学游戏",
-    url: "https://littlealchemy2.com/",
-    category: "games",
-    tags: ["放松", "专注", "无聊"],
-    icon: "⚗️",
-    ratings: { fun: 4, ease: 4, relief: 3, safety: 5, lowEnergy: 3 },
-    mood: "适合需要一点\"小成就感\"的时候",
-    review: "本来只想玩5分钟，结果合出了\"生命\"——感觉自己像上帝，但只是一个很废的上帝",
-  },
-  {
-    id: "my-noise",
-    name: "My Noise",
-    description: "高质量白噪音生成器。从雨声到咖啡馆，从森林到海边，声音质量极高",
-    url: "https://mynoise.net/",
-    category: "tools",
-    tags: ["放松", "睡眠", "专注"],
-    icon: "🔊",
-    ratings: { fun: 3, ease: 4, relief: 4, safety: 5, lowEnergy: 4 },
-    mood: "适合需要背景音的人",
-    review: "比YouTube上的白噪音好用一万倍，因为没有广告突然跳出来吓你一跳",
-  },
-  {
-    id: "thisissand",
-    name: "thisissand",
-    description: "在屏幕上倒沙子，堆积成你想要的样子。没有目标，没有规则，就是倒沙子",
-    url: "https://thisissand.com/",
-    category: "games",
-    tags: ["放松", "专注", "无聊"],
-    icon: "⏳",
-    ratings: { fun: 3, ease: 5, relief: 4, safety: 5, lowEnergy: 5 },
-    mood: "适合大脑不想转的时候",
-    review: "倒了20分钟沙子，感觉自己像个很佛的园丁，种的不是花，是沙",
   },
   {
     id: "pointer-pointer",
     name: "Pointer Pointer",
-    description: "把鼠标放在屏幕上任意位置，网站会找出一张手指指向你鼠标位置的照片。纯抽象",
+    description: "把鼠标放在屏幕上，网站会找出一张手指指向你鼠标位置的照片",
     url: "https://pointerpointer.com/",
     category: "games",
     tags: ["开心", "无聊", "解压"],
     icon: "👆",
-    ratings: { fun: 5, ease: 5, relief: 3, safety: 5, lowEnergy: 5 },
-    mood: "适合想笑一下的时候",
-    review: "玩了半小时，笑出了声，然后意识到我在对着一个指我鼠标的网页笑——更抽象了",
   },
   {
-    id: "neave-tv",
-    name: "Neave TV",
-    description: "随机播放有趣的视觉体验。每次点击都是一个新世界，从万花筒到抽象动画",
-    url: "https://neave.tv/",
-    category: "websites",
-    tags: ["开心", "无聊", "放松"],
-    icon: "",
-    ratings: { fun: 5, ease: 5, relief: 3, safety: 5, lowEnergy: 5 },
-    mood: "适合无聊但不想动脑的时候",
-    review: "点了一个又一个，像是在拆一个永远拆不完的盲盒",
-  },
-  {
-    id: "drum-machine",
-    name: "EmuDrums",
-    description: "在线打鼓机。不需要音乐基础，随便敲都有节奏感。声音很好听",
-    url: "https://emudrums.com/",
-    category: "tools",
-    tags: ["开心", "解压", "无聊"],
-    icon: "🥁",
-    ratings: { fun: 4, ease: 4, relief: 4, safety: 5, lowEnergy: 4 },
-    mood: "适合想发泄的时候",
-    review: "乱敲了一通居然还挺好听，感觉自己是个隐藏的音乐天才——虽然是自封的",
+    id: "thisissand",
+    name: "thisissand",
+    description: "在屏幕上倒沙子，堆积成你想要的样子",
+    url: "https://thisissand.com/",
+    category: "games",
+    tags: ["放松", "专注", "无聊"],
+    icon: "⏳",
   },
 ];
 
-// 弹幕数据
-var danmuList = [
-  "今日份活着已打卡 ✓",
-  "你不是废物，你是加载中",
-  "人生先别优化，先保活",
-  "阴暗爬行也算移动",
-  "没有发光也没事，萤火虫也不是天天营业",
-  "世界很吵，你可以先静音",
-  "今天只要没爆炸，就算系统稳定运行",
-  "先喝水，别跟人生硬刚",
-  "你不用马上好起来",
-  "给今天的你一个抱抱",
-  "撑不住就躺会儿，不丢人",
-  "你已经做得很好了",
-  "允许自己今天不营业",
-  "累了就歇，困了就睡",
-  "你的存在本身就是意义",
-  "不用重启人生，先重启浏览器",
-  "DDL前你会变成军用服务器",
-  "你不是没执行力，是启动成本高",
-  "被窝潜水也是潜水",
-  "电子围栏不是病，是自我保护",
-  "哭完记得喝水",
-  "先这样也可以",
-  "今天没死，明天再说",
-  "活着本身就是KPI",
-  "别内卷了，先保活",
-];
-
+// ========================================
 // 获取今日文案
+// ========================================
 function getDailyQuote() {
   var today = new Date();
   var index = today.getDate() % dailyQuotes.length;
   return dailyQuotes[index];
 }
 
+// ========================================
 // 获取随机文案
+// ========================================
 function getRandomQuote() {
   return dailyQuotes[Math.floor(Math.random() * dailyQuotes.length)];
 }
 
-// 生成发疯文学（升级版）- 使用 split/join 替代 replaceAll 提高兼容性
+// ========================================
+// 生成发疯文学
+// ========================================
 function generateFengwen(emotion) {
-  var totalWeight = tools.fengwenTemplates.reduce(function(sum, t) { return sum + t.weight; }, 0);
-  var random = Math.random() * totalWeight;
-  var selected = tools.fengwenTemplates[0];
-  for (var i = 0; i < tools.fengwenTemplates.length; i++) {
-    random -= tools.fengwenTemplates[i].weight;
-    if (random <= 0) { selected = tools.fengwenTemplates[i]; break; }
+  var templates = tools.fengwenTemplates;
+  var totalWeight = 0;
+  for (var i = 0; i < templates.length; i++) {
+    totalWeight += templates[i].weight;
   }
-  // 使用 split/join 替代 replaceAll，兼容性更好
+  var random = Math.random() * totalWeight;
+  var selected = templates[0];
+  for (var j = 0; j < templates.length; j++) {
+    random -= templates[j].weight;
+    if (random <= 0) { selected = templates[j]; break; }
+  }
   return selected.template.split('{e}').join(emotion);
 }
 
-// 获取替代方案
-function getAlternative() {
-  return tools.alternativesToDeath[Math.floor(Math.random() * tools.alternativesToDeath.length)];
+// ========================================
+// 翻译坏念头
+// ========================================
+function translateBadThought(thought) {
+  var translations = tools.thoughtTranslations;
+  for (var i = 0; i < translations.length; i++) {
+    if (thought.indexOf(translations[i].keyword) !== -1) {
+      return translations[i].translation;
+    }
+  }
+  return "先离开当前场景，去倒一杯水";
 }
 
+// ========================================
+// 获取替代方案
+// ========================================
+function getAlternative() {
+  return tools.alternativePlans[Math.floor(Math.random() * tools.alternativePlans.length)];
+}
+
+// ========================================
 // 获取深夜文案
+// ========================================
 function getNightRescue() {
   var hour = new Date().getHours();
   if (hour >= 1 && hour <= 5) {
@@ -573,16 +534,31 @@ function getNightRescue() {
   return "深夜急救包只在凌晨1-5点开启，现在先好好活着吧~";
 }
 
+// ========================================
 // 检查是否是深夜
+// ========================================
 function isNightTime() {
   var hour = new Date().getHours();
   return hour >= 1 && hour <= 5;
 }
 
-// 渲染星级
-function renderStars(count) {
-  var stars = '';
-  for (var i = 0; i < count; i++) stars += '⭐';
-  for (var j = count; j < 5; j++) stars += '☆';
-  return stars;
+// ========================================
+// 获取随机投喂
+// ========================================
+function getRandomFeed() {
+  return tools.feeds[Math.floor(Math.random() * tools.feeds.length)];
+}
+
+// ========================================
+// 获取精神天气
+// ========================================
+function getWeather() {
+  return tools.weather[Math.floor(Math.random() * tools.weather.length)];
+}
+
+// ========================================
+// 获取求救卡
+// ========================================
+function getSosCard(level) {
+  return tools.sosCards[level] || tools.sosCards.mild;
 }

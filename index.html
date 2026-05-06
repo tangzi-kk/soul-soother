@@ -7,148 +7,227 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Soul Soother</title>
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
 </head>
 <body>
   <div id="app">
-    <!-- Page Indicator - 小巧思导航 -->
+    <!-- 顶部圆点导航 -->
     <div class="page-indicator" id="pageIndicator">
       <div class="page-indicator-dot active" data-label="首页" onclick="goToPage(0)"></div>
-      <div class="page-indicator-dot" data-label="测评" onclick="goToPage(1)"></div>
-      <div class="page-indicator-dot" data-label="合集" onclick="goToPage(2)"></div>
-      <div class="page-indicator-dot" data-label="工具" onclick="goToPage(3)"></div>
-      <div class="page-indicator-dot" data-label="关于" onclick="goToPage(4)"></div>
+      <div class="page-indicator-dot" data-label="开心" onclick="goToPage(1)"></div>
+      <div class="page-indicator-dot" data-label="测评" onclick="goToPage(2)"></div>
+      <div class="page-indicator-dot" data-label="互助" onclick="goToPage(3)"></div>
+      <div class="page-indicator-dot" data-label="急救" onclick="goToPage(4)"></div>
     </div>
 
-    <!-- Pages Container -->
+    <!-- 页面容器 -->
     <div class="pages-container" id="pagesContainer">
 
-      <!-- ====== PAGE 1: HOME ====== -->
+      <!-- ====== PAGE 1: 首页 ====== -->
       <div class="page" id="page-home">
         <div class="page-content">
-          <div style="height: 32px;"></div>
+          <!-- 免责声明 -->
           <div class="disclaimer">
             内容仅供娱乐放松，不能替代专业医疗建议
           </div>
 
+          <!-- 深夜模式 -->
           <div id="nightRescue" class="night-rescue hidden">
             <div class="night-rescue-title">深夜急救包</div>
             <div class="night-rescue-text" id="nightRescueText"></div>
           </div>
 
-          <!-- Hero with Gravity Canvas -->
-          <div class="home-hero" id="homeHero">
-            <div class="gravity-canvas-wrap" id="gravityCanvas"></div>
-            <div class="home-hero-content">
-              <span class="home-hero-label">Soul Soother</span>
-              <h1 class="home-hero-title">用抽象接住崩溃</h1>
-              <p class="home-hero-subtitle">用玩笑降低痛感，让濒临崩溃的人在会心一笑中获得短暂的喘息</p>
-              <button class="cta" onclick="scrollToQuiz()">
-                开始测试
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-              </button>
-            </div>
+          <!-- 引力场画布 -->
+          <div class="gravity-canvas-wrap" id="gravityCanvas"></div>
+
+          <!-- 主标题 -->
+          <div class="hero">
+            <span class="hero-label">Soul Soother</span>
+            <h1 class="hero-title">你现在不用变好</h1>
+            <p class="hero-subtitle">先在这里待 30 秒</p>
           </div>
 
-          <!-- Daily Quote -->
-          <div class="daily-quote-card">
-            <div class="daily-quote-text" id="dailyQuote">加载中...</div>
-            <span class="daily-quote-date" id="dailyDate"></span>
-            <button class="cta cta-ghost" onclick="refreshQuote()">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-              换一句
+          <!-- 状态入口 -->
+          <div class="state-selector">
+            <button class="state-btn state-danger" onclick="goToPage(4)">
+              <span class="state-btn-icon">🆘</span>
+              <span class="state-btn-text">我快撑不住了</span>
+            </button>
+            <button class="state-btn state-warm" onclick="goToPage(1)">
+              <span class="state-btn-icon">✨</span>
+              <span class="state-btn-text">随机开心一秒</span>
+            </button>
+            <button class="state-btn state-calm" onclick="goToPage(2)">
+              <span class="state-btn-icon">🧠</span>
+              <span class="state-btn-text">测测今日精神状态</span>
+            </button>
+            <button class="state-btn state-soft" onclick="goToPage(3)">
+              <span class="state-btn-icon">🤗</span>
+              <span class="state-btn-text">抽一张互助卡</span>
             </button>
           </div>
 
-          <!-- Action Grid -->
-          <div class="section-title">选一个让自己舒服点</div>
-          <div class="action-grid">
-            <div class="action-card" onclick="goToPage(1)">
-              <svg class="action-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
-              <div class="action-card-title">精神状态检测</div>
-              <div class="action-card-desc">测测你有多抽象</div>
+          <!-- 今日精神天气 -->
+          <div class="weather-section">
+            <div class="section-header">
+              <span class="section-number">01</span>
+              <h2 class="section-title">今日精神天气</h2>
             </div>
-            <div class="action-card" onclick="goToPage(3)">
-              <svg class="action-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-              <div class="action-card-title">发疯文学生成</div>
-              <div class="action-card-desc">把情绪变成段子</div>
-            </div>
-            <div class="action-card" onclick="goToPage(2)">
-              <svg class="action-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-              <div class="action-card-title">治愈小游戏</div>
-              <div class="action-card-desc">无聊时随便玩</div>
-            </div>
-            <div class="action-card" onclick="goToPage(3)">
-              <svg class="action-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-              <div class="action-card-title">抽互助卡</div>
-              <div class="action-card-desc">今天也有人陪你</div>
+            <div class="weather-card" id="weatherCard" onclick="showWeatherDetail()">
+              <div class="weather-emoji" id="weatherEmoji">🌤️</div>
+              <div class="weather-label" id="weatherLabel">多云转抽象</div>
+              <div class="weather-desc" id="weatherDesc">有点低落，但还能撑</div>
             </div>
           </div>
 
-          <!-- Help Card -->
-          <div class="section-title">来自陌生人的陪伴</div>
-          <div class="help-card">
-            <svg class="help-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-            <div class="help-card-text" id="helpCardText">点击抽一张属于你的互助卡</div>
-            <button class="cta" onclick="drawHelpCard()">抽一张</button>
-            <div class="help-card-sub">每一条都来自真实的人</div>
-          </div>
-
-          <!-- Danmu -->
-          <div class="section-title">你不是一个人</div>
-          <div class="danmu-section">
-            <div class="danmu-label">陌生人弹幕</div>
-            <div class="danmu-track-wrap">
-              <div class="danmu-track" id="danmuTrack"></div>
+          <!-- 今日抽象 -->
+          <div class="daily-quote">
+            <div class="section-header">
+              <span class="section-number">02</span>
+              <h2 class="section-title">今日抽象</h2>
             </div>
-          </div>
-
-          <!-- Help Posts -->
-          <div class="help-posts-section">
-            <div class="help-textarea-wrap">
-              <textarea class="help-textarea" id="helpPost" placeholder="今天发生了什么？随便说一句..."></textarea>
-              <button class="cta" onclick="postHelp()" style="width: 100%;">
-                发布
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            <div class="daily-quote-text" id="dailyQuote">加载中...</div>
+            <div class="daily-quote-footer">
+              <span class="daily-quote-date" id="dailyDate"></span>
+              <button class="cta cta-ghost" onclick="refreshQuote()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                换一句
               </button>
             </div>
-            <div id="helpPosts">
-              <div class="help-post">
-                <div class="help-post-text">今天凌晨三点还没睡，但看到这句话突然觉得没那么孤单了</div>
-                <div class="help-post-footer">
-                  <span class="help-post-time">刚刚</span>
-                  <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
-                </div>
+          </div>
+
+          <!-- 快速入口 -->
+          <div class="quick-actions">
+            <div class="section-header">
+              <span class="section-number">03</span>
+              <h2 class="section-title">快速入口</h2>
+            </div>
+            <div class="action-grid">
+              <div class="action-card" onclick="goToPage(1)">
+                <svg class="action-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div class="action-card-title">开心一秒</div>
+                <div class="action-card-desc">随机投喂快乐</div>
               </div>
-              <div class="help-post">
-                <div class="help-post-text">又自伤了，但比上次少了一道，算进步吗</div>
-                <div class="help-post-footer">
-                  <span class="help-post-time">5分钟前</span>
-                  <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
-                </div>
+              <div class="action-card" onclick="goToPage(2)">
+                <svg class="action-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                <div class="action-card-title">精神状态</div>
+                <div class="action-card-desc">测测你有多抽象</div>
               </div>
-              <div class="help-post">
-                <div class="help-post-text">测出来我是"阴暗爬行型"，笑死，确实</div>
-                <div class="help-post-footer">
-                  <span class="help-post-time">10分钟前</span>
-                  <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
-                </div>
+              <div class="action-card" onclick="goToPage(3)">
+                <svg class="action-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                <div class="action-card-title">互助卡</div>
+                <div class="action-card-desc">今天也有人陪你</div>
+              </div>
+              <div class="action-card" onclick="goToPage(4)">
+                <svg class="action-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                <div class="action-card-title">急救包</div>
+                <div class="action-card-desc">30秒缓冲</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ====== PAGE 2: QUIZ ====== -->
+      <!-- ====== PAGE 2: 开心 ====== -->
+      <div class="page" id="page-play">
+        <div class="page-content">
+          <div class="page-header">
+            <h1 class="page-title">开心一秒</h1>
+            <p class="page-subtitle">低能量也能玩的治愈内容</p>
+          </div>
+
+          <!-- 随机投喂 -->
+          <div class="section">
+            <div class="section-header">
+              <span class="section-number">01</span>
+              <h2 class="section-title">随机投喂</h2>
+            </div>
+            <div class="feed-card" id="feedCard">
+              <div class="feed-content" id="feedContent">点击按钮，随机获得一份快乐</div>
+              <button class="cta cta-primary" onclick="randomFeed()" style="width: 100%;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+                投喂我
+              </button>
+            </div>
+          </div>
+
+          <!-- 低能量小游戏 -->
+          <div class="section">
+            <div class="section-header">
+              <span class="section-number">02</span>
+              <h2 class="section-title">低能量小游戏</h2>
+            </div>
+            <div class="mini-games">
+              <div class="mini-game-card" onclick="playGame('blanket')">
+                <div class="mini-game-emoji">🐕</div>
+                <div class="mini-game-title">给小狗盖被子</div>
+                <div class="mini-game-desc">点击让小狗暖和起来</div>
+              </div>
+              <div class="mini-game-card" onclick="playGame('trash')">
+                <div class="mini-game-emoji">🗑️</div>
+                <div class="mini-game-title">把坏念头拖进垃圾桶</div>
+                <div class="mini-game-desc">长按拖拽，释放压力</div>
+              </div>
+              <div class="mini-game-card" onclick="playGame('light')">
+                <div class="mini-game-emoji">💡</div>
+                <div class="mini-game-title">给脑子关灯</div>
+                <div class="mini-game-desc">点击关闭所有灯光</div>
+              </div>
+              <div class="mini-game-card" onclick="playGame('settle')">
+                <div class="mini-game-emoji">📊</div>
+                <div class="mini-game-title">今日活着结算</div>
+                <div class="mini-game-desc">看看今天完成了什么</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 发疯工具 -->
+          <div class="section">
+            <div class="section-header">
+              <span class="section-number">03</span>
+              <h2 class="section-title">发疯工具</h2>
+            </div>
+            <div class="tool-card">
+              <div class="tool-card-title">发疯文学生成器</div>
+              <div class="tool-card-desc">输入你的情绪，生成一段发疯文学</div>
+              <input type="text" class="generator-input" id="fengwenInput" placeholder="例如：加班、失恋、没钱...">
+              <button class="cta" onclick="generateFengwen()" style="width: 100%;">生成</button>
+              <div class="generator-output" id="fengwenOutput"></div>
+            </div>
+            <div class="tool-card">
+              <div class="tool-card-title">坏念头翻译机</div>
+              <div class="tool-card-desc">把危险念头翻译成能做的小动作</div>
+              <input type="text" class="generator-input" id="thoughtInput" placeholder="我脑子里现在有一句很坏的话...">
+              <button class="cta" onclick="translateThought()" style="width: 100%;">翻译</button>
+              <div class="generator-output" id="thoughtOutput"></div>
+            </div>
+          </div>
+
+          <!-- 治愈网页推荐 -->
+          <div class="section">
+            <div class="section-header">
+              <span class="section-number">04</span>
+              <h2 class="section-title">治愈网页</h2>
+            </div>
+            <div class="collection-grid" id="playCollectionGrid"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== PAGE 3: 测评 ====== -->
       <div class="page" id="page-quiz">
         <div class="page-content">
-          <div class="section-title" style="margin-bottom: var(--space-xl);">精神状态检测</div>
+          <div class="page-header">
+            <h1 class="page-title">测评</h1>
+            <p class="page-subtitle">了解你的精神状态，不是给你贴标签</p>
+          </div>
 
-          <!-- Quiz List -->
+          <!-- 测评列表 -->
           <div id="quizList">
             <div id="quizCards"></div>
           </div>
 
-          <!-- Quiz Page -->
+          <!-- 测评页面 -->
           <div id="quizPage" class="hidden">
             <div class="quiz-progress">
               <div class="quiz-progress-bar">
@@ -164,7 +243,7 @@
             </div>
           </div>
 
-          <!-- Result Page -->
+          <!-- 结果页面 -->
           <div id="resultPage" class="hidden">
             <div class="quiz-result">
               <div class="quiz-result-emoji" id="resultEmoji"></div>
@@ -184,93 +263,135 @@
         </div>
       </div>
 
-      <!-- ====== PAGE 3: COLLECTION ====== -->
-      <div class="page" id="page-collection">
+      <!-- ====== PAGE 4: 互助 ====== -->
+      <div class="page" id="page-mutual">
         <div class="page-content">
-          <div class="section-title" style="margin-bottom: var(--space-xl);">治愈合集</div>
-
-          <div class="category-tabs">
-            <button class="category-tab active" onclick="filterCategory('all', this)">全部</button>
-            <button class="category-tab" onclick="filterCategory('games', this)">小游戏</button>
-            <button class="category-tab" onclick="filterCategory('websites', this)">治愈网页</button>
-            <button class="category-tab" onclick="filterCategory('tools', this)">互动工具</button>
+          <div class="page-header">
+            <h1 class="page-title">互助</h1>
+            <p class="page-subtitle">你不是一个人，这里有人陪你</p>
           </div>
 
-          <div class="collection-grid" id="collectionGrid"></div>
-        </div>
-      </div>
-
-      <!-- ====== PAGE 4: TOOLS ====== -->
-      <div class="page" id="page-tools">
-        <div class="page-content">
-          <div class="section-title" style="margin-bottom: var(--space-xl);">互动工具</div>
-
-          <!-- Tool 1: 发疯文学 -->
-          <div class="tool-card" id="fengwen">
-            <div class="tool-card-title">发疯文学生成器</div>
-            <div class="tool-card-desc">输入你的情绪，生成一段发疯文学</div>
-            <input type="text" class="generator-input" id="fengwenInput" placeholder="例如：加班、失恋、没钱...">
-            <button class="cta" onclick="generateFengwen()" style="width: 100%;">生成</button>
-            <div class="generator-output" id="fengwenOutput"></div>
-          </div>
-
-          <!-- Tool 2: 替代计划 -->
-          <div class="tool-card" id="alt-plan">
-            <div class="tool-card-title">替代计划生成器</div>
-            <div class="tool-card-desc">当你想伤害自己时，试试这些替代方案</div>
-            <button class="cta" onclick="generateAltPlan()" style="width: 100%;">生成计划</button>
-            <div class="generator-output" id="altPlanOutput"></div>
-          </div>
-
-          <!-- Tool 3: 互助卡 -->
-          <div class="tool-card" id="help-card">
-            <div class="tool-card-title">互助卡抽取</div>
-            <div class="tool-card-desc">抽一张来自陌生人的温暖</div>
-            <div class="help-card" style="margin-top: var(--space-md);">
+          <!-- 互助卡 -->
+          <div class="section">
+            <div class="section-header">
+              <span class="section-number">01</span>
+              <h2 class="section-title">抽一张互助卡</h2>
+            </div>
+            <div class="help-card-section">
               <svg class="help-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-              <div class="help-card-text" id="toolHelpCardText">点击抽取</div>
-              <button class="cta" onclick="drawToolHelpCard()">抽一张</button>
+              <div class="help-card-text" id="helpCardText">点击抽一张属于你的互助卡</div>
+              <button class="cta" onclick="drawHelpCard()">抽一张</button>
+              <div class="help-card-sub">每一条都来自真实的人</div>
             </div>
           </div>
 
-          <!-- Tool 4: 能量条 -->
-          <div class="tool-card" id="energy">
-            <div class="tool-card-title">今日能量条</div>
-            <div class="tool-card-desc">记录你今天的精神状态</div>
-            <button class="cta" onclick="checkEnergy()" style="width: 100%;">检测能量</button>
-            <div class="generator-output" id="energyOutput"></div>
+          <!-- 深夜弹幕墙 -->
+          <div class="section">
+            <div class="section-header">
+              <span class="section-number">02</span>
+              <h2 class="section-title">深夜弹幕墙</h2>
+            </div>
+            <div class="danmu-section">
+              <div class="danmu-label">陌生人弹幕</div>
+              <div class="danmu-track-wrap">
+                <div class="danmu-track" id="danmuTrack"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 留一句给陌生人 -->
+          <div class="section">
+            <div class="section-header">
+              <span class="section-number">03</span>
+              <h2 class="section-title">留一句给陌生人</h2>
+            </div>
+            <div class="help-posts-section">
+              <div class="help-textarea-wrap">
+                <textarea class="help-textarea" id="helpPost" placeholder="今天发生了什么？随便说一句..."></textarea>
+                <button class="cta" onclick="postHelp()" style="width: 100%;">
+                  发布
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                </button>
+              </div>
+              <div id="helpPosts">
+                <div class="help-post">
+                  <div class="help-post-text">今天凌晨三点还没睡，但看到这句话突然觉得没那么孤单了</div>
+                  <div class="help-post-footer">
+                    <span class="help-post-time">刚刚</span>
+                    <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
+                  </div>
+                </div>
+                <div class="help-post">
+                  <div class="help-post-text">又自伤了，但比上次少了一道，算进步吗</div>
+                  <div class="help-post-footer">
+                    <span class="help-post-time">5分钟前</span>
+                    <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
+                  </div>
+                </div>
+                <div class="help-post">
+                  <div class="help-post-text">测出来我是"阴暗爬行型"，笑死，确实</div>
+                  <div class="help-post-footer">
+                    <span class="help-post-time">10分钟前</span>
+                    <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- ====== PAGE 5: ABOUT ====== -->
-      <div class="page" id="page-about">
+      <!-- ====== PAGE 5: 急救包 ====== -->
+      <div class="page" id="page-kit">
         <div class="page-content">
-          <div class="section-title" style="margin-bottom: var(--space-xl);">关于</div>
+          <div class="page-header">
+            <h1 class="page-title">急救包</h1>
+            <p class="page-subtitle">危机时刻的缓冲系统</p>
+          </div>
 
-          <div class="about-section">
-            <div class="about-section-title">关于 Soul Soother</div>
-            <div class="about-section-text">
-              Soul Soother 是一个面向情绪困扰人群的轻量级趣味治愈网站。我们不提供医疗建议，只提供陪伴、理解和一点点幽默。
+          <!-- 30秒缓冲 -->
+          <div class="section">
+            <div class="section-header">
+              <span class="section-number">01</span>
+              <h2 class="section-title">30秒缓冲</h2>
             </div>
-            <div class="about-section-text">
-              所有内容经过安全筛选，不包含详细自伤方法、不美化自杀行为。
+            <div class="buffer-card">
+              <div class="buffer-timer" id="bufferTimer">30</div>
+              <div class="buffer-text" id="bufferText">深呼吸，跟着数字倒数</div>
+              <button class="cta cta-primary" id="bufferBtn" onclick="startBuffer()" style="width: 100%;">开始缓冲</button>
             </div>
           </div>
 
-          <div class="about-section">
-            <div class="about-section-title">安全声明</div>
-            <div class="about-section-text">
-              <strong>免责声明：</strong>Soul Soother 不是医疗产品，不提供医学诊断、治疗建议或心理咨询服务。本网站的所有内容仅供娱乐、放松和陪伴目的。
+          <!-- 求救卡 -->
+          <div class="section">
+            <div class="section-header">
+              <span class="section-number">02</span>
+              <h2 class="section-title">求救卡</h2>
             </div>
-            <div class="about-section-text">
-              <strong>隐私保护：</strong>我们不收集任何用户数据，不使用 Cookie，不使用第三方追踪工具。所有操作均在本地完成。
+            <div class="sos-tabs">
+              <button class="sos-tab active" onclick="switchSos('mild', this)">轻度</button>
+              <button class="sos-tab" onclick="switchSos('moderate', this)">中度</button>
+              <button class="sos-tab" onclick="switchSos('severe', this)">高危</button>
+            </div>
+            <div class="sos-card" id="sosCard">
+              <div class="sos-content" id="sosContent">
+                <div class="sos-title">我现在有点难受</div>
+                <div class="sos-actions">
+                  <div class="sos-action">先喝一口水</div>
+                  <div class="sos-action">走到窗边看看外面</div>
+                  <div class="sos-action">给一个信任的人发消息</div>
+                </div>
+              </div>
+              <button class="cta" onclick="copySos()" style="width: 100%;">复制求救卡</button>
             </div>
           </div>
 
-          <div class="about-section" id="help">
-            <div class="about-section-title">求助资源</div>
-            <div class="about-section-text">如果你感到情绪低落或有心理困扰，以下资源可能对你有帮助：</div>
+          <!-- 紧急资源 -->
+          <div class="section">
+            <div class="section-header">
+              <span class="section-number">03</span>
+              <h2 class="section-title">紧急资源</h2>
+            </div>
             <div class="help-resources">
               <div class="help-resource-item">
                 <span class="help-resource-name">全国心理援助热线</span>
@@ -289,28 +410,27 @@
                 <a href="tel:400-161-9995" class="help-resource-phone">400-161-9995</a>
               </div>
             </div>
-            <div class="about-section-text" style="margin-top: var(--space-md); padding: var(--space-md); background: var(--bg-card); border-radius: 12px;">
+            <div class="emergency-notice">
               <strong>紧急情况：</strong>如果你或你认识的人正处于危险中，请立即拨打 120（急救）或 110（报警），或前往最近的医院急诊科。
             </div>
           </div>
 
-          <div class="about-section">
-            <div class="about-section-title">联系我们</div>
-            <div class="about-section-text">
-              如有任何关于安全、隐私或伦理的问题，欢迎通过以下方式联系我们：
+          <!-- 安全声明 -->
+          <div class="footer">
+            <div class="footer-text">Soul Soother 不是医疗产品，不提供医学诊断、治疗建议或心理咨询服务。</div>
+            <div class="footer-text">所有内容仅供娱乐、放松和陪伴目的。</div>
+            <div class="footer-links">
+              <a href="https://github.com/tangzi-kk/soul-soother" target="_blank">GitHub</a>
             </div>
-            <a href="https://github.com/tangzi-kk/soul-soother" target="_blank" class="cta cta-ghost" style="margin-top: var(--space-sm);">GitHub 仓库</a>
           </div>
         </div>
       </div>
 
     </div>
-
-    <!-- 导航已隐藏，使用顶部圆点指示器 -->
   </div>
 
   <script src="js/data.js"></script>
-  <script src="js/gravity.js"></script>
+  <script src="js/p5-gravity.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
