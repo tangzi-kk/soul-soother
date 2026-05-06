@@ -47,6 +47,83 @@ const nightRescue = [
   "再坚持一下，等早餐店开门，先吃个包子再说",
 ];
 
+// 互动工具数据
+const tools = {
+  // 发疯文学生成模板
+  fengwenTemplates: [
+    { template: "啊啊啊啊啊我{e}啊{e}啊{e}啊但我的快递还没到我的剧还没追完我的猫还没喂所以我决定先活着等这些都做完了再死结果发现永远做不完所以我永远死不了真抽象哈哈哈哈", weight: 3 },
+    { template: "我{e}了但我的外卖还没到所以先活着结果发现外卖永远吃不完所以我永远死不了纯纯大冤种就是我", weight: 2 },
+    { template: "{e}就{e}吧谁还没个发疯的时候啊啊啊啊啊我精神状态很好啊哈哈哈哈哈哈世界毁灭吧但先让我躺会儿", weight: 2 },
+    { template: "我想{e}但我的花呗还没还完所以我决定先活着等还完花呗再死结果发现永远还不完栓Q", weight: 2 },
+    { template: "别人：{e}了但还能坚持；我：{e}了直接发疯；结论：我比别人效率高", weight: 1 },
+    { template: "今天的我：{e}了，但没关系，因为明天的我可能更{e}。总结：我每天都在{e}的路上越走越远", weight: 2 },
+    { template: "我{e}的样子一定很狼狈，但没关系，因为我不在乎了——因为我{e}到已经不在乎{e}这件事了", weight: 1 },
+  ],
+
+  // "想死"替代方案
+  alternativesToDeath: [
+    { text: "先吃完这顿外卖再死", type: "食物" },
+    { text: "等这部剧更新完再死", type: "追剧" },
+    { text: "先把花呗还完再死", type: "现实" },
+    { text: "等猫找到新主人再死", type: "牵挂" },
+    { text: "先看完明天的日出再死——然后发现每天都能看到日出，所以每天都不能死", type: "诗意" },
+    { text: "等快递到了再死", type: "日常" },
+    { text: "先把冰箱里的东西吃完再死，不能浪费", type: "食物" },
+    { text: "等这个月的工资发了再死", type: "现实" },
+    { text: "先把游戏通关再死", type: "游戏" },
+    { text: "等喜欢的人回复消息再死——然后发现永远等不到，所以永远死不了", type: "情感" },
+    { text: "先把作业写完再死——然后发现永远写不完", type: "现实" },
+    { text: "等天气好了再死——然后发现天气永远不会好", type: "自然" },
+    { text: "先把存款花完再死——然后发现存款永远花不完（因为根本没有）", type: "扎心" },
+    { text: "等头发长出来再死——然后发现永远长不出来", type: "自嘲" },
+    { text: "先把体重减到100斤再死——然后发现永远减不到", type: "自嘲" },
+    { text: "等喜欢的UP主更新再死", type: "追更" },
+    { text: "先把购物车清空再死——然后发现永远清不完", type: "消费" },
+    { text: "等春天来了再死——然后发现冬天还没过完", type: "自然" },
+    { text: "先把想骂的人骂完再死——然后发现骂不完", type: "发泄" },
+    { text: "先把今天熬过去再死——然后发现明天更难熬，所以明天也不能死", type: "循环" },
+  ],
+
+  // 互助卡
+  helpCards: [
+    { icon: "🤗", text: "给今天的你一个抱抱" },
+    { icon: "💚", text: "你不用马上好起来" },
+    { icon: "", text: "先喝水，别跟人生硬刚" },
+    { icon: "🆘", text: "如果你现在很危险，请立刻联系现实中的人" },
+    { icon: "😴", text: "允许自己今天不营业" },
+    { icon: "⭐", text: "你已经做得很好了" },
+    { icon: "️", text: "累了就歇，困了就睡" },
+    { icon: "✨", text: "你的存在本身就是意义" },
+    { icon: "🛋️", text: "撑不住就躺会儿，不丢人" },
+    { icon: "🔇", text: "世界很吵，你可以先静音" },
+    { icon: "🐛", text: "阴暗爬行也算移动" },
+    { icon: "🌟", text: "没有发光也没事，萤火虫也不是天天营业" },
+    { icon: "✓", text: "今日份活着已打卡" },
+    { icon: "💪", text: "人生先别优化，先保活" },
+    { icon: "🔄", text: "你不用重启人生，先重启浏览器" },
+    { icon: "", text: "今天只要没爆炸，就算系统稳定运行" },
+    { icon: "", text: "先这样也可以" },
+    { icon: "💧", text: "哭完记得喝水" },
+    { icon: "", text: "你不是废物，你是加载中" },
+    { icon: "🎯", text: "你的问题不是废，是启动成本高" },
+  ],
+
+  // 情绪颜色测试数据
+  emotionColors: {
+    questions: [
+      { text: "你最喜欢哪个颜色？", options: [{ text: "蓝色", color: "#4a90d9" }, { text: "绿色", color: "#7ed321" }, { text: "紫色", color: "#9013fe" }, { text: "橙色", color: "#f5a623" }] },
+      { text: "你现在的心情更接近？", options: [{ text: "阴天", color: "#8e8e93" }, { text: "雨天", color: "#5ac8fa" }, { text: "晴天", color: "#ffcc00" }, { text: "雾天", color: "#d1d1d6" }] },
+      { text: "如果用一个词形容今天？", options: [{ text: "平静", color: "#34c759" }, { text: "疲惫", color: "#ff3b30" }, { text: "迷茫", color: "#af52de" }, { text: "还行", color: "#ff9500" }] },
+    ],
+    results: [
+      { name: "深海蓝", desc: "你的情绪像深海，表面平静，底下暗流涌动。你不是不难过，你只是习惯了把难过藏在别人看不到的地方。", color: "#4a90d9" },
+      { name: "迷雾灰", desc: "你的情绪像一场大雾，看不清方向，也不想看清。你不是没有目标，你是觉得目标太远了，不如原地待着。", color: "#8e8e93" },
+      { name: "余烬橙", desc: "你的情绪像快要熄灭的火，偶尔还会闪一下。你不是没有热情，你是把热情藏在了一个很深的地方，只有特别的时候才会拿出来。", color: "#f5a623" },
+      { name: "暗夜紫", desc: "你的情绪像深夜的天空，看起来很暗，但其实藏着无数星星。你不是没有希望，你是把希望藏在了夜里，等一个愿意抬头看天的人。", color: "#9013fe" },
+    ]
+  }
+};
+
 // 趣味测评数据 - SBTI 抽象风格
 const quizzes = [
   {
@@ -135,7 +212,7 @@ const quizzes = [
         name: "ATM-er（提款机型）",
         tagline: "燃烧自己，照亮别人的钱包；持续性输出资源，间歇性怀疑人生",
         description: "你不是没有自我，你只是把自我当成了提款机。你总在付出，总在照顾别人，但没人问过你累不累。你的善良是一种病——一种很贵的病。",
-        advice: "今天试试把"好"字从字典里删掉。别人找你帮忙，先说"让我想想"——想三天也行。你不是提款机，你是人。",
+        advice: "今天试试把\"好\"字从字典里删掉。别人找你帮忙，先说\"让我想想\"——想三天也行。你不是提款机，你是人。",
         minScore: 8,
         maxScore: 12,
         type: "付出型",
@@ -251,7 +328,7 @@ const quizzes = [
         name: "变色龙型",
         tagline: "我在每个人面前都是不同的我，但到底哪个才是真正的我？",
         description: "你的社交能力很强，强到你自己都不知道哪个是真实的你。你会根据场合、对象、氛围自动切换人设。这不是虚伪，这是生存技能。但偶尔，你也会觉得累——因为你一直在演，而且没有剧本。",
-        advice: "不用急着找"真正的自己"。你可能就是由无数个面具组成的，而这也是真实的你。今天试着做一件事：对一个人说一句你真实想说的话。",
+        advice: "不用急着找\"真正的自己\"。你可能就是由无数个面具组成的，而这也是真实的你。今天试着做一件事：对一个人说一句你真实想说的话。",
         minScore: 11,
         maxScore: 15,
         type: "适应型",
@@ -270,7 +347,7 @@ const quizzes = [
         id: "blackhole",
         name: "黑洞型",
         tagline: "我的情绪是一个黑洞，靠近的人都会被吸进去",
-        description: "你不是没有朋友，你是有朋友但觉得他们迟早会离开。你渴望亲密，但又害怕亲密。你把每个人都推开，然后说"看吧，果然没人爱我"。这不是你的错，是你的心太怕受伤了。",
+        description: "你不是没有朋友，你是有朋友但觉得他们迟早会离开。你渴望亲密，但又害怕亲密。你把每个人都推开，然后说\"看吧，果然没人爱我\"。这不是你的错，是你的心太怕受伤了。",
         advice: "黑洞也可以是温暖的。你不需要变得完美才值得被爱。你可以带着你的黑洞，找到一个愿意被吸引的人。在此之前，先学会和自己待在一起。",
         minScore: 20,
         maxScore: 24,
@@ -279,83 +356,6 @@ const quizzes = [
     ],
   },
 ];
-
-// 互动工具数据
-const tools = {
-  // 发疯文学生成模板
-  fengwenTemplates: [
-    { template: "啊啊啊啊啊我{e}啊{e}啊{e}啊但我的快递还没到我的剧还没追完我的猫还没喂所以我决定先活着等这些都做完了再死结果发现永远做不完所以我永远死不了真抽象哈哈哈哈", weight: 3 },
-    { template: "我{e}了但我的外卖还没到所以先活着结果发现外卖永远吃不完所以我永远死不了纯纯大冤种就是我", weight: 2 },
-    { template: "{e}就{e}吧谁还没个发疯的时候啊啊啊啊啊我精神状态很好啊哈哈哈哈哈哈世界毁灭吧但先让我躺会儿", weight: 2 },
-    { template: "我想{e}但我的花呗还没还完所以我决定先活着等还完花呗再死结果发现永远还不完栓Q", weight: 2 },
-    { template: "别人：{e}了但还能坚持；我：{e}了直接发疯；结论：我比别人效率高", weight: 1 },
-    { template: "今天的我：{e}了，但没关系，因为明天的我可能更{e}。总结：我每天都在{e}的路上越走越远", weight: 2 },
-    { template: "我{e}的样子一定很狼狈，但没关系，因为我不在乎了——因为我{e}到已经不在乎{e}这件事了", weight: 1 },
-  ],
-
-  // "想死"替代方案
-  alternativesToDeath: [
-    { text: "先吃完这顿外卖再死", type: "食物" },
-    { text: "等这部剧更新完再死", type: "追剧" },
-    { text: "先把花呗还完再死", type: "现实" },
-    { text: "等猫找到新主人再死", type: "牵挂" },
-    { text: "先看完明天的日出再死——然后发现每天都能看到日出，所以每天都不能死", type: "诗意" },
-    { text: "等快递到了再死", type: "日常" },
-    { text: "先把冰箱里的东西吃完再死，不能浪费", type: "食物" },
-    { text: "等这个月的工资发了再死", type: "现实" },
-    { text: "先把游戏通关再死", type: "游戏" },
-    { text: "等喜欢的人回复消息再死——然后发现永远等不到，所以永远死不了", type: "情感" },
-    { text: "先把作业写完再死——然后发现永远写不完", type: "现实" },
-    { text: "等天气好了再死——然后发现天气永远不会好", type: "自然" },
-    { text: "先把存款花完再死——然后发现存款永远花不完（因为根本没有）", type: "扎心" },
-    { text: "等头发长出来再死——然后发现永远长不出来", type: "自嘲" },
-    { text: "先把体重减到100斤再死——然后发现永远减不到", type: "自嘲" },
-    { text: "等喜欢的UP主更新再死", type: "追更" },
-    { text: "先把购物车清空再死——然后发现永远清不完", type: "消费" },
-    { text: "等春天来了再死——然后发现冬天还没过完", type: "自然" },
-    { text: "先把想骂的人骂完再死——然后发现骂不完", type: "发泄" },
-    { text: "先把今天熬过去再死——然后发现明天更难熬，所以明天也不能死", type: "循环" },
-  ],
-
-  // 互助卡
-  helpCards: [
-    { icon: "🤗", text: "给今天的你一个抱抱" },
-    { icon: "💚", text: "你不用马上好起来" },
-    { icon: "🥤", text: "先喝水，别跟人生硬刚" },
-    { icon: "🆘", text: "如果你现在很危险，请立刻联系现实中的人" },
-    { icon: "😴", text: "允许自己今天不营业" },
-    { icon: "⭐", text: "你已经做得很好了" },
-    { icon: "🛏️", text: "累了就歇，困了就睡" },
-    { icon: "✨", text: "你的存在本身就是意义" },
-    { icon: "🛋️", text: "撑不住就躺会儿，不丢人" },
-    { icon: "🔇", text: "世界很吵，你可以先静音" },
-    { icon: "🐛", text: "阴暗爬行也算移动" },
-    { icon: "🌟", text: "没有发光也没事，萤火虫也不是天天营业" },
-    { icon: "✓", text: "今日份活着已打卡" },
-    { icon: "💪", text: "人生先别优化，先保活" },
-    { icon: "🔄", text: "你不用重启人生，先重启浏览器" },
-    { icon: "🐾", text: "今天只要没爆炸，就算系统稳定运行" },
-    { icon: "🌱", text: "先这样也可以" },
-    { icon: "💧", text: "哭完记得喝水" },
-    { icon: "🌈", text: "你不是废物，你是加载中" },
-    { icon: "🎯", text: "你的问题不是废，是启动成本高" },
-  ],
-
-  // 情绪颜色测试数据
-  emotionColors: {
-    questions: [
-      { text: "你最喜欢哪个颜色？", options: [{ text: "蓝色", color: "#4a90d9" }, { text: "绿色", color: "#7ed321" }, { text: "紫色", color: "#9013fe" }, { text: "橙色", color: "#f5a623" }] },
-      { text: "你现在的心情更接近？", options: [{ text: "阴天", color: "#8e8e93" }, { text: "雨天", color: "#5ac8fa" }, { text: "晴天", color: "#ffcc00" }, { text: "雾天", color: "#d1d1d6" }] },
-      { text: "如果用一个词形容今天？", options: [{ text: "平静", color: "#34c759" }, { text: "疲惫", color: "#ff3b30" }, { text: "迷茫", color: "#af52de" }, { text: "还行", color: "#ff9500" }] },
-    ],
-    results: [
-      { name: "深海蓝", desc: "你的情绪像深海，表面平静，底下暗流涌动。你不是不难过，你只是习惯了把难过藏在别人看不到的地方。", color: "#4a90d9" },
-      { name: "迷雾灰", desc: "你的情绪像一场大雾，看不清方向，也不想看清。你不是没有目标，你是觉得目标太远了，不如原地待着。", color: "#8e8e93" },
-      { name: "余烬橙", desc: "你的情绪像快要熄灭的火，偶尔还会闪一下。你不是没有热情，你是把热情藏在了一个很深的地方，只有特别的时候才会拿出来。", color: "#f5a623" },
-      { name: "暗夜紫", desc: "你的情绪像深夜的天空，看起来很暗，但其实藏着无数星星。你不是没有希望，你是把希望藏在了夜里，等一个愿意抬头看天的人。", color: "#9013fe" },
-    ]
-  }
-};
 
 // 治愈合集数据 - 增加测评维度
 const collections = [
@@ -378,7 +378,7 @@ const collections = [
     url: "https://paveldogreat.github.io/WebGL-Fluid-Simulation/",
     category: "games",
     tags: ["放松", "解压", "无聊"],
-    icon: "🌊",
+    icon: "",
     ratings: { fun: 5, ease: 5, relief: 4, safety: 5, lowEnergy: 5 },
     mood: "适合无聊+烦躁的时候",
     review: "划了半小时，感觉自己像个不会画画的画家——但画出来的东西比画家还好看",
@@ -414,7 +414,7 @@ const collections = [
     url: "https://rainymood.com/",
     category: "websites",
     tags: ["放松", "睡眠", "深夜"],
-    icon: "🌧️",
+    icon: "️",
     ratings: { fun: 2, ease: 5, relief: 4, safety: 5, lowEnergy: 5 },
     mood: "适合睡不着的时候",
     review: "听着雨声感觉自己住在一个不会漏雨的房子里，外面下多大雨都无所谓",
@@ -440,8 +440,8 @@ const collections = [
     tags: ["放松", "专注", "无聊"],
     icon: "⚗️",
     ratings: { fun: 4, ease: 4, relief: 3, safety: 5, lowEnergy: 3 },
-    mood: "适合需要一点"小成就感"的时候",
-    review: "本来只想玩5分钟，结果合出了"生命"——感觉自己像上帝，但只是一个很废的上帝",
+    mood: "适合需要一点\"小成就感\"的时候",
+    review: "本来只想玩5分钟，结果合出了\"生命\"——感觉自己像上帝，但只是一个很废的上帝",
   },
   {
     id: "my-noise",
@@ -486,7 +486,7 @@ const collections = [
     url: "https://neave.tv/",
     category: "websites",
     tags: ["开心", "无聊", "放松"],
-    icon: "📺",
+    icon: "",
     ratings: { fun: 5, ease: 5, relief: 3, safety: 5, lowEnergy: 5 },
     mood: "适合无聊但不想动脑的时候",
     review: "点了一个又一个，像是在拆一个永远拆不完的盲盒",
@@ -536,8 +536,8 @@ const danmuList = [
 
 // 获取今日文案
 function getDailyQuote() {
-  const today = new Date();
-  const index = today.getDate() % dailyQuotes.length;
+  var today = new Date();
+  var index = today.getDate() % dailyQuotes.length;
   return dailyQuotes[index];
 }
 
@@ -546,16 +546,17 @@ function getRandomQuote() {
   return dailyQuotes[Math.floor(Math.random() * dailyQuotes.length)];
 }
 
-// 生成发疯文学（升级版）
+// 生成发疯文学（升级版）- 使用 split/join 替代 replaceAll 提高兼容性
 function generateFengwen(emotion) {
-  const totalWeight = tools.fengwenTemplates.reduce((sum, t) => sum + t.weight, 0);
-  let random = Math.random() * totalWeight;
-  let selected = tools.fengwenTemplates[0];
-  for (const t of tools.fengwenTemplates) {
-    random -= t.weight;
-    if (random <= 0) { selected = t; break; }
+  const totalWeight = tools.fengwenTemplates.reduce(function(sum, t) { return sum + t.weight; }, 0);
+  var random = Math.random() * totalWeight;
+  var selected = tools.fengwenTemplates[0];
+  for (var i = 0; i < tools.fengwenTemplates.length; i++) {
+    random -= tools.fengwenTemplates[i].weight;
+    if (random <= 0) { selected = tools.fengwenTemplates[i]; break; }
   }
-  return selected.template.replaceAll('{e}', emotion);
+  // 使用 split/join 替代 replaceAll，兼容性更好
+  return selected.template.split('{e}').join(emotion);
 }
 
 // 获取替代方案
@@ -565,7 +566,7 @@ function getAlternative() {
 
 // 获取深夜文案
 function getNightRescue() {
-  const hour = new Date().getHours();
+  var hour = new Date().getHours();
   if (hour >= 1 && hour <= 5) {
     return nightRescue[Math.floor(Math.random() * nightRescue.length)];
   }
@@ -574,29 +575,14 @@ function getNightRescue() {
 
 // 检查是否是深夜
 function isNightTime() {
-  const hour = new Date().getHours();
+  var hour = new Date().getHours();
   return hour >= 1 && hour <= 5;
 }
 
 // 渲染星级
 function renderStars(count) {
-  return '⭐'.repeat(count) + '☆'.repeat(5 - count);
-}
-
-// 导出数据
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = {
-    dailyQuotes,
-    quizzes,
-    collections,
-    tools,
-    danmuList,
-    getDailyQuote,
-    getRandomQuote,
-    generateFengwen,
-    getAlternative,
-    getNightRescue,
-    isNightTime,
-    renderStars,
-  };
+  var stars = '';
+  for (var i = 0; i < count; i++) stars += '⭐';
+  for (var j = count; j < 5; j++) stars += '☆';
+  return stars;
 }
