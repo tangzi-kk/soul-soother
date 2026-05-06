@@ -434,15 +434,49 @@
     document.getElementById('resultAdvice').textContent = result.advice;
 
     var recHtml = '';
-    var recommendations = [
-      { name: 'Pixel Thoughts', desc: '60秒冥想，把烦恼放进星星里', icon: '✨' },
-      { name: '流体模拟', desc: '鼠标划过产生美丽的色彩流动', icon: '🌊' },
-      { name: '发疯文学生成器', desc: '输入情绪，生成发疯文学', icon: '📝' }
-    ];
+    var recommendationMap = {
+      'atmer': [
+        { name: '抽一张互助卡', desc: '今天也有人陪你', page: 3 },
+        { name: '30秒缓冲', desc: '给自己30秒独处时间', page: 4 },
+        { name: '发疯文学生成器', desc: '输入情绪，生成发疯文学', page: 1 }
+      ],
+      'zzzz': [
+        { name: '流体模拟', desc: '鼠标划过产生美丽的色彩流动', page: 1 },
+        { name: 'Weave Silk', desc: '对称绘画，画出美丽的光影图案', page: 1 },
+        { name: '给脑子关灯', desc: '点击关闭所有灯光', page: 1 }
+      ],
+      'malo': [
+        { name: 'Pixel Thoughts', desc: '60秒冥想，把烦恼放进星星里', page: 1 },
+        { name: 'Rainy Mood', desc: '经典雨声背景音', page: 1 },
+        { name: '今日活着结算', desc: '看看今天完成了什么', page: 1 }
+      ],
+      'shadow-roach': [
+        { name: '互助卡', desc: '今天也有人陪你', page: 3 },
+        { name: '深夜弹幕墙', desc: '看看陌生人在说什么', page: 3 },
+        { name: '求救卡', desc: '需要帮助时可以复制', page: 4 }
+      ],
+      'safe': [
+        { name: '随机开心一秒', desc: '随机投喂快乐', page: 1 },
+        { name: '互助卡', desc: '抽一张互助卡', page: 3 },
+        { name: '治愈网页', desc: '低能量小游戏', page: 1 }
+      ],
+      'warning': [
+        { name: '30秒缓冲', desc: '深呼吸，跟着数字倒数', page: 4 },
+        { name: '求救卡（轻度）', desc: '轻度情绪急救', page: 4 },
+        { name: '互助卡', desc: '今天也有人陪你', page: 3 }
+      ],
+      'crisis': [
+        { name: '紧急资源', desc: '心理援助热线', page: 4 },
+        { name: '求救卡（高危）', desc: '高危情绪急救', page: 4 },
+        { name: '30秒缓冲', desc: '先撑过30秒', page: 4 }
+      ]
+    };
+
+    var recommendations = recommendationMap[result.id] || recommendationMap['safe'];
     for (var k = 0; k < recommendations.length; k++) {
       var r = recommendations[k];
-      recHtml += '<div class="collection-item" onclick="goToPage(1)" style="cursor: pointer;">' +
-        '<div style="font-size: 20px; margin-right: var(--space-2);">' + r.icon + '</div>' +
+      recHtml += '<div class="collection-item" onclick="goToPage(' + r.page + ')" style="cursor: pointer;">' +
+        '<div class="collection-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg></div>' +
         '<div class="collection-item-content">' +
           '<div class="collection-item-title">' + r.name + '</div>' +
           '<div class="collection-item-desc">' + r.desc + '</div>' +

@@ -16,11 +16,26 @@
   <div id="app">
     <!-- 顶部圆点导航 -->
     <div class="page-indicator" id="pageIndicator">
-      <div class="page-indicator-dot active" data-label="首页" onclick="goToPage(0)"></div>
-      <div class="page-indicator-dot" data-label="开心" onclick="goToPage(1)"></div>
-      <div class="page-indicator-dot" data-label="测评" onclick="goToPage(2)"></div>
-      <div class="page-indicator-dot" data-label="互助" onclick="goToPage(3)"></div>
-      <div class="page-indicator-dot" data-label="急救" onclick="goToPage(4)"></div>
+      <div class="page-indicator-item active" onclick="goToPage(0)">
+        <div class="page-indicator-dot"></div>
+        <span class="page-indicator-label">首页</span>
+      </div>
+      <div class="page-indicator-item" onclick="goToPage(1)">
+        <div class="page-indicator-dot"></div>
+        <span class="page-indicator-label">开心</span>
+      </div>
+      <div class="page-indicator-item" onclick="goToPage(2)">
+        <div class="page-indicator-dot"></div>
+        <span class="page-indicator-label">测评</span>
+      </div>
+      <div class="page-indicator-item" onclick="goToPage(3)">
+        <div class="page-indicator-dot"></div>
+        <span class="page-indicator-label">互助</span>
+      </div>
+      <div class="page-indicator-item" onclick="goToPage(4)">
+        <div class="page-indicator-dot"></div>
+        <span class="page-indicator-label">急救</span>
+      </div>
     </div>
 
     <!-- 页面容器 -->

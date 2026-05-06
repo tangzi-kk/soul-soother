@@ -315,36 +315,57 @@ soul-soother/
 
 ## 7. 设计规范
 
-### 7.1 色彩系统
+### 7.1 色彩系统 - Cocoa Ink Palette
+
+**设计哲学**：以可可棕与羊皮纸为基调，营造温暖、有质感的阅读氛围，避免冷冰冰的"医疗感"。
 
 ```css
 :root {
-  /* 主色调 - 雾蓝灰（冷静、不刺眼） */
-  --primary-50: #f0f4f8;
-  --primary-100: #d9e2ec;
-  --primary-200: #bcccdc;
-  --primary-300: #9fb3c8;
-  --primary-400: #829ab1;
-  --primary-500: #627d98;
-  --primary-600: #486581;
-  
-  /* 强调色 - 薄荷绿（希望、生机） */
-  --accent-50: #e6fffa;
-  --accent-100: #b2f5ea;
-  --accent-200: #81e6d9;
-  --accent-300: #4fd1c5;
-  
-  /* 背景色 */
-  --bg-primary: #faf9f7;
-  --bg-secondary: #f5f3f0;
-  --bg-card: #ffffff;
-  
-  /* 文字色 */
-  --text-primary: #2d3748;
-  --text-secondary: #718096;
-  --text-muted: #a0aec0;
+  /* 主色调 - Cocoa Ink */
+  --color-ink: #472425;          /* 深可可色：主文字色，温暖而沉稳 */
+  --color-charcoal: #472425;     /* 与 Ink 一致，正文强调色 */
+  --color-cocoa: #80705f;        /* 可可棕：次要文字、引力场粒子 */
+  --color-slate: #878887;        /* 石板灰：辅助说明、标签文字 */
+
+  /* 画布背景 - Parchment */
+  --color-canvas: #fdfaf3;       /* 羊皮纸白：主背景，温暖不刺眼 */
+  --color-canvas-warm: #f5f0e8;  /* 暖羊皮纸：卡片悬停、输入框背景 */
+
+  /* 边框与分隔 */
+  --color-border: #e8e0d4;       /* 浅可可边框：卡片、按钮边框 */
+  --color-border-subtle: #f0ebe3;/* 极淡边框：分隔线 */
+
+  /* 功能色 */
+  --color-accent: #738ae5;       /* 薰衣草紫：交互强调色（按钮、链接、活跃状态） */
+  --color-accent-hover: #5a72d0; /* 深薰衣草：悬停状态 */
+  --color-danger: #e73737;       /* 警示红：危机内容、急救入口 */
+  --color-danger-soft: #fef2f2;  /* 淡红底：危险按钮背景 */
+  --color-warm: #fdf6e3;         /* 暖黄底：温暖提示 */
+  --color-calm: #dbeafe;         /* 淡蓝底：平静提示 */
+  --color-soft: #fce7f3;         /* 淡粉底：柔和提示 */
 }
 ```
+
+#### 色彩使用规范
+
+| 元素 | 色彩 | 说明 |
+|------|------|------|
+| 主标题/正文 | `--color-ink` (#472425) | 所有重要文字内容 |
+| 辅助说明 | `--color-slate` (#878887) | 描述性文字、标签 |
+| 页面背景 | `--color-canvas` (#fdfaf3) | 全局背景 |
+| 卡片背景 | `--color-canvas` | 与背景一致，通过边框区分 |
+| 交互强调 | `--color-accent` (#738ae5) | 按钮、链接、导航活跃状态 |
+| 危险/急救 | `--color-danger` (#e73737) | 危机入口、紧急提示 |
+| 边框 | `--color-border` (#e8e0d4) | 卡片、输入框边框 |
+
+#### 引力场背景色
+
+| 元素 | 色彩 | 说明 |
+|------|------|------|
+| 背景底色 | `#f9f8f4` | 与画布色协调的暖白 |
+| 浮动文字 | `#333333` | 中灰色，不干扰前景内容 |
+| 引力粒子 | `#80705f` | 可可棕，与品牌色呼应 |
+| 引力目标文字 | `#63a648`, `#8ec492`, `#e6efb3` | 绿色渐变，象征生机 |
 
 ### 7.2 字体规范
 - **中文**：系统默认字体栈（PingFang SC, Microsoft YaHei, sans-serif）
