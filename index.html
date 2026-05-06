@@ -4,316 +4,313 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=393, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Soul Soother — 用抽象接住崩溃</title>
-  <meta name="description" content="一个面向极端情绪状态人群的轻量级趣味治愈网站，用Z世代最懂的抽象自嘲语言，让濒临崩溃的人在会心一笑中获得短暂的喘息">
-  <!-- 中文字体 CDN -->
-  <link rel="preconnect" href="https://cdn.jsdelivr.net">
-  <link href="https://cdn.jsdelivr.net/npm/alibaba-puhuiti-2/Alibaba-PuHuiTi-Bold/Alibaba-PuHuiTi-Bold.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/alibaba-puhuiti-2/Alibaba-PuHuiTi-Regular/Alibaba-PuHuiTi-Regular.css" rel="stylesheet">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Soul Soother</title>
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    /* 引力场提示 */
-    .gravity-hint {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: var(--text-caption);
-      letter-spacing: var(--tracking-caption);
-      color: var(--color-slate);
-      opacity: 0.6;
-      pointer-events: none;
-      z-index: 100;
-      animation: hintFade 3s ease forwards;
-      animation-delay: 1s;
-      text-align: center;
-    }
-    @keyframes hintFade {
-      0% { opacity: 0.6; }
-      70% { opacity: 0.6; }
-      100% { opacity: 0; }
-    }
-    /* 引力点样式 */
-    .gravity-dot {
-      box-shadow: 0 0 0 2px rgba(115, 138, 229, 0.2);
-    }
-  </style>
 </head>
 <body>
-  <div class="gravity-hint">点击任意位置，感受文字的呼吸</div>
-
-  <main class="main-content" id="gravityContainer">
-    <div class="disclaimer">
-      <strong>温馨提示</strong> — Soul Soother 是一个趣味治愈内容合集网站，所有内容仅供娱乐和放松，不能替代专业医疗建议。
+  <div id="app">
+    <!-- Page Indicator - 小巧思导航 -->
+    <div class="page-indicator" id="pageIndicator">
+      <div class="page-indicator-dot active" data-label="首页" onclick="goToPage(0)"></div>
+      <div class="page-indicator-dot" data-label="测评" onclick="goToPage(1)"></div>
+      <div class="page-indicator-dot" data-label="合集" onclick="goToPage(2)"></div>
+      <div class="page-indicator-dot" data-label="工具" onclick="goToPage(3)"></div>
+      <div class="page-indicator-dot" data-label="关于" onclick="goToPage(4)"></div>
     </div>
 
-    <div id="nightRescue" class="night-rescue hidden">
-      <div class="night-rescue-title">深夜急救包</div>
-      <div class="night-rescue-text" id="nightRescueText"></div>
-    </div>
+    <!-- Pages Container -->
+    <div class="pages-container" id="pagesContainer">
 
-    <!-- Hero: 极简居中，大量留白 -->
-    <section class="hero">
-      <span class="hero-label">Soul Soother</span>
-      <h1 class="hero-title">用抽象接住崩溃</h1>
-      <p class="hero-subtitle">用玩笑降低痛感，让濒临崩溃的人在会心一笑中获得短暂的喘息</p>
-      <a href="quiz.html" class="cta cta-primary">
-        开始测试
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-      </a>
-    </section>
+      <!-- ====== PAGE 1: HOME ====== -->
+      <div class="page" id="page-home">
+        <div class="page-content">
+          <div style="height: 32px;"></div>
+          <div class="disclaimer">
+            内容仅供娱乐放松，不能替代专业医疗建议
+          </div>
 
-    <!-- Daily Quote: 居中引用式布局 -->
-    <section class="section">
-      <div class="daily-quote">
-        <div class="daily-quote-text" id="dailyQuote">加载中...</div>
-        <div class="daily-quote-footer">
-          <span class="daily-quote-date" id="dailyDate"></span>
-          <button class="cta cta-ghost" onclick="refreshQuote()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-            换一句
-          </button>
-        </div>
-      </div>
-    </section>
+          <div id="nightRescue" class="night-rescue hidden">
+            <div class="night-rescue-title">深夜急救包</div>
+            <div class="night-rescue-text" id="nightRescueText"></div>
+          </div>
 
-    <!-- Action Grid: 2x2 画廊网格，hover 时顶部出现 accent 线条 -->
-    <section class="section">
-      <div class="section-header">
-        <span class="section-number">01</span>
-        <h2 class="section-title">选一个让自己舒服点</h2>
-      </div>
-      <div class="action-grid">
-        <a href="quiz.html" class="action-card">
-          <svg class="action-card-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
-          <div class="action-card-title">精神状态检测</div>
-          <div class="action-card-desc">测测你有多抽象</div>
-        </a>
-        <a href="tools.html#fengwen" class="action-card">
-          <svg class="action-card-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-          <div class="action-card-title">发疯文学生成</div>
-          <div class="action-card-desc">把情绪变成段子</div>
-        </a>
-        <a href="collection.html" class="action-card">
-          <svg class="action-card-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-          <div class="action-card-title">治愈小游戏</div>
-          <div class="action-card-desc">无聊时随便玩</div>
-        </a>
-        <a href="tools.html#help-card" class="action-card">
-          <svg class="action-card-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-          <div class="action-card-title">抽互助卡</div>
-          <div class="action-card-desc">今天也有人陪你</div>
-        </a>
-      </div>
-    </section>
-
-    <!-- Help Card: 居中仪式感的单卡片 -->
-    <section class="section">
-      <div class="section-header">
-        <span class="section-number">02</span>
-        <h2 class="section-title">来自陌生人的陪伴</h2>
-      </div>
-      <div class="help-card-section">
-        <svg id="helpCardIcon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-        <div class="help-card-text" id="helpCardText">点击抽一张属于你的互助卡</div>
-        <button class="cta" onclick="drawHelpCard()">抽一张</button>
-        <div class="help-card-sub">每一条都来自真实的人</div>
-      </div>
-    </section>
-
-    <!-- Danmu + Help Posts: 上下流式 -->
-    <section class="section">
-      <div class="section-header">
-        <span class="section-number">03</span>
-        <h2 class="section-title">你不是一个人</h2>
-      </div>
-
-      <div class="danmu-section">
-        <div class="danmu-label">陌生人弹幕</div>
-        <div class="danmu-track-wrap">
-          <div class="danmu-track" id="danmuTrack"></div>
-        </div>
-      </div>
-
-      <div class="help-posts-section">
-        <div class="help-textarea-wrap">
-          <textarea class="help-textarea" id="helpPost" placeholder="今天发生了什么？随便说一句..."></textarea>
-          <button class="cta cta-primary" onclick="postHelp()" style="width: 100%;">
-            发布
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-          </button>
-        </div>
-
-        <div class="help-posts-header">
-          <span class="help-posts-title">最新互助</span>
-        </div>
-        <div id="helpPosts">
-          <div class="help-post">
-            <div class="help-post-text">今天凌晨三点还没睡，但看到这句话突然觉得没那么孤单了</div>
-            <div class="help-post-footer">
-              <span class="help-post-time">刚刚</span>
-              <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
+          <!-- Hero with Gravity Canvas -->
+          <div class="home-hero" id="homeHero">
+            <div class="gravity-canvas-wrap" id="gravityCanvas"></div>
+            <div class="home-hero-content">
+              <span class="home-hero-label">Soul Soother</span>
+              <h1 class="home-hero-title">用抽象接住崩溃</h1>
+              <p class="home-hero-subtitle">用玩笑降低痛感，让濒临崩溃的人在会心一笑中获得短暂的喘息</p>
+              <button class="cta" onclick="scrollToQuiz()">
+                开始测试
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </button>
             </div>
           </div>
-          <div class="help-post">
-            <div class="help-post-text">又自伤了，但比上次少了一道，算进步吗</div>
-            <div class="help-post-footer">
-              <span class="help-post-time">5分钟前</span>
-              <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
+
+          <!-- Daily Quote -->
+          <div class="daily-quote-card">
+            <div class="daily-quote-text" id="dailyQuote">加载中...</div>
+            <span class="daily-quote-date" id="dailyDate"></span>
+            <button class="cta cta-ghost" onclick="refreshQuote()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+              换一句
+            </button>
+          </div>
+
+          <!-- Action Grid -->
+          <div class="section-title">选一个让自己舒服点</div>
+          <div class="action-grid">
+            <div class="action-card" onclick="goToPage(1)">
+              <svg class="action-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+              <div class="action-card-title">精神状态检测</div>
+              <div class="action-card-desc">测测你有多抽象</div>
+            </div>
+            <div class="action-card" onclick="goToPage(3)">
+              <svg class="action-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              <div class="action-card-title">发疯文学生成</div>
+              <div class="action-card-desc">把情绪变成段子</div>
+            </div>
+            <div class="action-card" onclick="goToPage(2)">
+              <svg class="action-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              <div class="action-card-title">治愈小游戏</div>
+              <div class="action-card-desc">无聊时随便玩</div>
+            </div>
+            <div class="action-card" onclick="goToPage(3)">
+              <svg class="action-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              <div class="action-card-title">抽互助卡</div>
+              <div class="action-card-desc">今天也有人陪你</div>
             </div>
           </div>
-          <div class="help-post">
-            <div class="help-post-text">测出来我是"阴暗爬行型"，笑死，确实</div>
-            <div class="help-post-footer">
-              <span class="help-post-time">10分钟前</span>
-              <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
+
+          <!-- Help Card -->
+          <div class="section-title">来自陌生人的陪伴</div>
+          <div class="help-card">
+            <svg class="help-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+            <div class="help-card-text" id="helpCardText">点击抽一张属于你的互助卡</div>
+            <button class="cta" onclick="drawHelpCard()">抽一张</button>
+            <div class="help-card-sub">每一条都来自真实的人</div>
+          </div>
+
+          <!-- Danmu -->
+          <div class="section-title">你不是一个人</div>
+          <div class="danmu-section">
+            <div class="danmu-label">陌生人弹幕</div>
+            <div class="danmu-track-wrap">
+              <div class="danmu-track" id="danmuTrack"></div>
+            </div>
+          </div>
+
+          <!-- Help Posts -->
+          <div class="help-posts-section">
+            <div class="help-textarea-wrap">
+              <textarea class="help-textarea" id="helpPost" placeholder="今天发生了什么？随便说一句..."></textarea>
+              <button class="cta" onclick="postHelp()" style="width: 100%;">
+                发布
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              </button>
+            </div>
+            <div id="helpPosts">
+              <div class="help-post">
+                <div class="help-post-text">今天凌晨三点还没睡，但看到这句话突然觉得没那么孤单了</div>
+                <div class="help-post-footer">
+                  <span class="help-post-time">刚刚</span>
+                  <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
+                </div>
+              </div>
+              <div class="help-post">
+                <div class="help-post-text">又自伤了，但比上次少了一道，算进步吗</div>
+                <div class="help-post-footer">
+                  <span class="help-post-time">5分钟前</span>
+                  <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
+                </div>
+              </div>
+              <div class="help-post">
+                <div class="help-post-text">测出来我是"阴暗爬行型"，笑死，确实</div>
+                <div class="help-post-footer">
+                  <span class="help-post-time">10分钟前</span>
+                  <button class="hug-btn" onclick="sendHug(this)">抱抱</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  </main>
 
-  <nav class="bottom-nav">
-    <div class="bottom-nav-inner">
-      <a href="index.html" class="bottom-nav-item active">
-        <span>首页</span>
-      </a>
-      <a href="quiz.html" class="bottom-nav-item">
-        <span>测评</span>
-      </a>
-      <a href="collection.html" class="bottom-nav-item">
-        <span>合集</span>
-      </a>
-      <a href="tools.html" class="bottom-nav-item">
-        <span>工具</span>
-      </a>
-      <a href="about.html" class="bottom-nav-item">
-        <span>关于</span>
-      </a>
-    </div>
-  </nav>
+      <!-- ====== PAGE 2: QUIZ ====== -->
+      <div class="page" id="page-quiz">
+        <div class="page-content">
+          <div class="section-title" style="margin-bottom: var(--space-xl);">精神状态检测</div>
 
-  <footer class="footer">
-    <div class="footer-text">Soul Soother — 用抽象接住崩溃，用玩笑降低痛感</div>
-    <div class="footer-text">本网站仅供娱乐和放松，不能替代专业医疗建议</div>
-    <div class="footer-links">
-      <a href="about.html">关于我们</a>
-      <a href="about.html#help">求助资源</a>
-      <a href="https://github.com/tangzi-kk/soul-soother" target="_blank">GitHub</a>
+          <!-- Quiz List -->
+          <div id="quizList">
+            <div id="quizCards"></div>
+          </div>
+
+          <!-- Quiz Page -->
+          <div id="quizPage" class="hidden">
+            <div class="quiz-progress">
+              <div class="quiz-progress-bar">
+                <div class="quiz-progress-fill" id="progressFill"></div>
+              </div>
+              <span class="quiz-progress-text" id="progressText">1/8</span>
+            </div>
+            <div class="quiz-question" id="questionText"></div>
+            <div class="quiz-options" id="optionsContainer"></div>
+            <div class="quiz-nav">
+              <button class="cta cta-ghost" id="prevBtn" onclick="prevQuestion()">上一题</button>
+              <button class="cta" id="nextBtn" onclick="nextQuestion()">下一题</button>
+            </div>
+          </div>
+
+          <!-- Result Page -->
+          <div id="resultPage" class="hidden">
+            <div class="quiz-result">
+              <div class="quiz-result-emoji" id="resultEmoji"></div>
+              <div class="quiz-result-type-label" id="resultType"></div>
+              <div class="quiz-result-title" id="resultTitle"></div>
+              <div class="quiz-result-tagline" id="resultTagline"></div>
+              <div class="quiz-result-desc" id="resultDesc"></div>
+              <div class="quiz-result-advice" id="resultAdvice"></div>
+              <div class="result-actions">
+                <button class="cta cta-ghost" onclick="shareResult()">分享</button>
+                <button class="cta" onclick="restartQuiz()">再测</button>
+              </div>
+              <div class="section-title" style="font-size: var(--text-body); margin-bottom: var(--space-md);">推荐给你</div>
+              <div id="recommendations"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== PAGE 3: COLLECTION ====== -->
+      <div class="page" id="page-collection">
+        <div class="page-content">
+          <div class="section-title" style="margin-bottom: var(--space-xl);">治愈合集</div>
+
+          <div class="category-tabs">
+            <button class="category-tab active" onclick="filterCategory('all', this)">全部</button>
+            <button class="category-tab" onclick="filterCategory('games', this)">小游戏</button>
+            <button class="category-tab" onclick="filterCategory('websites', this)">治愈网页</button>
+            <button class="category-tab" onclick="filterCategory('tools', this)">互动工具</button>
+          </div>
+
+          <div class="collection-grid" id="collectionGrid"></div>
+        </div>
+      </div>
+
+      <!-- ====== PAGE 4: TOOLS ====== -->
+      <div class="page" id="page-tools">
+        <div class="page-content">
+          <div class="section-title" style="margin-bottom: var(--space-xl);">互动工具</div>
+
+          <!-- Tool 1: 发疯文学 -->
+          <div class="tool-card" id="fengwen">
+            <div class="tool-card-title">发疯文学生成器</div>
+            <div class="tool-card-desc">输入你的情绪，生成一段发疯文学</div>
+            <input type="text" class="generator-input" id="fengwenInput" placeholder="例如：加班、失恋、没钱...">
+            <button class="cta" onclick="generateFengwen()" style="width: 100%;">生成</button>
+            <div class="generator-output" id="fengwenOutput"></div>
+          </div>
+
+          <!-- Tool 2: 替代计划 -->
+          <div class="tool-card" id="alt-plan">
+            <div class="tool-card-title">替代计划生成器</div>
+            <div class="tool-card-desc">当你想伤害自己时，试试这些替代方案</div>
+            <button class="cta" onclick="generateAltPlan()" style="width: 100%;">生成计划</button>
+            <div class="generator-output" id="altPlanOutput"></div>
+          </div>
+
+          <!-- Tool 3: 互助卡 -->
+          <div class="tool-card" id="help-card">
+            <div class="tool-card-title">互助卡抽取</div>
+            <div class="tool-card-desc">抽一张来自陌生人的温暖</div>
+            <div class="help-card" style="margin-top: var(--space-md);">
+              <svg class="help-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+              <div class="help-card-text" id="toolHelpCardText">点击抽取</div>
+              <button class="cta" onclick="drawToolHelpCard()">抽一张</button>
+            </div>
+          </div>
+
+          <!-- Tool 4: 能量条 -->
+          <div class="tool-card" id="energy">
+            <div class="tool-card-title">今日能量条</div>
+            <div class="tool-card-desc">记录你今天的精神状态</div>
+            <button class="cta" onclick="checkEnergy()" style="width: 100%;">检测能量</button>
+            <div class="generator-output" id="energyOutput"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====== PAGE 5: ABOUT ====== -->
+      <div class="page" id="page-about">
+        <div class="page-content">
+          <div class="section-title" style="margin-bottom: var(--space-xl);">关于</div>
+
+          <div class="about-section">
+            <div class="about-section-title">关于 Soul Soother</div>
+            <div class="about-section-text">
+              Soul Soother 是一个面向情绪困扰人群的轻量级趣味治愈网站。我们不提供医疗建议，只提供陪伴、理解和一点点幽默。
+            </div>
+            <div class="about-section-text">
+              所有内容经过安全筛选，不包含详细自伤方法、不美化自杀行为。
+            </div>
+          </div>
+
+          <div class="about-section">
+            <div class="about-section-title">安全声明</div>
+            <div class="about-section-text">
+              <strong>免责声明：</strong>Soul Soother 不是医疗产品，不提供医学诊断、治疗建议或心理咨询服务。本网站的所有内容仅供娱乐、放松和陪伴目的。
+            </div>
+            <div class="about-section-text">
+              <strong>隐私保护：</strong>我们不收集任何用户数据，不使用 Cookie，不使用第三方追踪工具。所有操作均在本地完成。
+            </div>
+          </div>
+
+          <div class="about-section" id="help">
+            <div class="about-section-title">求助资源</div>
+            <div class="about-section-text">如果你感到情绪低落或有心理困扰，以下资源可能对你有帮助：</div>
+            <div class="help-resources">
+              <div class="help-resource-item">
+                <span class="help-resource-name">全国心理援助热线</span>
+                <a href="tel:400-161-9995" class="help-resource-phone">400-161-9995</a>
+              </div>
+              <div class="help-resource-item">
+                <span class="help-resource-name">北京回龙观医院危机干预</span>
+                <a href="tel:010-82951332" class="help-resource-phone">010-82951332</a>
+              </div>
+              <div class="help-resource-item">
+                <span class="help-resource-name">生命热线</span>
+                <a href="tel:400-821-1215" class="help-resource-phone">400-821-1215</a>
+              </div>
+              <div class="help-resource-item">
+                <span class="help-resource-name">希望24热线</span>
+                <a href="tel:400-161-9995" class="help-resource-phone">400-161-9995</a>
+              </div>
+            </div>
+            <div class="about-section-text" style="margin-top: var(--space-md); padding: var(--space-md); background: var(--bg-card); border-radius: 12px;">
+              <strong>紧急情况：</strong>如果你或你认识的人正处于危险中，请立即拨打 120（急救）或 110（报警），或前往最近的医院急诊科。
+            </div>
+          </div>
+
+          <div class="about-section">
+            <div class="about-section-title">联系我们</div>
+            <div class="about-section-text">
+              如有任何关于安全、隐私或伦理的问题，欢迎通过以下方式联系我们：
+            </div>
+            <a href="https://github.com/tangzi-kk/soul-soother" target="_blank" class="cta cta-ghost" style="margin-top: var(--space-sm);">GitHub 仓库</a>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </footer>
+
+    <!-- 导航已隐藏，使用顶部圆点指示器 -->
+  </div>
 
   <script src="js/data.js"></script>
   <script src="js/gravity.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      loadDailyQuote();
-      checkNightTime();
-      initDanmu();
-
-      // 初始化引力场
-      setTimeout(function() {
-        if (window.GravityField) {
-          window.GravityField.init('#gravityContainer');
-        }
-      }, 500);
-    });
-
-    function loadDailyQuote() {
-      var quote = getDailyQuote();
-      document.getElementById('dailyQuote').textContent = quote;
-      document.getElementById('dailyDate').textContent = new Date().toLocaleDateString('zh-CN', {
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long'
-      });
-    }
-
-    function refreshQuote() {
-      var quote = getRandomQuote();
-      var el = document.getElementById('dailyQuote');
-      el.style.opacity = '0';
-      setTimeout(function() {
-        el.textContent = quote;
-        el.style.opacity = '1';
-      }, 250);
-    }
-
-    function checkNightTime() {
-      if (isNightTime()) {
-        document.getElementById('nightRescue').classList.remove('hidden');
-        document.getElementById('nightRescueText').textContent = getNightRescue();
-      }
-    }
-
-    function initDanmu() {
-      var track = document.getElementById('danmuTrack');
-      var html = '';
-      var allDanmu = danmuList.concat(danmuList);
-      for (var i = 0; i < allDanmu.length; i++) {
-        html += '<span class="danmu-item">' + allDanmu[i] + '</span>';
-      }
-      track.innerHTML = html;
-    }
-
-    function drawHelpCard() {
-      var cards = tools.helpCards;
-      var card = cards[Math.floor(Math.random() * cards.length)];
-      var iconEl = document.getElementById('helpCardIcon');
-      var textEl = document.getElementById('helpCardText');
-      iconEl.style.opacity = '0';
-      textEl.style.opacity = '0';
-      setTimeout(function() {
-        iconEl.style.opacity = '1';
-        textEl.textContent = card.text;
-        textEl.style.opacity = '1';
-      }, 300);
-    }
-
-    function postHelp() {
-      var content = document.getElementById('helpPost').value.trim();
-      if (!content) {
-        alert('写点什么吧，哪怕只有一个字');
-        return;
-      }
-
-      var crisisWords = ['自杀', '想死', '自残', '跳楼', '割腕', '上吊', '毒药'];
-      var hasCrisis = false;
-      for (var i = 0; i < crisisWords.length; i++) {
-        if (content.indexOf(crisisWords[i]) !== -1) {
-          hasCrisis = true;
-          break;
-        }
-      }
-
-      if (hasCrisis) {
-        alert('检测到你可能处于危机中。\n\n请立即联系：\n全国心理援助热线：400-161-9995\n北京回龙观医院危机干预：010-82951332\n生命热线：400-821-1215\n\n你并不孤单，帮助是可获得的。');
-        return;
-      }
-
-      var postsContainer = document.getElementById('helpPosts');
-      var newPost = document.createElement('div');
-      newPost.className = 'help-post fade-in';
-      newPost.innerHTML = '<div class="help-post-text">' + content + '</div><div class="help-post-footer"><span class="help-post-time">刚刚</span><button class="hug-btn" onclick="sendHug(this)">抱抱</button></div>';
-      postsContainer.insertBefore(newPost, postsContainer.firstChild);
-      document.getElementById('helpPost').value = '';
-      saveHelpPost(content);
-    }
-
-    function sendHug(btn) {
-      btn.classList.add('hugged');
-      btn.textContent = '已抱抱';
-      btn.disabled = true;
-    }
-
-    function saveHelpPost(content) {
-      var posts = JSON.parse(localStorage.getItem('helpPosts') || '[]');
-      posts.unshift({ content: content, time: new Date().toISOString() });
-      if (posts.length > 50) posts = posts.slice(0, 50);
-      localStorage.setItem('helpPosts', JSON.stringify(posts));
-    }
-  </script>
+  <script src="js/app.js"></script>
 </body>
 </html>
