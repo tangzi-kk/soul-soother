@@ -9,7 +9,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@200;400;600&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html, body {
       width: 100%;
       height: 100%;
@@ -17,6 +22,7 @@
       background: #f9f8f4;
       font-family: 'Noto Serif SC', serif;
     }
+
     #canvas-container {
       position: fixed;
       top: 0;
@@ -25,6 +31,8 @@
       height: 100%;
       z-index: 1;
     }
+
+    /* 极简控制面板 */
     .control-panel {
       position: fixed;
       top: 24px;
@@ -41,11 +49,13 @@
       transform: translateY(-8px);
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     .control-panel.open {
       opacity: 1;
       visibility: visible;
       transform: translateY(0);
     }
+
     .control-panel h2 {
       font-size: 13px;
       font-weight: 400;
@@ -55,9 +65,11 @@
       padding-bottom: 12px;
       border-bottom: 1px solid rgba(128, 112, 95, 0.1);
     }
+
     .control-group {
       margin-bottom: 14px;
     }
+
     .control-group label {
       display: block;
       font-size: 11px;
@@ -65,6 +77,7 @@
       margin-bottom: 6px;
       letter-spacing: 0.02em;
     }
+
     .control-group input[type="range"] {
       width: 100%;
       height: 2px;
@@ -73,6 +86,7 @@
       outline: none;
       -webkit-appearance: none;
     }
+
     .control-group input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       width: 12px;
@@ -82,9 +96,20 @@
       cursor: pointer;
       transition: transform 0.2s ease;
     }
+
     .control-group input[type="range"]::-webkit-slider-thumb:hover {
       transform: scale(1.3);
     }
+
+    .control-group input[type="color"] {
+      width: 100%;
+      height: 28px;
+      border: 1px solid rgba(128, 112, 95, 0.2);
+      border-radius: 6px;
+      cursor: pointer;
+      background: transparent;
+    }
+
     .control-group input[type="text"] {
       width: 100%;
       padding: 6px 10px;
@@ -95,10 +120,12 @@
       background: rgba(255, 255, 255, 0.5);
       font-family: 'Noto Serif SC', serif;
     }
+
     .control-group input[type="text"]:focus {
       outline: none;
       border-color: rgba(128, 112, 95, 0.4);
     }
+
     .toggle-btn {
       position: fixed;
       top: 24px;
@@ -117,14 +144,17 @@
       transition: all 0.3s ease;
       color: #80705f;
     }
+
     .toggle-btn:hover {
       background: rgba(249, 248, 244, 1);
       transform: scale(1.05);
     }
+
     .toggle-btn svg {
       width: 16px;
       height: 16px;
     }
+
     .info-text {
       position: fixed;
       bottom: 24px;
@@ -184,69 +214,105 @@
     //  视觉隐喻：植物的根、时间的刻度、雨线、神经突触
     // ═══════════════════════════════════════════════════════════════
 
+    // ── 全局配置对象 ──
     const CONFIG = {
+      // 画布尺寸
       canvas: {
-        width: 393,
-        height: 852,
-        backgroundColor: '#f9f8f4',
+        width: 393,        // 画布宽度（移动端优先）
+        height: 852,       // 画布高度
+        backgroundColor: '#f9f8f4',  // 背景颜色：暖白
       },
+
+      // 文本参数
       text: {
-        content: '用抽象接住崩溃\n用玩笑降低痛感\n\n我的精神状态：\n一边想死 一边怕死\n一边觉得自己不配死\n最后决定先活着\n\n因为死了就看不到\n这么抽象的自己了',
-        fontSize: 14,
-        color: '#472425',
-        strokeColor: '#80705f',
-        strokeWeight: 0,
-        letterSpacing: 2,
-        lineSpacing: 28,
-        margin: { top: 120, right: 40, bottom: 120, left: 40 },
+        content: '用抽象接住崩溃\n用玩笑降低痛感\n\n我的精神状态：\n一边想死 一边怕死\n一边觉得自己不配死\n最后决定先活着\n\n因为死了就看不到\n这么抽象的自己了',  // 显示文本
+        fontSize: 14,      // 初始文字字号
+        color: '#472425',  // 初始文字颜色：深可可
+        strokeColor: '#80705f',  // 文字描边颜色
+        strokeWeight: 0,   // 文字描边粗细，0 为无描边
+        letterSpacing: 2,  // 字距
+        lineSpacing: 28,   // 行距
+        margin: {          // 四边页边距
+          top: 120,
+          right: 40,
+          bottom: 120,
+          left: 40
+        },
         fontFamily: 'Noto Serif SC',
       },
+
+      // 圆点参数
       dot: {
-        color: '#80705f',
-        size: 4,
-        positionRange: { x: [60, 333], y: [100, 700] },
-        generationInterval: 80,
-        maxDots: 8,
+        color: '#80705f',  // 圆点颜色：可可棕
+        size: 4,           // 圆点大小
+        positionRange: {   // 圆点生成范围
+          x: [60, 333],    // 横向范围
+          y: [100, 700],   // 纵向范围
+        },
+        generationInterval: 80,  // 圆点生成速度（帧数间隔）
+        maxDots: 8,        // 最大圆点数量
       },
+
+      // 引力参数
       attraction: {
-        countRange: [3, 8],
-        safeDistance: 24,
-        speed: 0.04,
-        targetFontSize: 22,
-        targetColors: ['#63a648', '#8ec492', '#e6efb3'],
+        countRange: [3, 8],      // 每个圆点吸引字符数量范围
+        safeDistance: 24,        // 被吸引字符之间的最小间距
+        speed: 0.04,             // 字符移动速度（缓动系数）
+        targetFontSize: 22,      // 被吸引字符目标字号
+        targetColors: [           // 被吸引字符随机颜色组
+          '#63a648',             // 生机绿
+          '#8ec492',             // 薄荷绿
+          '#e6efb3',             // 嫩芽黄
+        ],
       },
+
+      // 直线参数
       line: {
-        color: '#d4c4b0',
-        thickness: 0.8,
-        lengthRange: [80, 280],
-        opacity: 0.35,
+        color: '#d4c4b0',        // 直线颜色
+        thickness: 0.8,          // 直线粗细
+        lengthRange: [80, 280],  // 直线长度范围
+        opacity: 0.35,           // 直线透明度
+      },
+
+      // 视觉层级
+      zIndex: {
+        lines: 1,      // 直线在最底层
+        dots: 2,       // 圆点在中间层
+        text: 3,       // 文字在最上层
       },
     };
 
-    let chars = [];
-    let dots = [];
-    let lines = [];
+    // ── 全局变量 ──
+    let chars = [];       // 字符对象数组
+    let dots = [];        // 引力圆点数组
+    let lines = [];       // 垂直线数组
+    let fontLoaded = false;
     let frameCounter = 0;
 
+    // ═══════════════════════════════════════════════════════════════
+    //  P5.JS 生命周期
+    // ═══════════════════════════════════════════════════════════════
+
     function setup() {
-      const canvas = createCanvas(windowWidth, windowHeight);
+      const canvas = createCanvas(CONFIG.canvas.width, CONFIG.canvas.height);
       canvas.parent('canvas-container');
+      
       textFont(CONFIG.text.fontFamily);
       textAlign(LEFT, TOP);
-      initializeText();
-    }
-
-    function windowResized() {
-      resizeCanvas(windowWidth, windowHeight);
+      
       initializeText();
     }
 
     function draw() {
       background(CONFIG.canvas.backgroundColor);
+      
+      // 生成新圆点
       frameCounter++;
       if (frameCounter % CONFIG.dot.generationInterval === 0 && dots.length < CONFIG.dot.maxDots) {
         spawnDot();
       }
+
+      // 更新和绘制
       updateChars();
       drawLines();
       drawDots();
@@ -254,10 +320,15 @@
     }
 
     function mousePressed() {
+      // 点击画面生成引力点
       if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
         spawnDotAt(mouseX, mouseY);
       }
     }
+
+    // ═══════════════════════════════════════════════════════════════
+    //  文字初始化
+    // ═══════════════════════════════════════════════════════════════
 
     function initializeText() {
       chars = [];
@@ -266,23 +337,34 @@
       const margin = CONFIG.text.margin;
       const letterSpacing = CONFIG.text.letterSpacing;
       const lineSpacing = CONFIG.text.lineSpacing;
+      
       textSize(fontSize);
-      const maxWidth = width - margin.left - margin.right;
+      
+      const maxWidth = CONFIG.canvas.width - margin.left - margin.right;
       let currentX = margin.left;
       let currentY = margin.top;
+      
+      // 按行分割文本
       const rawLines = content.split('\n');
+      
       for (let lineIdx = 0; lineIdx < rawLines.length; lineIdx++) {
         const line = rawLines[lineIdx];
+        
         if (line === '') {
           currentY += lineSpacing;
           continue;
         }
+        
+        // 自动换行处理
         let currentLine = '';
+        
         for (let i = 0; i < line.length; i++) {
           const char = line[i];
           const testLine = currentLine + char;
           const testWidth = textWidth(testLine) + (testLine.length - 1) * letterSpacing;
+          
           if (testWidth > maxWidth && currentLine !== '') {
+            // 输出当前行
             outputLine(currentLine, currentX, currentY, fontSize, letterSpacing);
             currentY += lineSpacing;
             currentLine = char;
@@ -290,18 +372,23 @@
             currentLine = testLine;
           }
         }
+        
+        // 输出最后一行
         if (currentLine !== '') {
           outputLine(currentLine, currentX, currentY, fontSize, letterSpacing);
         }
+        
         currentY += lineSpacing;
       }
     }
 
     function outputLine(line, startX, y, fontSize, letterSpacing) {
       let x = startX;
+      
       for (let i = 0; i < line.length; i++) {
         const char = line[i];
         const charWidth = textWidth(char);
+        
         chars.push({
           char: char,
           originX: x,
@@ -321,9 +408,14 @@
           alpha: 255,
           floatOffset: random(TWO_PI),
         });
+        
         x += charWidth + letterSpacing;
       }
     }
+
+    // ═══════════════════════════════════════════════════════════════
+    //  引力圆点
+    // ═══════════════════════════════════════════════════════════════
 
     function spawnDot() {
       const range = CONFIG.dot.positionRange;
@@ -333,6 +425,7 @@
     }
 
     function spawnDotAt(x, y) {
+      // 创建圆点
       const dot = {
         x: x,
         y: y,
@@ -342,7 +435,10 @@
         birthFrame: frameCount,
         pulsePhase: random(TWO_PI),
       };
+      
       dots.push(dot);
+      
+      // 创建垂直线
       const lineLength = random(CONFIG.line.lengthRange[0], CONFIG.line.lengthRange[1]);
       lines.push({
         x: x,
@@ -355,38 +451,59 @@
         opacity: CONFIG.line.opacity,
         birthFrame: frameCount,
       });
+      
+      // 吸引字符
       attractCharsToDot(dot);
     }
 
     function attractCharsToDot(dot) {
       const countRange = CONFIG.attraction.countRange;
       const targetCount = floor(random(countRange[0], countRange[1] + 1));
+      
+      // 筛选未被吸引的字符
       const availableChars = chars.filter(c => !c.isAttracted);
+      
       if (availableChars.length === 0) return;
+      
+      // 随机选择字符
       const shuffled = shuffleArray([...availableChars]);
       const selected = shuffled.slice(0, min(targetCount, shuffled.length));
+      
+      // 为每个字符设置目标位置
       for (let i = 0; i < selected.length; i++) {
         const char = selected[i];
         const angle = (TWO_PI / selected.length) * i + random(-0.3, 0.3);
         const radius = random(15, 35);
+        
         char.isAttracted = true;
         char.attractedBy = dot;
         char.targetX = dot.x + cos(angle) * radius;
         char.targetY = dot.y + sin(angle) * radius;
         char.targetFontSize = CONFIG.attraction.targetFontSize;
         char.targetColor = random(CONFIG.attraction.targetColors);
+        
         dot.attractedChars.push(char);
       }
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    //  更新与绘制
+    // ═══════════════════════════════════════════════════════════════
+
     function updateChars() {
       for (let char of chars) {
         if (char.isAttracted && char.targetX !== null) {
+          // 缓动移动到目标位置
           char.x += (char.targetX - char.x) * CONFIG.attraction.speed;
           char.y += (char.targetY - char.y) * CONFIG.attraction.speed;
+          
+          // 缓动改变字号
           char.fontSize += (char.targetFontSize - char.fontSize) * CONFIG.attraction.speed * 0.5;
+          
+          // 保持字符间安全距离
           maintainSafeDistance(char);
         } else {
+          // 未被吸引的字符轻微漂浮
           char.y += sin(frameCount * 0.01 + char.floatOffset) * 0.15;
           char.x += cos(frameCount * 0.008 + char.floatOffset) * 0.1;
         }
@@ -395,11 +512,14 @@
 
     function maintainSafeDistance(char) {
       if (!char.isAttracted) return;
+      
       for (let other of chars) {
         if (other === char || !other.isAttracted || other.attractedBy !== char.attractedBy) continue;
+        
         const dx = other.x - char.x;
         const dy = other.y - char.y;
         const dist = sqrt(dx * dx + dy * dy);
+        
         if (dist < CONFIG.attraction.safeDistance && dist > 0) {
           const force = (CONFIG.attraction.safeDistance - dist) / dist * 0.5;
           char.x -= dx * force;
@@ -410,14 +530,19 @@
 
     function drawLines() {
       for (let line of lines) {
+        // 直线生长动画
         if (line.currentLength < line.length) {
           line.currentLength += line.growthSpeed;
           line.currentLength = min(line.currentLength, line.length);
         }
+        
         const age = frameCount - line.birthFrame;
         const fadeIn = min(age / 60, 1);
+        
         stroke(red(color(line.color)), green(color(line.color)), blue(color(line.color)), line.opacity * 255 * fadeIn);
         strokeWeight(line.thickness);
+        
+        // 绘制垂直线
         line(line.x, line.y, line.x, line.y + line.currentLength);
       }
     }
@@ -427,12 +552,19 @@
         const age = frameCount - dot.birthFrame;
         const fadeIn = min(age / 40, 1);
         const pulse = sin(frameCount * 0.03 + dot.pulsePhase) * 0.3 + 0.7;
+        
         const c = color(dot.color);
+        
+        // 外圈光晕
         noStroke();
         fill(red(c), green(c), blue(c), 15 * fadeIn * pulse);
         ellipse(dot.x, dot.y, dot.size * 4);
+        
+        // 中圈
         fill(red(c), green(c), blue(c), 40 * fadeIn * pulse);
         ellipse(dot.x, dot.y, dot.size * 2);
+        
+        // 核心
         fill(red(c), green(c), blue(c), 180 * fadeIn);
         ellipse(dot.x, dot.y, dot.size);
       }
@@ -442,27 +574,39 @@
       for (let char of chars) {
         const fontSize = char.fontSize;
         textSize(fontSize);
+        
         let c;
         if (char.isAttracted && char.targetColor) {
+          // 被吸引的字符使用目标颜色
           const targetC = color(char.targetColor);
           const originC = color(CONFIG.text.color);
+          
+          // 计算颜色过渡进度
           const distToTarget = dist(char.x, char.y, char.targetX, char.targetY);
           const maxDist = 100;
           const progress = constrain(1 - distToTarget / maxDist, 0, 1);
+          
           c = lerpColor(originC, targetC, progress);
         } else {
           c = color(char.color);
         }
+        
+        // 描边
         if (char.strokeWeight > 0) {
           stroke(color(char.strokeColor));
           strokeWeight(char.strokeWeight);
         } else {
           noStroke();
         }
+        
         fill(c);
         text(char.char, char.x, char.y);
       }
     }
+
+    // ═══════════════════════════════════════════════════════════════
+    //  工具函数
+    // ═══════════════════════════════════════════════════════════════
 
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
@@ -472,6 +616,10 @@
       return array;
     }
 
+    // ═══════════════════════════════════════════════════════════════
+    //  UI 控制面板
+    // ═══════════════════════════════════════════════════════════════
+
     const toggleBtn = document.getElementById('toggleBtn');
     const controlPanel = document.getElementById('controlPanel');
 
@@ -479,6 +627,7 @@
       controlPanel.classList.toggle('open');
     });
 
+    // 参数绑定
     document.getElementById('dotSpeed').addEventListener('input', (e) => {
       CONFIG.dot.generationInterval = 230 - parseInt(e.target.value);
     });
@@ -502,6 +651,7 @@
       initializeText();
     });
 
+    // 点击面板外部关闭
     document.addEventListener('click', (e) => {
       if (!controlPanel.contains(e.target) && !toggleBtn.contains(e.target)) {
         controlPanel.classList.remove('open');
