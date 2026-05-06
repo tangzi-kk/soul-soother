@@ -5,132 +5,123 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <title>Soul Soother - 心灵抚慰者</title>
+  <title>Soul Soother - 用抽象接住崩溃</title>
   <meta name="description" content="一个面向极端情绪状态人群的轻量级趣味治愈网站，用Z世代最懂的抽象自嘲语言，让濒临崩溃的人在会心一笑中获得短暂的喘息">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <main class="main-content">
     <div class="disclaimer">
-      <strong> 温馨提示</strong><br>
-      Soul Soother 是一个趣味治愈内容合集网站，所有内容仅供娱乐和放松，不能替代专业医疗建议。
+      <strong>温馨提示</strong> — Soul Soother 是一个趣味治愈内容合集网站，所有内容仅供娱乐和放松，不能替代专业医疗建议。
     </div>
 
     <div id="nightRescue" class="night-rescue hidden">
-      <div class="night-rescue-title">🌙 深夜急救包</div>
+      <div class="night-rescue-title">深夜急救包</div>
       <div class="night-rescue-text" id="nightRescueText"></div>
     </div>
 
-    <section class="guide-section" data-step="1">
-      <div class="guide-section-header">
-        <span class="guide-step-number">1</span>
-        <span class="guide-step-label">今日份</span>
-      </div>
-      <div class="daily-quote daily-quote--compact">
+    <section class="hero">
+      <span class="hero-label">Soul Soother</span>
+      <h1 class="hero-title">用抽象接住崩溃</h1>
+      <p class="hero-subtitle">用玩笑降低痛感，让濒临崩溃的人在会心一笑中获得短暂的喘息</p>
+      <a href="quiz.html" class="cta cta-primary">开始测试 →</a>
+    </section>
+
+    <section class="section">
+      <div class="daily-quote">
         <div class="daily-quote-text" id="dailyQuote">加载中...</div>
         <div class="daily-quote-footer">
           <span class="daily-quote-date" id="dailyDate"></span>
-          <button class="btn-refresh" onclick="refreshQuote()">🔄 换一句</button>
+          <button class="cta cta-ghost" onclick="refreshQuote()">换一句</button>
         </div>
       </div>
     </section>
 
-    <section class="guide-section" data-step="2">
-      <div class="guide-section-header">
-        <span class="guide-step-number">2</span>
-        <span class="guide-step-label">选一个让自己舒服点</span>
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <h2 class="section-title">选一个让自己舒服点</h2>
       </div>
       <div class="action-grid">
-        <a href="quiz.html" class="action-card action-card--primary" style="--delay: 0.1s;">
+        <a href="quiz.html" class="action-card">
           <div class="action-card-icon">🧠</div>
           <div class="action-card-title">精神状态检测</div>
           <div class="action-card-desc">测测你有多抽象</div>
         </a>
-        <a href="tools.html#fengwen" class="action-card" style="--delay: 0.15s;">
+        <a href="tools.html#fengwen" class="action-card">
           <div class="action-card-icon">📝</div>
           <div class="action-card-title">发疯文学生成</div>
           <div class="action-card-desc">把情绪变成段子</div>
         </a>
-        <a href="collection.html" class="action-card" style="--delay: 0.2s;">
+        <a href="collection.html" class="action-card">
           <div class="action-card-icon">🎮</div>
           <div class="action-card-title">治愈小游戏</div>
           <div class="action-card-desc">无聊时随便玩</div>
         </a>
-        <a href="tools.html#help-card" class="action-card" style="--delay: 0.25s;">
+        <a href="tools.html#help-card" class="action-card">
           <div class="action-card-icon">💝</div>
           <div class="action-card-title">抽互助卡</div>
           <div class="action-card-desc">今天也有人陪你</div>
         </a>
-        <a href="tools.html#alt-plan" class="action-card action-card--accent" style="--delay: 0.3s;">
-          <div class="action-card-icon"></div>
-          <div class="action-card-title">替代计划</div>
-          <div class="action-card-desc">先别急着死</div>
-        </a>
       </div>
     </section>
 
-    <section class="guide-section" data-step="3">
-      <div class="guide-section-header">
-        <span class="guide-step-number">3</span>
-        <span class="guide-step-label">来自陌生人的陪伴</span>
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">02</span>
+        <h2 class="section-title">来自陌生人的陪伴</h2>
       </div>
-      <div class="help-card-preview">
+      <div class="help-card-section">
         <div class="help-card-icon" id="helpCardIcon">🎲</div>
         <div class="help-card-text" id="helpCardText">点击抽一张属于你的互助卡</div>
-        <button class="btn btn-primary" onclick="drawHelpCard()">抽一张</button>
+        <button class="cta" onclick="drawHelpCard()">抽一张</button>
         <div class="help-card-sub">每一条都来自真实的人</div>
       </div>
     </section>
 
-    <section class="guide-section" data-step="4">
-      <div class="guide-section-header">
-        <span class="guide-step-number">4</span>
-        <span class="guide-step-label">你不是一个人</span>
+    <section class="section">
+      <div class="section-header">
+        <span class="section-number">03</span>
+        <h2 class="section-title">你不是一个人</h2>
       </div>
 
       <div class="danmu-section">
-        <div class="danmu-label">💬 陌生人弹幕</div>
+        <div class="danmu-label">陌生人弹幕</div>
         <div class="danmu-track-wrap">
           <div class="danmu-track" id="danmuTrack"></div>
         </div>
       </div>
 
-      <div class="help-section">
-        <div class="help-section-header">
-          <span class="help-section-icon"></span>
-          <div>
-            <div class="help-section-title">说点什么吧</div>
-            <div class="help-section-subtitle">不用写很多，一句话也可以</div>
-          </div>
+      <div class="help-posts-section">
+        <div class="help-textarea-wrap">
+          <textarea class="help-textarea" id="helpPost" placeholder="今天发生了什么？随便说一句..."></textarea>
+          <button class="cta cta-primary" onclick="postHelp()" style="width: 100%;">发布</button>
         </div>
-        <textarea class="help-textarea" id="helpPost" placeholder="今天发生了什么？随便说一句..."></textarea>
-        <div class="help-footer">
-          <span></span>
-          <button class="btn btn-primary" onclick="postHelp()" style="padding: 8px 18px; font-size: 13px;">发布</button>
-        </div>
-      </div>
 
-      <div class="help-posts-title">最新互助</div>
-      <div id="helpPosts">
-        <div class="help-post">
-          <div class="help-post-text">今天凌晨三点还没睡，但看到这句话突然觉得没那么孤单了</div>
-          <div class="help-post-footer">
-            <span class="help-post-time">刚刚</span>
-            <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
-          </div>
+        <div class="help-posts-header">
+          <span class="help-posts-title">最新互助</span>
         </div>
-        <div class="help-post">
-          <div class="help-post-text">又自伤了，但比上次少了一道，算进步吗</div>
-          <div class="help-post-footer">
-            <span class="help-post-time">5分钟前</span>
-            <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+        <div id="helpPosts">
+          <div class="help-post">
+            <div class="help-post-text">今天凌晨三点还没睡，但看到这句话突然觉得没那么孤单了</div>
+            <div class="help-post-footer">
+              <span class="help-post-time">刚刚</span>
+              <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+            </div>
           </div>
-        </div>
-        <div class="help-post">
-          <div class="help-post-text">测出来我是"阴暗爬行型"，笑死，确实</div>
-          <div class="help-post-footer">
-            <span class="help-post-time">10分钟前</span>
-            <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+          <div class="help-post">
+            <div class="help-post-text">又自伤了，但比上次少了一道，算进步吗</div>
+            <div class="help-post-footer">
+              <span class="help-post-time">5分钟前</span>
+              <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+            </div>
+          </div>
+          <div class="help-post">
+            <div class="help-post-text">测出来我是"阴暗爬行型"，笑死，确实</div>
+            <div class="help-post-footer">
+              <span class="help-post-time">10分钟前</span>
+              <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+            </div>
           </div>
         </div>
       </div>
@@ -140,30 +131,25 @@
   <nav class="bottom-nav">
     <div class="bottom-nav-inner">
       <a href="index.html" class="bottom-nav-item active">
-        <span class="bottom-nav-icon">🏠</span>
         <span>首页</span>
       </a>
       <a href="quiz.html" class="bottom-nav-item">
-        <span class="bottom-nav-icon">🧠</span>
         <span>测评</span>
       </a>
       <a href="collection.html" class="bottom-nav-item">
-        <span class="bottom-nav-icon">🎮</span>
         <span>合集</span>
       </a>
       <a href="tools.html" class="bottom-nav-item">
-        <span class="bottom-nav-icon">🛠️</span>
         <span>工具</span>
       </a>
       <a href="about.html" class="bottom-nav-item">
-        <span class="bottom-nav-icon">ℹ️</span>
         <span>关于</span>
       </a>
     </div>
   </nav>
 
   <footer class="footer">
-    <div class="footer-text">Soul Soother - 用抽象接住崩溃，用玩笑降低痛感</div>
+    <div class="footer-text">Soul Soother — 用抽象接住崩溃，用玩笑降低痛感</div>
     <div class="footer-text">本网站仅供娱乐和放松，不能替代专业医疗建议</div>
     <div class="footer-links">
       <a href="about.html">关于我们</a>
@@ -178,7 +164,6 @@
       loadDailyQuote();
       checkNightTime();
       initDanmu();
-      initGuideReveal();
     });
 
     function loadDailyQuote() {
@@ -195,11 +180,9 @@
       var quote = getRandomQuote();
       var el = document.getElementById('dailyQuote');
       el.style.opacity = '0';
-      el.style.transform = 'translateY(8px)';
       setTimeout(function() {
         el.textContent = quote;
         el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
       }, 250);
     }
 
@@ -227,14 +210,11 @@
       var textEl = document.getElementById('helpCardText');
       iconEl.style.opacity = '0';
       textEl.style.opacity = '0';
-      iconEl.style.transform = 'scale(0.5) rotate(-15deg)';
       setTimeout(function() {
         iconEl.textContent = card.icon || '✨';
         textEl.textContent = card.text;
         iconEl.style.opacity = '1';
         textEl.style.opacity = '1';
-        iconEl.style.transform = 'scale(1) rotate(0deg)';
-        iconEl.style.animation = 'float 3s ease-in-out infinite';
       }, 300);
     }
 
@@ -279,21 +259,6 @@
       posts.unshift({ content: content, time: new Date().toISOString() });
       if (posts.length > 50) posts = posts.slice(0, 50);
       localStorage.setItem('helpPosts', JSON.stringify(posts));
-    }
-
-    function initGuideReveal() {
-      var sections = document.querySelectorAll('.guide-section');
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('guide-section--visible');
-          }
-        });
-      }, { threshold: 0.1 });
-
-      sections.forEach(function(section) {
-        observer.observe(section);
-      });
     }
   </script>
 </body>

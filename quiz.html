@@ -12,7 +12,7 @@
 <body>
   <main class="main-content">
     <div class="disclaimer">
-      <strong>🌿 温馨提示</strong><br>
+      <strong>温馨提示</strong><br>
       以下测试仅供娱乐，非医学诊断。如果你感到情绪低落或有心理困扰，建议寻求专业帮助。
     </div>
 
@@ -38,8 +38,8 @@
         </div>
 
         <div class="quiz-nav">
-          <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">上一题</button>
-          <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">下一题</button>
+          <button class="cta cta-ghost" id="prevBtn" onclick="prevQuestion()">上一题</button>
+          <button class="cta cta-primary" id="nextBtn" onclick="nextQuestion()">下一题</button>
         </div>
       </div>
     </div>
@@ -55,8 +55,8 @@
           <div class="quiz-result-advice" id="resultAdvice"></div>
 
           <div class="result-actions">
-            <button class="btn btn-primary" onclick="shareResult()">📤 分享</button>
-            <button class="btn btn-secondary" onclick="restartQuiz()">🔄 再测</button>
+            <button class="cta cta-primary" onclick="shareResult()">分享</button>
+            <button class="cta cta-ghost" onclick="restartQuiz()">再测</button>
           </div>
 
           <div class="result-rec-title">适合你的内容</div>
@@ -133,7 +133,7 @@
           '</div>' +
           '<div class="quiz-card-meta">' +
             '<span class="quiz-card-time">⏱️ ' + q.duration + '</span>' +
-            '<button class="btn btn-primary" style="padding: 8px 18px; font-size: 13px;">开始测试</button>' +
+            '<button class="cta cta-primary" style="padding: 8px 18px; font-size: 13px;">开始测试</button>' +
           '</div>' +
         '</div>';
       }
