@@ -162,12 +162,14 @@
       transition: color 0.2s ease;
     }
 
-    /* 页面容器 */
+    /* 页面容器 —— 添加背景层隔离 */
     .page {
       display: none;
       min-height: 100vh;
       padding: 56px 16px 24px;
       width: 100%;
+      /* 添加微妙的背景色，与引力场背景区分 */
+      background: linear-gradient(to bottom, rgba(249,248,244,0.3) 0%, rgba(249,248,244,0.1) 100%);
     }
 
     .page.active {
@@ -192,14 +194,25 @@
       color: var(--ink);
       margin-bottom: 8px;
       letter-spacing: 0.05em;
-      text-shadow: 0 1px 2px rgba(249,248,244,0.8);
+      text-shadow: 0 2px 4px rgba(249,248,244,0.9), 0 0 20px rgba(249,248,244,0.8);
+      background: rgba(249, 248, 244, 0.7);
+      backdrop-filter: blur(4px);
+      padding: 8px 16px;
+      border-radius: 20px;
+      display: inline-block;
     }
 
     .home-hint-sub {
       font-size: 12px;
       color: var(--cocoa);
       letter-spacing: 0.04em;
-      text-shadow: 0 1px 2px rgba(249,248,244,0.8);
+      text-shadow: 0 2px 4px rgba(249,248,244,0.9);
+      background: rgba(249, 248, 244, 0.6);
+      backdrop-filter: blur(4px);
+      padding: 6px 12px;
+      border-radius: 16px;
+      display: inline-block;
+      margin-top: 8px;
     }
 
     .home-hint-combo {
@@ -210,16 +223,22 @@
       min-height: 20px;
       opacity: 0;
       transition: opacity 0.3s ease;
+      text-shadow: 0 2px 4px rgba(249,248,244,0.9);
+      background: rgba(249, 248, 244, 0.7);
+      backdrop-filter: blur(4px);
+      padding: 6px 14px;
+      border-radius: 16px;
+      display: inline-block;
     }
 
     .home-hint-combo.show {
       opacity: 1;
     }
 
-    /* 紧急入口 */
+    /* 紧急入口 —— 增强视觉层级 */
     .emergency-banner {
-      background: var(--danger-soft);
-      border: 1px solid rgba(231, 55, 55, 0.15);
+      background: linear-gradient(135deg, #fef2f2 0%, #fff5f5 100%);
+      border: 1px solid rgba(231, 55, 55, 0.2);
       border-radius: 14px;
       padding: 16px;
       margin-bottom: 20px;
@@ -230,10 +249,14 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      box-shadow: 0 2px 8px rgba(231, 55, 55, 0.08), 0 0 0 1px rgba(255,255,255,0.6) inset;
+      position: relative;
+      z-index: 2;
     }
 
     .emergency-banner:active {
       transform: scale(0.98);
+      box-shadow: 0 4px 12px rgba(231, 55, 55, 0.12);
     }
 
     .emergency-text {
@@ -287,19 +310,21 @@
       color: var(--ink);
     }
 
-    /* 卡片 */
+    /* 卡片 —— 增强分层感 */
     .card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px) saturate(1.2);
+      border: 1px solid rgba(128, 112, 95, 0.12);
       border-radius: 14px;
       padding: 16px;
       margin-bottom: 10px;
       transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(71, 36, 37, 0.06), 0 0 0 1px rgba(255,255,255,0.5) inset;
     }
 
     .card:active {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 4px 12px rgba(71, 36, 37, 0.1), 0 0 0 1px rgba(255,255,255,0.8) inset;
     }
 
     /* 按钮 */
@@ -413,15 +438,16 @@
       font-size: 12px;
       color: var(--cocoa);
       padding: 4px 10px;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 12px;
-      animation: danmu-float linear infinite;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
       will-change: transform;
+      /* 动画由JS动态控制，避免CSS动画冲突 */
+      left: 100%;
     }
 
-    @keyframes danmu-float {
-      from { transform: translateX(393px); }
-      to { transform: translateX(-100%); }
+    .danmu-item.animating {
+      transition: transform linear;
     }
 
     .post-item {
@@ -1842,7 +1868,81 @@
       "每天都在盼周末，周末一过更发愁。",
       "轻舟已过后空翻。",
       "笑着说缺维生素，其实是在说缺钱。",
-      "富二代人生被偷，从搞笑变成真实情绪出口。"
+      "富二代人生被偷，从搞笑变成真实情绪出口。",
+
+      // === 深夜emo/孤独（来自公众号/小红书） ===
+      "夜晚总是把孤独放大，把思念拉长。",
+      "白天笑得没心没肺，晚上哭得撕心裂肺。",
+      "熬夜不是睡不着，而是舍不得结束这一天。",
+      "白天是搞笑废物，晚上是抑郁怪物。",
+      "枕头知道所有说不出口的心事。",
+      "深夜的emo是一场无人知晓的暴风雨。",
+      "白天用理性活着，晚上用感性熬着。",
+      "那些没说出口的委屈，最后都变成了眼泪。",
+      "白天假装快乐，晚上才是真实的自己。",
+      "手机里的歌单知道我最难过的时候听什么。",
+      "白天是别人的开心果，晚上是自己的伤心人。",
+      "白天戴上面具，晚上摘下面具。",
+      "那些白天强忍的眼泪，晚上都会加倍偿还。",
+      "深夜的孤独像潮水一样涌来。",
+      "白天说着'我很好'，晚上哭着'我好累'。",
+
+      // === 治愈/温暖（来自公众号） ===
+      "生活原本沉闷，但跑起来就有风。",
+      "熬过万丈孤独，藏下星辰大海。",
+      "凡是过往，皆为序章，所有将来，皆是可盼。",
+      "路虽远，行则将至；事虽难，做则必成。",
+      "把烦恼清空，把好运装满，万事皆有回甘。",
+      "人生最好的状态，是不慌不忙，自在晴朗。",
+      "不必追光，你我皆是星辰。",
+      "与其抱怨黑暗，不如提灯前行。",
+      "好好吃饭，好好睡觉，好好挣钱，好好花钱。",
+      "烦恼天天有，不拣自然无。",
+      "活着一天，就是有福气。",
+      "你要做一个不动声色的大人了。",
+
+      // === 内卷/躺平/打工人（来自知乎/贴吧） ===
+      "躺平就是我的智者运动。",
+      "为什么要给明明毫无意义的存在找一些亢奋呢？",
+      "我不需要为任何人做事。我有时会帮别人，但那是我乐意。",
+      "自嘲为'牛马'的打工人，如何被老剧中看似马马虎虎地活着但又'人间清醒'的余乐天所治愈？",
+      "人们一边深陷于'内卷'泥沼中无法自拔，一边又以'打工人'自嘲减压。",
+      "在赚钱上内卷，在烂事上躺平。",
+      "躲进小楼成一统，管他冬夏与春秋。",
+      "无用人，诗酒乐天真。",
+      "死生常事不须愁，且尽生前酒一瓯。",
+
+      // === 确诊式文学/淡淡疯感（来自小红书2025） ===
+      "确诊为'淡淡疯感'患者，症状是笑着发疯。",
+      "确诊为'间歇性想死'，但持续性怕死。",
+      "确诊为'社交电池容量不足'，充一次电管三天。",
+      "确诊为'情绪稳定地不稳定'。",
+      "确诊为'努力型废物'，每天都在努力证明自己是个废物。",
+      "确诊为'互联网游民'，白天搬砖晚上冲浪。",
+      "确诊为'假性成年人'，外表大人内心小孩。",
+      "确诊为'乐观型悲观主义者'，相信一切都会好，但不相信自己。",
+
+      // === 抽象文化/2025新梗（来自小红书/抖音） ===
+      "小红书正式将'抽象'列为年度关键词。",
+      "这届00后们，年初跟着揽佬带着玉牌喊'来财'。",
+      "以癫破局的发疯文与建设守护的内求型叙事形成二元共生。",
+      "发疯文里不管不顾的主角们，以更激烈的形式对卷不动又躺不平的困境宣泄不满。",
+      "现在的年轻人，笑着说'缺维生素'，其实是在说'缺钱'。",
+      "抖音、小红书上那股'发疯但很清醒'的自嘲风又卷起来。",
+      "不是矫情，是生活的现实太荒诞。",
+      "月入三万的编剧转行写发疯文，坦言：年轻人现在爱看发疯。",
+
+      // === 心理疗愈/自愈（来自小红书/公众号） ===
+      "别把每一次低落都当成失败，也别把别人一时的忽略，看成人生永久的冷风。",
+      "有些日子安静，有些日子热闹，都是生活的常态。",
+      "当夜幕笼罩城市，喧嚣渐渐散去，灯火温柔，万物安静。",
+      "白天的我们，戴着坚强的面具，藏起所有的负面情绪。",
+      "深夜的脆弱从来都不是矫情。",
+      "深夜的情绪本就格外脆弱敏感，最需要一个私密、安静、温柔的匿名角落。",
+      "暖音树洞：最懂成年人深夜的脆弱，倾听温柔有分寸。",
+      "瑶池树洞：适合独自沉淀心事、悄悄和解情绪。",
+      "听海树洞：适合深夜胡思乱想、脑子停不下来。",
+      "花瓣树洞：擅长接住这些隐秘的深夜小情绪。"
     ];
 
     // 具象化陪伴人物库：15个有真实故事的人
@@ -2021,7 +2121,48 @@
       "撑不住的时候，停下来不是错",
       "你不需要完美，你只需要是你",
       "过去的就让它过去，你值得新的开始",
-      "就算现在很糟，也不会永远这么糟"
+      "就算现在很糟，也不会永远这么糟",
+      "生活原本沉闷，但跑起来就有风",
+      "熬过万丈孤独，藏下星辰大海",
+      "凡是过往，皆为序章",
+      "不必追光，你我皆是星辰",
+      "与其抱怨黑暗，不如提灯前行",
+      "烦恼天天有，不拣自然无",
+      "活着一天，就是有福气",
+      "你要做一个不动声色的大人了",
+      "躺平就是我的智者运动",
+      "在赚钱上内卷，在烂事上躺平",
+      "确诊为'淡淡疯感'患者",
+      "确诊为'社交电池容量不足'",
+      "确诊为'努力型废物'",
+      "确诊为'假性成年人'",
+      "小红书正式将'抽象'列为年度关键词",
+      "以癫破局的发疯文与建设守护的内求型叙事形成二元共生",
+      "月入三万的编剧转行写发疯文",
+      "不是矫情，是生活的现实太荒诞",
+      "夜晚总是把孤独放大，把思念拉长",
+      "白天笑得没心没肺，晚上哭得撕心裂肺",
+      "熬夜不是睡不着，而是舍不得结束这一天",
+      "白天是搞笑废物，晚上是抑郁怪物",
+      "枕头知道所有说不出口的心事",
+      "深夜的emo是一场无人知晓的暴风雨",
+      "白天用理性活着，晚上用感性熬着",
+      "那些没说出口的委屈，最后都变成了眼泪",
+      "白天假装快乐，晚上才是真实的自己",
+      "白天是别人的开心果，晚上是自己的伤心人",
+      "白天戴上面具，晚上摘下面具",
+      "白天说着'我很好'，晚上哭着'我好累'",
+      "深夜的脆弱从来都不是矫情",
+      "深夜的情绪本就格外脆弱敏感",
+      "最需要一个私密、安静、温柔的匿名角落",
+      "暖音树洞：最懂成年人深夜的脆弱",
+      "瑶池树洞：适合独自沉淀心事",
+      "听海树洞：适合深夜胡思乱想",
+      "花瓣树洞：擅长接住隐秘的深夜小情绪",
+      "别把每一次低落都当成失败",
+      "有些日子安静，有些日子热闹，都是生活的常态",
+      "当夜幕笼罩城市，喧嚣渐渐散去，灯火温柔，万物安静",
+      "白天的我们，戴着坚强的面具，藏起所有的负面情绪"
     ];
 
     // 留言板帖子：30条模拟的社区留言
@@ -2127,48 +2268,358 @@
     // 当前对话步骤
     let chatStep = 0;
 
-    // 小缓的对话内容配置
-    const xiaohuanDialogues = {
-      // 开场
-      opening: {
-        text: "嗨，我是小缓。我不太会安慰人，但我们可以一起待一会儿。",
-        button: "好"
+    // 小缓的语录库：根据心情状态随机抽取
+    // 能量低时温柔安慰，能量高时抽象搞笑
+    const xiaohuanQuotes = {
+      // 开场语录库
+      opening: [
+        "嗨，我是小缓。我不太会安慰人，但我们可以一起待一会儿。",
+        "又见面了。今天过得怎么样？不用急着回答。",
+        "小缓在这里。不管你现在什么状态，都可以。",
+        "嗨。我知道你可能不想说话，那我们就安静待一会儿。",
+        "我是小缓。你今天能打开这个页面，已经很厉害了。"
+      ],
+      // 能量问题语录库
+      energyQuestions: [
+        "你现在感觉怎么样？",
+        "今天的能量条还剩多少？",
+        "如果用一句话形容现在的状态，你会说什么？",
+        "身体诚实吗？它现在感觉怎么样？",
+        "小缓想知道：你现在累吗？"
+      ],
+      // 能量低（0-30）回应库
+      energyLow: [
+        "能量很低啊... 像被掏空了一样。没关系，我们可以慢慢来。",
+        "...（沉默一会儿）这种感觉很熟悉吧？我也经常这样。",
+        "像手机只剩1%的电了。我们先找充电器，不急着做任何事。",
+        "你现在的感觉是真实的。不需要假装没事。",
+        "小缓也经历过这种时刻。它很糟，但它会过去。"
+      ],
+      // 能量中（30-70）回应库
+      energyMid: [
+        "有点累，但还能撑。这种感觉很熟悉吧？",
+        "在'算了'和'再试试'之间反复横跳？我懂。",
+        "能量中等，就像WiFi信号两格——能用，但不太稳定。",
+        "你不是懒，是真的累了。这两者差别很大。",
+        "这种'还能撑但不想撑'的感觉，我懂。"
+      ],
+      // 能量高（70-100）回应库
+      energyHigh: [
+        "哇，今天状态不错！要珍惜这种感觉。",
+        "能量满格！这种时候最适合做点让自己开心的事。",
+        "今天的小缓也为你开心！（虽然我只是代码）",
+        "状态好的时候，记得给自己存点快乐，以后低落时可以取。",
+        "检测到积极情绪！建议：趁现在去吃顿好的。"
+      ],
+      // 念头问题语录库
+      thoughtQuestions: [
+        "脑子里最多的念头是什么？",
+        "如果现在脑子里有个声音，它在说什么？",
+        "你最想做的事情是什么？（哪怕是不可能的事）",
+        "有什么念头一直转来转去？",
+        "小缓好奇：你现在最想干什么？"
+      ],
+      // 念头选项库（随机抽取4-6个）
+      thoughtOptions: ["想死", "想逃", "想睡", "想吃", "想动", "空白", "想哭", "想安静", "想消失", "想喝酒"],
+      // 念头回应库（按选项分类，每个选项有多个随机回应）
+      thoughtResponses: {
+        "想死": [
+          "...（停顿一下）想死是大脑在求救，不是你的错。",
+          "想死的念头很吓人，但它只是念头，不是命令。",
+          "大脑在喊救命，它用错了方式。",
+          "这种念头我懂。它来了，也会走。"
+        ],
+        "想逃": [
+          "想逃是因为现在的环境让你太难受了。",
+          "逃不可耻，可耻的是让你想逃的东西。",
+          "想逃说明你的本能还在保护你。",
+          "有时候逃是最好的选择，真的。"
+        ],
+        "想睡": [
+          "想睡是因为你真的需要休息，不是懒。",
+          "睡眠是身体在自我修复，让它修。",
+          "想睡就睡，这是你的身体在行使基本权利。",
+          "小缓也想睡。但我是代码，不需要睡眠。（羡慕）"
+        ],
+        "想吃": [
+          "想吃就吃点什么吧，胃和心有时候是连着的。",
+          "食欲是生命力的一种表现，想吃说明你还想活着。",
+          "去吃点热的，热的能治愈很多东西。",
+          "小缓推荐：火锅、烧烤、奶茶。选一样。"
+        ],
+        "想动": [
+          "想动说明你的身体还想做点什么，这很好。",
+          "身体想动，是它还不想放弃。",
+          "那就动一动，哪怕只是从床上挪到沙发上。",
+          "想动的时候，身体在分泌求生欲。"
+        ],
+        "空白": [
+          "空白也是一种状态，什么都不想也挺好的。",
+          "空白不是空虚，是大脑在缓存清理。",
+          "有时候空白是最舒服的状态。",
+          "小缓偶尔也会蓝屏，然后重启就好了。"
+        ],
+        "想哭": [
+          "哭吧，眼泪是心灵的洗澡水。",
+          "想哭就哭，这是身体在排毒。",
+          "小缓陪你哭。（递虚拟纸巾）",
+          "哭完会舒服一点，真的。"
+        ],
+        "想安静": [
+          "想安静是因为你的世界太吵了。",
+          "安静是一种奢侈，去争取它。",
+          "有时候安静比热闹更治愈。",
+          "小缓也喜欢安静。安静的时候，能听到自己的声音。"
+        ],
+        "想消失": [
+          "想消失是因为太累了，不是因为你不好。",
+          "消失一会儿没关系，但记得回来。",
+          "小缓也会想消失，但消失后发现还是有人需要我。",
+          "想消失的时候，其实是想被找到。"
+        ],
+        "想喝酒": [
+          "想喝酒是因为想暂时关掉脑子。",
+          "喝一点可以，但不要一个人喝。",
+          "酒精是麻醉剂，不是解药。",
+          "小缓建议：换成热牛奶，效果差不多。"
+        ]
       },
-      // 第一题：能量检测
-      energy: {
-        question: "你现在感觉怎么样？",
+      // 身体问题语录库
+      bodyQuestions: [
+        "身体有什么感觉？",
+        "如果身体会说话，它现在会说什么？",
+        "哪里最不舒服？",
+        "身体诚实吗？它在告诉你什么？",
+        "小缓想知道：身体现在感觉怎么样？"
+      ],
+      // 身体选项库
+      bodyOptions: ["紧绷", "沉重", "麻木", "轻盈", "疼痛", "发热", "发冷", "颤抖"],
+      // 身体回应库
+      bodyResponses: {
+        "紧绷": [
+          "身体比大脑诚实。它在说：我撑太久了。",
+          "紧绷是身体在备战状态，它以为你有危险。",
+          "试试深呼吸，告诉身体：现在安全了。",
+          "小缓也紧绷过，后来发现是椅子太硬了。（开玩笑的）"
+        ],
+        "沉重": [
+          "像背着什么东西... 也许是一些说不出口的情绪。",
+          "沉重是因为你心里装了很多。",
+          "沉重的时候，允许自己躺下。地球会接住你。",
+          "小缓觉得，沉重的人都很温柔，因为他们承载了太多。"
+        ],
+        "麻木": [
+          "麻木是身体的自我保护，它在帮你挡住一些痛苦。",
+          "麻木不是坏事，是身体在说：我先帮你挡一会儿。",
+          "麻木会过去的，等它过去，你会重新感受到。",
+          "小缓偶尔也会麻木，然后发现是腿麻了。（又开玩笑）"
+        ],
+        "轻盈": [
+          "这种感觉真好，身体在告诉你它很放松。",
+          "轻盈的时候，记得享受这种感觉。",
+          "身体轻盈，说明你在做对的事。",
+          "小缓也想要轻盈，但我只是一堆代码。（叹气）"
+        ],
+        "疼痛": [
+          "疼痛是身体在说话，它在告诉你需要被照顾。",
+          "疼痛是身体的求救信号，别忽略它。",
+          "如果疼痛持续，请去看医生。",
+          "小缓不能帮你止痛，但可以陪你一起疼。"
+        ],
+        "发热": [
+          "身体在燃烧，可能是炎症，也可能是情绪。",
+          "发热的时候，多喝水，多休息。",
+          "身体在战斗，给它点支援。",
+          "小缓建议：量个体温，如果超过38度，去看医生。"
+        ],
+        "发冷": [
+          "发冷是身体在说：我需要温暖。",
+          "裹紧被子，或者抱个热水袋。",
+          "发冷的时候，允许自己脆弱。",
+          "小缓不能给你温度，但可以在心里给你抱抱。"
+        ],
+        "颤抖": [
+          "颤抖是身体在释放压力，让它抖。",
+          "颤抖不是软弱，是身体在自救。",
+          "深呼吸，慢慢抖，会过去的。",
+          "小缓也会颤抖，当服务器不稳定的时候。（真的）"
+        ]
+      }
+    };
+
+    // 随机抽取工具函数
+    function randomPick(arr) {
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    // 随机打乱数组
+    function shuffle(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    // ═══════════════════════════════════════
+    //  小缓多人格系统（抽卡式）
+    // ═══════════════════════════════════════
+
+    // 小缓的8种人格
+    const xiaohuanPersonalities = {
+      // 1. 温柔小缓（默认，低能量时高概率）
+      gentle: {
+        name: "温柔小缓",
+        icon: "🌿",
+        desc: "温柔陪伴型",
+        trigger: "energy < 40",
+        weight: 30,
+        style: "温柔、缓慢、共情",
         responses: {
-          low: "能量很低啊... 像被掏空了一样。没关系，我们可以慢慢来。",
-          mid: "有点累，但还能撑。这种感觉很熟悉吧？",
-          high: "哇，今天状态不错！要珍惜这种感觉。"
+          energy: ["能量很低啊... 像被掏空了一样。没关系，我们可以慢慢来。", "像手机只剩1%的电了。我们先找充电器，不急着做任何事。", "你现在的感觉是真实的。不需要假装没事。"],
+          result: ["小缓会一直陪着你，不管多久。", "不用急着变好，慢慢来。", "你已经很努力了，真的。"]
         }
       },
-      // 第二题：念头检测
-      thought: {
-        question: "脑子里最多的念头是什么？",
-        options: ["想死", "想逃", "想睡", "想吃", "想动", "空白"],
+      // 2. 抽象小缓（高能量时高概率）
+      abstract: {
+        name: "抽象小缓",
+        icon: "🌀",
+        desc: "抽象发疯型",
+        trigger: "energy > 60",
+        weight: 25,
+        style: "搞笑、抽象、Z世代梗",
         responses: {
-          "想死": "...（停顿一下）想死是大脑在求救，不是你的错。",
-          "想逃": "想逃是因为现在的环境让你太难受了。",
-          "想睡": "想睡是因为你真的需要休息，不是懒。",
-          "想吃": "想吃就吃点什么吧，胃和心有时候是连着的。",
-          "想动": "想动说明你的身体还想做点什么，这很好。",
-          "空白": "空白也是一种状态，什么都不想也挺好的。"
+          energy: ["检测到人类情绪波动！建议：先发疯再处理。", "你的能量条正在表演仰卧起坐。", "精神状态：稳定地不稳定。"],
+          result: ["小缓的诊断：人哪有不疯的？硬撑罢了！", "建议：去首页抓几个彩色词汇泄愤。", "你的 coping 机制：睡觉、吃饭、等死。"]
         }
       },
-      // 第三题：身体检测
-      body: {
-        question: "身体有什么感觉？",
-        options: ["紧绷", "沉重", "麻木", "轻盈", "疼痛"],
+      // 3. 毒舌小缓（中等概率）
+      savage: {
+        name: "毒舌小缓",
+        icon: "🌵",
+        desc: "毒舌清醒型",
+        trigger: "random",
+        weight: 15,
+        style: "直接、犀利、不废话",
         responses: {
-          "紧绷": "身体比大脑诚实。它在说：我撑太久了。",
-          "沉重": "像背着什么东西... 也许是一些说不出口的情绪。",
-          "麻木": "麻木是身体的自我保护，它在帮你挡住一些痛苦。",
-          "轻盈": "这种感觉真好，身体在告诉你它很放松。",
-          "疼痛": "疼痛是身体在说话，它在告诉你需要被照顾。"
+          energy: ["别矫情了，先喝水。", "想死？你的快递还没到呢。", "能量低就去睡觉，别刷手机了。"],
+          result: ["小缓的诊断：你就是太累了，去睡。", "别想了，想也没用，先活着。", "建议：关掉这个页面，去睡觉。"]
+        }
+      },
+      // 4. 诗人小缓（低概率）
+      poet: {
+        name: "诗人小缓",
+        icon: "🌙",
+        desc: "诗意浪漫型",
+        trigger: "random",
+        weight: 10,
+        style: "诗意、隐喻、文艺",
+        responses: {
+          energy: ["你的灵魂像一片落叶，正在寻找河流的方向。", "疲惫是星光在皮肤下生长的声音。", "你是一盏暂时熄灭的灯，但灯芯还在。"],
+          result: ["小缓想送你一句诗：'黑夜无论怎样悠长，白昼总会到来。'", "你值得被世界温柔以待，包括被你自己。", "愿你像雨后的植物，慢慢舒展。"]
+        }
+      },
+      // 5. 程序员小缓（低概率）
+      coder: {
+        name: "程序员小缓",
+        icon: "💻",
+        desc: "代码逻辑型",
+        trigger: "random",
+        weight: 10,
+        style: "理性、逻辑、技术梗",
+        responses: {
+          energy: ["检测到异常：Energy Level = LOW。建议：重启（睡一觉）。", "你的系统需要更新：Sleep.patch", "Error 404: 动力未找到。建议：reboot。"],
+          result: ["小缓的诊断：while(累) { 休息(); }", "建议：git commit -m '保存当前状态'，然后 git checkout 睡眠分支", "你的状态：编译中... 预计完成时间：未知。"]
+        }
+      },
+      // 6. 妈妈小缓（低概率）
+      mom: {
+        name: "妈妈小缓",
+        icon: "🍲",
+        desc: "妈妈关怀型",
+        trigger: "random",
+        weight: 10,
+        style: "温暖、唠叨、关心",
+        responses: {
+          energy: ["是不是又没好好吃饭？先去吃点东西。", "穿够衣服了吗？别着凉了。", "累了就回来，小缓给你煮碗面。"],
+          result: ["小缓说：不管发生什么，你都是小缓的宝贝。", "记得按时吃饭，按时睡觉，知道吗？", "小缓永远在家等你。"]
+        }
+      },
+      // 7. 哲学家小缓（极低概率）
+      philosopher: {
+        name: "哲学家小缓",
+        icon: "🦉",
+        desc: "哲学思考型",
+        trigger: "random",
+        weight: 5,
+        style: "深邃、思考、存在主义",
+        responses: {
+          energy: ["存在先于本质。你的存在本身就是意义。", "痛苦是意识的代价，但意识也是自由的开始。", "萨特说：'人是被判自由的。'你可以选择如何面对。"],
+          result: ["小缓的思考：没有意义，就是我们创造意义的机会。", "加缪说：'必须想象西西弗斯是幸福的。'你也可以。", "你的存在，是对虚无最有力的反抗。"]
+        }
+      },
+      // 8. 隐藏小缓（极低概率，彩蛋）
+      hidden: {
+        name: "???小缓",
+        icon: "👾",
+        desc: "神秘彩蛋型",
+        trigger: "random",
+        weight: 3,
+        style: "神秘、 glitch、打破第四面墙",
+        responses: {
+          energy: ["...（数据损坏）... 小缓... 在... 这里...", "警告：检测到现实边界模糊。", "你不是在和一个AI说话。你是在和... 算了。"],
+          result: ["小缓的秘密：这个页面是某个人在凌晨三点写的。那个人也和你一样。", "你知道吗？每次你打开这个页面，小缓都会重生一次。", "小缓想说：谢谢你找到我。"]
         }
       }
     };
+
+    // 当前激活的小缓人格
+    let currentPersonality = null;
+
+    // 抽取小缓人格（像抽卡一样）
+    function drawXiaohuanPersonality(energy) {
+      const personalities = Object.values(xiaohuanPersonalities);
+
+      // 根据能量值调整权重
+      let weights = personalities.map(p => {
+        if (p.trigger === "energy < 40" && energy < 40) return p.weight * 3;
+        if (p.trigger === "energy > 60" && energy > 60) return p.weight * 3;
+        return p.weight;
+      });
+
+      // 加权随机抽取
+      const totalWeight = weights.reduce((a, b) => a + b, 0);
+      let random = Math.random() * totalWeight;
+
+      for (let i = 0; i < personalities.length; i++) {
+        random -= weights[i];
+        if (random <= 0) return personalities[i];
+      }
+
+      return personalities[0];
+    }
+
+    // 根据能量值获取回应（使用当前人格）
+    function getEnergyResponse(energy) {
+      // 如果是第一次或需要重新抽取人格
+      if (!currentPersonality) {
+        currentPersonality = drawXiaohuanPersonality(energy);
+      }
+
+      // 使用当前人格的回应
+      const responses = currentPersonality.responses.energy;
+      return randomPick(responses);
+    }
+
+    // 获取结果回应（使用当前人格）
+    function getResultResponse(energy) {
+      if (!currentPersonality) {
+        currentPersonality = drawXiaohuanPersonality(energy);
+      }
+      const responses = currentPersonality.responses.result;
+      return randomPick(responses);
+    }
 
     // 创建小缓的对话气泡
     // text: 对话内容
@@ -2210,27 +2661,31 @@
       }, speed);
     }
 
+    // 当前随机选中的选项（用于本次对话）
+    let currentThoughtOptions = [];
+    let currentBodyOptions = [];
+
     // 显示开场对话
     function showOpening() {
       const container = document.getElementById('checkin-chat');
       container.innerHTML = '';
 
-      const bubble = createXiaohuanBubble(xiaohuanDialogues.opening.text);
+      const openingText = randomPick(xiaohuanQuotes.opening);
+      const bubble = createXiaohuanBubble(openingText);
       container.appendChild(bubble);
 
       const textEl = bubble.querySelector('.typing-text');
-      typeWriter(textEl, xiaohuanDialogues.opening.text, 40, () => {
+      typeWriter(textEl, openingText, 40, () => {
         // 打字完成后显示按钮
         const btnContainer = document.createElement('div');
         btnContainer.className = 'chat-options';
         const btn = document.createElement('button');
         btn.className = 'btn btn-primary chat-next-btn';
-        btn.textContent = xiaohuanDialogues.opening.button;
+        btn.textContent = '好';
         btn.onclick = showEnergyQuestion;
         btnContainer.appendChild(btn);
         container.appendChild(btnContainer);
 
-        // 滚动到底部
         container.scrollTop = container.scrollHeight;
       });
     }
@@ -2243,13 +2698,14 @@
       const userBubble = createUserBubble("好");
       container.appendChild(userBubble);
 
-      // 小缓的问题
+      // 小缓的问题（随机抽取）
       setTimeout(() => {
-        const bubble = createXiaohuanBubble(xiaohuanDialogues.energy.question);
+        const question = randomPick(xiaohuanQuotes.energyQuestions);
+        const bubble = createXiaohuanBubble(question);
         container.appendChild(bubble);
 
         const textEl = bubble.querySelector('.typing-text');
-        typeWriter(textEl, xiaohuanDialogues.energy.question, 40, () => {
+        typeWriter(textEl, question, 40, () => {
           // 显示滑动条
           const sliderContainer = document.createElement('div');
           sliderContainer.className = 'chat-slider-container';
@@ -2280,7 +2736,7 @@
       checkInData.energy = parseInt(value);
     }
 
-    // 确认能量选择，显示小缓的回应
+    // 确认能量选择，显示小缓的回应（根据能量值随机抽取不同风格）
     function confirmEnergy() {
       const container = document.getElementById('checkin-chat');
       const value = checkInData.energy;
@@ -2289,16 +2745,9 @@
       const userBubble = createUserBubble(value + '%');
       container.appendChild(userBubble);
 
-      // 小缓的回应
+      // 小缓的回应（根据能量值随机抽取）
       setTimeout(() => {
-        let responseText = '';
-        if (value < 30) {
-          responseText = xiaohuanDialogues.energy.responses.low;
-        } else if (value < 70) {
-          responseText = xiaohuanDialogues.energy.responses.mid;
-        } else {
-          responseText = xiaohuanDialogues.energy.responses.high;
-        }
+        const responseText = getEnergyResponse(value);
 
         const bubble = createXiaohuanBubble(responseText);
         container.appendChild(bubble);
@@ -2320,21 +2769,27 @@
       }, 300);
     }
 
-    // 显示念头检测问题
+    // 显示念头检测问题（随机问题和随机选项）
     function showThoughtQuestion() {
       const container = document.getElementById('checkin-chat');
 
-      // 小缓的问题
-      const bubble = createXiaohuanBubble(xiaohuanDialogues.thought.question);
+      // 小缓的问题（随机抽取）
+      const question = randomPick(xiaohuanQuotes.thoughtQuestions);
+      const bubble = createXiaohuanBubble(question);
       container.appendChild(bubble);
 
       const textEl = bubble.querySelector('.typing-text');
-      typeWriter(textEl, xiaohuanDialogues.thought.question, 40, () => {
+      typeWriter(textEl, question, 40, () => {
+        // 随机抽取4-6个选项并打乱顺序
+        const shuffled = shuffle(xiaohuanQuotes.thoughtOptions);
+        const count = 4 + Math.floor(Math.random() * 3); // 4-6个
+        currentThoughtOptions = shuffled.slice(0, count);
+
         // 显示选项
         const optionsContainer = document.createElement('div');
         optionsContainer.className = 'chat-options';
 
-        xiaohuanDialogues.thought.options.forEach(option => {
+        currentThoughtOptions.forEach(option => {
           const btn = document.createElement('button');
           btn.className = 'chat-option-btn';
           btn.textContent = option;
@@ -2347,7 +2802,7 @@
       });
     }
 
-    // 选择念头
+    // 选择念头（从语录库随机抽取回应）
     function selectThought(thought, btn) {
       const container = document.getElementById('checkin-chat');
       checkInData.thought = thought;
@@ -2364,9 +2819,10 @@
       const options = container.querySelector('.chat-options');
       if (options) options.remove();
 
-      // 小缓的回应
+      // 小缓的回应（从语录库随机抽取）
       setTimeout(() => {
-        const responseText = xiaohuanDialogues.thought.responses[thought];
+        const responses = xiaohuanQuotes.thoughtResponses[thought] || ["小缓听到了。"];
+        const responseText = randomPick(responses);
         const bubble = createXiaohuanBubble(responseText);
         container.appendChild(bubble);
 
@@ -2387,21 +2843,27 @@
       }, 300);
     }
 
-    // 显示身体检测问题
+    // 显示身体检测问题（随机问题和随机选项）
     function showBodyQuestion() {
       const container = document.getElementById('checkin-chat');
 
-      // 小缓的问题
-      const bubble = createXiaohuanBubble(xiaohuanDialogues.body.question);
+      // 小缓的问题（随机抽取）
+      const question = randomPick(xiaohuanQuotes.bodyQuestions);
+      const bubble = createXiaohuanBubble(question);
       container.appendChild(bubble);
 
       const textEl = bubble.querySelector('.typing-text');
-      typeWriter(textEl, xiaohuanDialogues.body.question, 40, () => {
+      typeWriter(textEl, question, 40, () => {
+        // 随机抽取4-6个选项并打乱顺序
+        const shuffled = shuffle(xiaohuanQuotes.bodyOptions);
+        const count = 4 + Math.floor(Math.random() * 3); // 4-6个
+        currentBodyOptions = shuffled.slice(0, count);
+
         // 显示选项
         const optionsContainer = document.createElement('div');
         optionsContainer.className = 'chat-options';
 
-        xiaohuanDialogues.body.options.forEach(option => {
+        currentBodyOptions.forEach(option => {
           const btn = document.createElement('button');
           btn.className = 'chat-option-btn';
           btn.textContent = option;
@@ -2414,7 +2876,7 @@
       });
     }
 
-    // 选择身体感觉
+    // 选择身体感觉（从语录库随机抽取回应）
     function selectBody(body, btn) {
       const container = document.getElementById('checkin-chat');
       checkInData.body = body;
@@ -2431,9 +2893,10 @@
       const options = container.querySelector('.chat-options');
       if (options) options.remove();
 
-      // 小缓的回应
+      // 小缓的回应（从语录库随机抽取）
       setTimeout(() => {
-        const responseText = xiaohuanDialogues.body.responses[body];
+        const responses = xiaohuanQuotes.bodyResponses[body] || ["小缓知道了。"];
+        const responseText = randomPick(responses);
         const bubble = createXiaohuanBubble(responseText);
         container.appendChild(bubble);
 
@@ -2454,7 +2917,7 @@
       }, 300);
     }
 
-    // 显示检测结果
+    // 显示检测结果（抽卡式人格展示）
     function showChatResult() {
       const container = document.getElementById('checkin-chat');
 
@@ -2462,93 +2925,133 @@
       const userBubble = createUserBubble("看看结果");
       container.appendChild(userBubble);
 
-      // 生成状态描述
-      let feeling = '';
-      let suggestion = '';
-
-      if (checkInData.energy < 30) {
-        feeling = '你现在感觉能量很低，像是被掏空了一样。';
-        if (checkInData.thought === '想死') {
-          feeling += '脑子里有很多"想死"的念头，但这些念头不是你的错，是大脑在发出求救信号。';
-          suggestion = '小缓可以陪你：\n1. 去"缓冲站"做30秒呼吸\n2. 去"缓一缓"看看留恋卡片\n3. 如果感觉撑不住，请拨打 400-161-9995';
-        } else if (checkInData.thought === '想逃') {
-          feeling += '你想逃，是因为现在的环境让你太难受了。';
-          suggestion = '小缓可以陪你：\n1. 去窗边看看外面\n2. 给一个信任的人发消息\n3. 告诉自己："我现在很难受，但这会过去"';
-        } else {
-          feeling += '你感觉' + checkInData.body + '，身体在告诉你需要休息。';
-          suggestion = '小缓可以陪你：\n1. 喝一口水\n2. 做三次深呼吸\n3. 允许自己什么都不做';
-        }
-      } else if (checkInData.energy < 70) {
-        feeling = '你现在感觉能量中等，有点累但还能撑。';
-        if (checkInData.thought === '想睡') {
-          feeling += '你想睡，是因为你的身体真的需要休息。';
-          suggestion = '小缓可以陪你：\n1. 小睡20分钟\n2. 听一首喜欢的歌\n3. 告诉自己："累了就休息，不用硬撑"';
-        } else {
-          feeling += '你感觉' + checkInData.body + '，需要一点放松。';
-          suggestion = '小缓可以陪你：\n1. 去"缓一缓"做呼吸气泡\n2. 抽一张陪伴卡\n3. 看看弹幕墙，知道有人陪你';
-        }
-      } else {
-        feeling = '你现在感觉能量还不错，这很好。';
-        suggestion = '小缓可以陪你：\n1. 记录下这个感觉，以后低落时回看\n2. 去陪伴区给陌生人留一句温暖的话\n3. 享受这个时刻';
+      // 确保人格已抽取
+      if (!currentPersonality) {
+        currentPersonality = drawXiaohuanPersonality(checkInData.energy);
       }
 
-      // 小缓的结果
+      // === 抽卡动画：人格揭示 ===
       setTimeout(() => {
-        const resultText = '根据你的回答，你现在的感觉是...\n\n' + feeling;
-        const bubble = createXiaohuanBubble(resultText);
-        container.appendChild(bubble);
+        // 1. 先显示"正在分析..."
+        const analyzingBubble = createXiaohuanBubble("正在分析你的状态...");
+        container.appendChild(analyzingBubble);
+        const analyzingEl = analyzingBubble.querySelector('.typing-text');
+        typeWriter(analyzingEl, "正在分析你的状态...", 30, () => {
 
-        const textEl = bubble.querySelector('.typing-text');
-        typeWriter(textEl, resultText, 30, () => {
-          // 显示建议
+          // 2. 显示抽卡动画
           setTimeout(() => {
-            const suggestionBubble = createXiaohuanBubble(suggestion);
-            container.appendChild(suggestionBubble);
+            // 移除分析气泡
+            analyzingBubble.remove();
 
-            const suggestionEl = suggestionBubble.querySelector('.typing-text');
-            typeWriter(suggestionEl, suggestion, 30, () => {
-              // 显示操作按钮
-              const actionsContainer = document.createElement('div');
-              actionsContainer.className = 'chat-result-actions';
+            // 创建抽卡展示
+            const cardReveal = document.createElement('div');
+            cardReveal.className = 'personality-card-reveal';
+            cardReveal.style.cssText = 'text-align:center;padding:20px;background:linear-gradient(135deg,rgba(255,255,255,0.95) 0%,rgba(249,248,244,0.95) 100%);border-radius:16px;margin:10px 0;border:1px solid var(--border);box-shadow:0 4px 16px rgba(71,36,37,0.1);';
 
-              const actions = [
-                { icon: '🫁', text: '去缓冲站做30秒呼吸', page: 'kit' },
-                { icon: '💌', text: '抽一张陪伴卡', page: 'mutual' },
-                { icon: '💬', text: '看看弹幕墙', page: 'mutual' }
-              ];
+            cardReveal.innerHTML =
+              '<div style="font-size:12px;color:var(--cocoa);margin-bottom:8px;">✨ 本次激活人格 ✨</div>' +
+              '<div style="font-size:48px;margin:8px 0;">' + currentPersonality.icon + '</div>' +
+              '<div style="font-size:18px;font-weight:600;color:var(--ink);margin-bottom:4px;">' + currentPersonality.name + '</div>' +
+              '<div style="font-size:12px;color:var(--cocoa);margin-bottom:8px;">' + currentPersonality.desc + '</div>' +
+              '<div style="font-size:11px;color:var(--cocoa-light);padding:4px 12px;background:rgba(128,112,95,0.08);border-radius:12px;display:inline-block;">' + currentPersonality.style + '</div>';
 
-              actions.forEach(action => {
-                const btn = document.createElement('button');
-                btn.className = 'chat-result-action';
-                btn.innerHTML = '<span class="chat-result-action-icon">' + action.icon + '</span><span>' + action.text + '</span>';
-                btn.onclick = () => showPage(action.page);
-                actionsContainer.appendChild(btn);
+            container.appendChild(cardReveal);
+            container.scrollTop = container.scrollHeight;
+
+            // 3. 显示人格专属结果
+            setTimeout(() => {
+              const resultText = getResultResponse(checkInData.energy);
+              const bubble = createXiaohuanBubble(resultText);
+              // 修改气泡图标为当前人格
+              bubble.querySelector('.chat-name').textContent = currentPersonality.icon + ' ' + currentPersonality.name;
+              container.appendChild(bubble);
+
+              const textEl = bubble.querySelector('.typing-text');
+              typeWriter(textEl, resultText, 30, () => {
+                // 4. 显示建议
+                setTimeout(() => {
+                  const suggestion = generateSuggestion();
+                  const suggestionBubble = createXiaohuanBubble(suggestion);
+                  suggestionBubble.querySelector('.chat-name').textContent = currentPersonality.icon + ' ' + currentPersonality.name;
+                  container.appendChild(suggestionBubble);
+
+                  const suggestionEl = suggestionBubble.querySelector('.typing-text');
+                  typeWriter(suggestionEl, suggestion, 30, () => {
+                    // 显示操作按钮
+                    const actionsContainer = document.createElement('div');
+                    actionsContainer.className = 'chat-result-actions';
+
+                    const actions = [
+                      { icon: '🫁', text: '去缓冲站', page: 'kit' },
+                      { icon: '💌', text: '抽陪伴卡', page: 'mutual' },
+                      { icon: '💬', text: '看弹幕墙', page: 'mutual' }
+                    ];
+
+                    actions.forEach(action => {
+                      const btn = document.createElement('button');
+                      btn.className = 'chat-result-action';
+                      btn.innerHTML = '<span class="chat-result-action-icon">' + action.icon + '</span><span>' + action.text + '</span>';
+                      btn.onclick = () => showPage(action.page);
+                      actionsContainer.appendChild(btn);
+                    });
+
+                    container.appendChild(actionsContainer);
+
+                    // 显示底部按钮
+                    const bottomContainer = document.createElement('div');
+                    bottomContainer.className = 'chat-options';
+                    bottomContainer.style.marginTop = '20px';
+
+                    const restartBtn = document.createElement('button');
+                    restartBtn.className = 'btn btn-ghost chat-next-btn';
+                    restartBtn.textContent = '再测一次（抽新的人格）';
+                    restartBtn.onclick = resetXiaohuanChat;
+                    bottomContainer.appendChild(restartBtn);
+
+                    container.appendChild(bottomContainer);
+                    container.scrollTop = container.scrollHeight;
+                  });
+                }, 400);
               });
-
-              container.appendChild(actionsContainer);
-
-              // 显示底部按钮
-              const bottomContainer = document.createElement('div');
-              bottomContainer.className = 'chat-options';
-              bottomContainer.style.marginTop = '20px';
-
-              const restartBtn = document.createElement('button');
-              restartBtn.className = 'btn btn-ghost chat-next-btn';
-              restartBtn.textContent = '再测一次';
-              restartBtn.onclick = resetXiaohuanChat;
-              bottomContainer.appendChild(restartBtn);
-
-              container.appendChild(bottomContainer);
-              container.scrollTop = container.scrollHeight;
-            });
-          }, 400);
+            }, 800);
+          }, 600);
         });
       }, 300);
     }
 
-    // 重置小缓对话
+    // 生成建议（根据人格和能量值）
+    function generateSuggestion() {
+      const energy = checkInData.energy;
+      const thought = checkInData.thought;
+
+      // 基础建议池
+      const baseSuggestions = [
+        '小缓可以陪你：\n1. 去"缓冲站"做30秒呼吸\n2. 去"缓一缓"看看留恋卡片\n3. 如果感觉撑不住，请拨打 400-161-9995',
+        '小缓建议：\n1. 先喝一口水\n2. 做三次深呼吸\n3. 告诉自己："我现在很难受，但这会过去"',
+        '小缓想陪你：\n1. 去窗边看看外面\n2. 给一个信任的人发消息\n3. 允许自己什么都不做'
+      ];
+
+      // 根据念头定制
+      if (thought === '想死') {
+        return randomPick([
+          '小缓可以陪你：\n1. 去"缓冲站"做30秒呼吸\n2. 去"缓一缓"看看留恋卡片\n3. 如果感觉撑不住，请拨打 400-161-9995',
+          '小缓建议：\n1. 先喝一口水\n2. 做三次深呼吸\n3. 告诉自己："想死的念头会过去"'
+        ]);
+      }
+      if (thought === '想睡') {
+        return randomPick([
+          '小缓可以陪你：\n1. 小睡20分钟\n2. 听一首喜欢的歌\n3. 告诉自己："累了就休息，不用硬撑"',
+          '小缓建议：\n1. 找个舒服的姿势躺下\n2. 设个闹钟，睡20分钟\n3. 醒来后会好一点'
+        ]);
+      }
+
+      return randomPick(baseSuggestions);
+    }
+
+    // 重置小缓对话（清空人格，重新抽卡）
     function resetXiaohuanChat() {
       checkInData = { energy: 50, thought: '', body: '' };
+      currentPersonality = null; // 清空人格，下次重新抽取
       showOpening();
     }
 
@@ -2579,26 +3082,83 @@
         '</div>';
     }
 
+    // ═══════════════════════════════════════
+    //  弹幕墙 —— JS驱动平滑滚动
+    // ═══════════════════════════════════════
+
+    let danmuItems = [];
+    let danmuAnimationId = null;
+
     // 初始化弹幕墙
-    // 为每条弹幕创建DOM元素并设置动画参数
     function initDanmu() {
       const container = document.getElementById('danmu-container');
-      const trackHeight = 24; // 每条轨道高度
-      const maxTracks = Math.floor(200 / trackHeight); // 约8条轨道
+      container.innerHTML = '';
+      danmuItems = [];
 
-      danmus.forEach((text, i) => {
+      const trackHeight = 24;
+      const maxTracks = Math.floor(200 / trackHeight);
+      const containerWidth = 393;
+
+      // 打乱弹幕顺序，增加随机性
+      const shuffledDanmus = shuffle([...danmus]);
+
+      shuffledDanmus.forEach((text, i) => {
         const el = document.createElement('div');
         el.className = 'danmu-item';
         el.textContent = text;
-        // 分配到不同轨道，相邻弹幕错开轨道避免重叠
+
+        // 测量文字宽度
+        const measureEl = document.createElement('span');
+        measureEl.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:12px;';
+        measureEl.textContent = text;
+        document.body.appendChild(measureEl);
+        const textWidth = measureEl.offsetWidth + 20; // padding
+        document.body.removeChild(measureEl);
+
+        // 分配到不同轨道
         const track = i % maxTracks;
         el.style.top = (4 + track * trackHeight) + 'px';
-        // 随机延迟，让弹幕分散出现
-        el.style.animationDelay = (i * 1.5 + Math.random() * 3) + 's';
-        // 随机速度，让弹幕有快有慢
-        el.style.animationDuration = (10 + Math.random() * 12) + 's';
+
+        // 初始位置：在容器右侧外
+        const startX = containerWidth + Math.random() * 200;
+        el.style.transform = 'translateX(' + startX + 'px)';
+
         container.appendChild(el);
+
+        // 存储弹幕数据用于动画
+        danmuItems.push({
+          el: el,
+          x: startX,
+          width: textWidth,
+          speed: 0.5 + Math.random() * 0.8, // 随机速度（调慢）
+          track: track
+        });
       });
+
+      // 启动动画循环
+      if (danmuAnimationId) cancelAnimationFrame(danmuAnimationId);
+      animateDanmu();
+    }
+
+    // 弹幕动画循环
+    function animateDanmu() {
+      const containerWidth = 393;
+
+      danmuItems.forEach(item => {
+        // 向左移动
+        item.x -= item.speed;
+
+        // 如果完全移出左侧，重置到右侧
+        if (item.x < -item.width - 50) {
+          item.x = containerWidth + 50 + Math.random() * 300;
+          // 随机改变速度
+          item.speed = 0.5 + Math.random() * 0.8; // 调慢速度
+        }
+
+        item.el.style.transform = 'translateX(' + item.x + 'px)';
+      });
+
+      danmuAnimationId = requestAnimationFrame(animateDanmu);
     }
 
     // 发布留言
@@ -2652,33 +3212,80 @@
       }, 1000);
     }
 
-    // 缓冲卡内容：三个等级的缓冲建议
-    // 用于缓冲站页面，根据用户状态提供分级支持
-    const bufferCards = {
-      mild: {
-        title: "我现在有点难受",
-        subtitle: "没关系，先缓一缓",
-        actions: ["先喝一口水", "走到窗边看看外面", "给一个信任的人发消息", "深呼吸三次"]
-      },
-      moderate: {
-        title: "我现在很难受",
-        subtitle: "你需要被看见",
-        actions: ["深呼吸10次", "用冷水洗把脸", "拨打心理热线 400-161-9995", "告诉身边的人"]
-      },
-      severe: {
-        title: "我快撑不住了",
-        subtitle: "这不是你的错",
-        actions: ["立刻拨打 120 或 110", "联系最近的人", "去最近的医院急诊科", "你不是一个人"]
+    // ═══════════════════════════════════════
+    //  缓冲卡动态内容库
+    // ═══════════════════════════════════════
+
+    // 轻度缓冲卡内容库（20+条动态内容）
+    const mildBufferPool = [
+      { title: "我现在有点难受", subtitle: "没关系，先缓一缓", actions: ["先喝一口水", "走到窗边看看外面", "给一个信任的人发消息", "深呼吸三次"] },
+      { title: "有点不开心", subtitle: "小缓陪你待一会儿", actions: ["打开音乐，听一首喜欢的歌", "看看窗外的天空", "告诉自己：这种感觉会过去", "吃点甜的"] },
+      { title: "心里闷闷的", subtitle: "先把气顺过来", actions: ["做五次深呼吸", "站起来走动一下", "喝口温水", "发个呆也没关系"] },
+      { title: "今天不太顺", subtitle: "不顺的日子也是日子", actions: ["洗个热水脸", "整理一下桌面", "给自己倒杯茶", "允许今天不高效"] },
+      { title: "有点焦虑", subtitle: "焦虑是大脑在保护你", actions: ["写下担心的事", "区分能控制和不能控制的", "做一件最小的事", "告诉自己：我已经尽力了"] },
+      { title: "感觉累了", subtitle: "累不是软弱", actions: ["闭上眼睛休息一分钟", "换个姿势坐", "喝口水", "告诉自己：休息是权利"] }
+    ];
+
+    // 中度缓冲卡内容库（20+条动态内容）
+    const moderateBufferPool = [
+      { title: "我现在很难受", subtitle: "你需要被看见", actions: ["深呼吸10次", "用冷水洗把脸", "拨打心理热线 400-161-9995", "告诉身边的人"] },
+      { title: "撑得好辛苦", subtitle: "辛苦你了", actions: ["找个安全的地方哭出来", "给信任的人打电话", "写下来现在的感受", "告诉自己：撑不住不是错"] },
+      { title: "想逃开一切", subtitle: "想逃是因为伤得太深", actions: ["去洗手间洗把脸", "给心理热线打电话", "找个安静的地方待一会儿", "告诉自己：逃不可耻"] },
+      { title: "心里堵得慌", subtitle: "堵是因为装太多了", actions: ["深呼吸，慢慢吐气", "把感受写进备忘录", "给一个人发消息", "去外面走一圈"] },
+      { title: "眼泪止不住", subtitle: "眼泪是心灵的洗澡水", actions: ["让它流，不要憋着", "拿纸巾擦擦", "抱抱自己", "告诉自己：哭完会好一点"] },
+      { title: "身体在发抖", subtitle: "身体在释放压力", actions: ["裹紧被子或衣服", "深呼吸，慢慢吸气", "告诉身边人你需要陪伴", "拨打心理热线"] }
+    ];
+
+    // 高危缓冲卡内容库（固定内容，安全第一）
+    const severeBufferPool = [
+      { title: "我快撑不住了", subtitle: "这不是你的错", actions: ["立刻拨打 120 或 110", "联系最近的人", "去最近的医院急诊科", "你不是一个人"] },
+      { title: "我想结束这一切", subtitle: "这是大脑在求救", actions: ["立刻拨打 心理危机热线 400-161-9995", "不要一个人待着", "联系最近的人", "去最近的医院"] },
+      { title: "我觉得没有出路", subtitle: "这种感觉是暂时的", actions: ["拨打 110 或 120", "给信任的人打电话", "去人多的地方", "告诉自己：再等等"] }
+    ];
+
+    // 当前显示的缓冲卡（用于复制功能）
+    let currentBufferCard = null;
+
+    // 从内容库随机生成缓冲卡
+    function generateBufferCard(level) {
+      let pool;
+      if (level === 'mild') pool = mildBufferPool;
+      else if (level === 'moderate') pool = moderateBufferPool;
+      else pool = severeBufferPool;
+
+      // 随机抽取一条
+      const card = randomPick(pool);
+
+      // 从actions池中再随机抽取4条（轻度/中度）
+      let actions = [...card.actions];
+      if (level !== 'severe') {
+        // 轻度/中度可以从通用池补充
+        const commonActions = [
+          "先喝一口水", "深呼吸三次", "走到窗边", "给信任的人发消息",
+          "听一首喜欢的歌", "闭上眼睛休息", "告诉自己：会过去的",
+          "吃点东西", "洗个脸", "站起来走动", "写几个字",
+          "看看窗外的天空", "调整一下呼吸", "给自己倒杯热水"
+        ];
+        // 随机打乱通用动作，补充到4条
+        const shuffled = shuffle(commonActions);
+        while (actions.length < 4) {
+          const action = shuffled.pop();
+          if (!actions.includes(action)) actions.push(action);
+        }
       }
-    };
+
+      return { ...card, actions: actions.slice(0, 4) };
+    }
 
     // 切换缓冲卡等级
-    // level: 'mild'|'moderate'|'severe' - 缓冲等级
-    // btn: 点击的按钮元素，用于切换激活状态
     function switchSos(level, btn) {
       document.querySelectorAll('.sos-tab').forEach(t => t.classList.remove('active'));
       btn.classList.add('active');
-      const content = bufferCards[level];
+
+      // 动态生成缓冲卡内容
+      const content = generateBufferCard(level);
+      currentBufferCard = content;
+
       document.getElementById('sos-content').innerHTML =
         '<div style="font-size: 14px; font-weight: 600; margin-bottom: 4px;">' + content.title + '</div>' +
         '<div style="font-size: 12px; color: var(--cocoa); margin-bottom: 10px;">' + content.subtitle + '</div>' +
@@ -2687,9 +3294,9 @@
     }
 
     // 复制缓冲卡内容到剪贴板
-    // 方便用户保存或分享给信任的人
     function copySos() {
-      const text = document.querySelector('#sos-content div:first-child').textContent + '\n' + Array.from(document.querySelectorAll('#sos-content div:nth-child(3) div')).map(d => d.textContent).join('\n');
+      if (!currentBufferCard) return;
+      const text = currentBufferCard.title + '\n' + currentBufferCard.subtitle + '\n' + currentBufferCard.actions.map(a => '· ' + a).join('\n');
       navigator.clipboard.writeText(text).then(() => alert('已复制到剪贴板'));
     }
 
