@@ -98,46 +98,43 @@
   <script src="js/data.js"></script>
   <script>
     function generateFengwenOutput() {
-      const input = document.getElementById('fengwenInput').value.trim();
+      var input = document.getElementById('fengwenInput').value.trim();
       if (!input) {
         alert('输入点什么吧，比如"想死"、"崩溃"');
         return;
       }
-
-      const output = generateFengwen(input);
-      const outputEl = document.getElementById('fengwenOutput');
+      var output = generateFengwen(input);
+      var outputEl = document.getElementById('fengwenOutput');
       outputEl.textContent = output;
       outputEl.classList.add('show');
     }
 
     function generateAlternative() {
-      const output = getAlternative();
-      const outputEl = document.getElementById('alternativeOutput');
-      outputEl.innerHTML = `${output.text}<span class="alt-type-tag">${output.type}</span>`;
+      var output = getAlternative();
+      var outputEl = document.getElementById('alternativeOutput');
+      outputEl.innerHTML = output.text + '<span class="alt-type-tag">' + output.type + '</span>';
       outputEl.classList.add('show');
     }
 
-    const helpCards = tools.helpCards;
-
     function drawHelpCard() {
-      const card = helpCards[Math.floor(Math.random() * helpCards.length)];
-      document.getElementById('helpCardIcon').textContent = card.icon;
+      var cards = tools.helpCards;
+      var card = cards[Math.floor(Math.random() * cards.length)];
+      document.getElementById('helpCardIcon').textContent = card.icon || '✨';
       document.getElementById('helpCardText').textContent = card.text;
       document.getElementById('helpCardIcon').style.animation = 'none';
-      setTimeout(() => {
+      setTimeout(function() {
         document.getElementById('helpCardIcon').style.animation = 'float 3s ease-in-out infinite';
       }, 10);
     }
 
     function quickCheck(level) {
-      const results = {
+      var results = {
         1: { title: "🔋 能量满格", text: "恭喜！你今天状态不错，建议把这份能量存起来，因为明天可能就用完了" },
         2: { title: "🔋 能量一半", text: "正常状态。建议先完成最重要的一件事，其他的可以明天再说" },
         3: { title: "🪫 快没电了", text: "你的能量即将耗尽。建议立即躺平，充电至少8小时" },
         4: { title: "💀 已关机但硬撑", text: "检测到你是传说级疯批。建议：1. 放下手机 2. 躺下 3. 闭上眼睛 4. 明天再说" },
       };
-
-      const result = results[level];
+      var result = results[level];
       document.getElementById('quickResultTitle').textContent = result.title;
       document.getElementById('quickResultText').textContent = result.text;
       document.getElementById('quickCheck').classList.add('hidden');

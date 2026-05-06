@@ -10,9 +10,9 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <main class="main-content stagger-in">
+  <main class="main-content">
     <div class="disclaimer">
-      <strong>🌿 温馨提示</strong><br>
+      <strong> 温馨提示</strong><br>
       Soul Soother 是一个趣味治愈内容合集网站，所有内容仅供娱乐和放松，不能替代专业医疗建议。
     </div>
 
@@ -21,102 +21,120 @@
       <div class="night-rescue-text" id="nightRescueText"></div>
     </div>
 
-    <div class="daily-quote">
-      <div class="daily-quote-label">✨ 今日抽象</div>
-      <div class="daily-quote-text" id="dailyQuote">加载中...</div>
-      <div class="daily-quote-footer">
-        <span class="daily-quote-date" id="dailyDate"></span>
-        <button class="btn-refresh" onclick="refreshQuote()">🔄 换一句</button>
+    <section class="guide-section" data-step="1">
+      <div class="guide-section-header">
+        <span class="guide-step-number">1</span>
+        <span class="guide-step-label">今日份</span>
       </div>
-    </div>
-
-    <div class="guide-intro">
-      <div class="guide-intro-emoji">🤗</div>
-      <div class="guide-intro-title">今天还好吗？</div>
-      <div class="guide-intro-desc">不管今天过得怎么样，来选一个让自己舒服一点的方式吧</div>
-    </div>
-
-    <div class="action-grid">
-      <a href="quiz.html" class="action-card" style="--delay: 0.1s;">
-        <div class="action-card-icon">🧠</div>
-        <div class="action-card-title">精神状态检测</div>
-        <div class="action-card-desc">测测你有多抽象</div>
-      </a>
-      <a href="tools.html#fengwen" class="action-card" style="--delay: 0.2s;">
-        <div class="action-card-icon">📝</div>
-        <div class="action-card-title">发疯文学生成</div>
-        <div class="action-card-desc">把情绪变成段子</div>
-      </a>
-      <a href="collection.html" class="action-card" style="--delay: 0.3s;">
-        <div class="action-card-icon">🎮</div>
-        <div class="action-card-title">治愈小游戏</div>
-        <div class="action-card-desc">无聊时随便玩</div>
-      </a>
-      <a href="tools.html#help-card" class="action-card" style="--delay: 0.4s;">
-        <div class="action-card-icon">💝</div>
-        <div class="action-card-title">抽互助卡</div>
-        <div class="action-card-desc">今天也有人陪你</div>
-      </a>
-      <a href="tools.html#alt-plan" class="action-card" style="--delay: 0.5s;">
-        <div class="action-card-icon"></div>
-        <div class="action-card-title">替代计划</div>
-        <div class="action-card-desc">先别急着死</div>
-      </a>
-    </div>
-
-    <div class="help-card-preview">
-      <div class="help-card-icon" id="helpCardIcon">🎲</div>
-      <div class="help-card-text" id="helpCardText">点击抽一张属于你的互助卡</div>
-      <button class="btn btn-primary" onclick="drawHelpCard()">抽一张</button>
-      <div class="help-card-sub">来自陌生人的无声陪伴</div>
-    </div>
-
-    <div class="danmu-section">
-      <div class="danmu-label">💬 来自陌生人的陪伴</div>
-      <div class="danmu-track-wrap">
-        <div class="danmu-track" id="danmuTrack"></div>
-      </div>
-    </div>
-
-    <div class="help-section">
-      <div class="help-section-header">
-        <span class="help-section-icon"></span>
-        <div>
-          <div class="help-section-title">求助 / 互助</div>
-          <div class="help-section-subtitle">今天有点撑不住？来这里发一句</div>
+      <div class="daily-quote daily-quote--compact">
+        <div class="daily-quote-text" id="dailyQuote">加载中...</div>
+        <div class="daily-quote-footer">
+          <span class="daily-quote-date" id="dailyDate"></span>
+          <button class="btn-refresh" onclick="refreshQuote()">🔄 换一句</button>
         </div>
       </div>
-      <textarea class="help-textarea" id="helpPost" placeholder="今天发生了什么？随便说一句..."></textarea>
-      <div class="help-footer">
-        <span>不用写很多，一句话也可以</span>
-        <button class="btn btn-primary" onclick="postHelp()" style="padding: 8px 18px; font-size: 13px;">发布</button>
-      </div>
-    </div>
+    </section>
 
-    <div class="help-posts-title">最新互助</div>
-    <div id="helpPosts">
-      <div class="help-post">
-        <div class="help-post-text">今天凌晨三点还没睡，但看到这句话突然觉得没那么孤单了</div>
-        <div class="help-post-footer">
-          <span class="help-post-time">刚刚</span>
-          <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+    <section class="guide-section" data-step="2">
+      <div class="guide-section-header">
+        <span class="guide-step-number">2</span>
+        <span class="guide-step-label">选一个让自己舒服点</span>
+      </div>
+      <div class="action-grid">
+        <a href="quiz.html" class="action-card action-card--primary" style="--delay: 0.1s;">
+          <div class="action-card-icon">🧠</div>
+          <div class="action-card-title">精神状态检测</div>
+          <div class="action-card-desc">测测你有多抽象</div>
+        </a>
+        <a href="tools.html#fengwen" class="action-card" style="--delay: 0.15s;">
+          <div class="action-card-icon">📝</div>
+          <div class="action-card-title">发疯文学生成</div>
+          <div class="action-card-desc">把情绪变成段子</div>
+        </a>
+        <a href="collection.html" class="action-card" style="--delay: 0.2s;">
+          <div class="action-card-icon">🎮</div>
+          <div class="action-card-title">治愈小游戏</div>
+          <div class="action-card-desc">无聊时随便玩</div>
+        </a>
+        <a href="tools.html#help-card" class="action-card" style="--delay: 0.25s;">
+          <div class="action-card-icon">💝</div>
+          <div class="action-card-title">抽互助卡</div>
+          <div class="action-card-desc">今天也有人陪你</div>
+        </a>
+        <a href="tools.html#alt-plan" class="action-card action-card--accent" style="--delay: 0.3s;">
+          <div class="action-card-icon"></div>
+          <div class="action-card-title">替代计划</div>
+          <div class="action-card-desc">先别急着死</div>
+        </a>
+      </div>
+    </section>
+
+    <section class="guide-section" data-step="3">
+      <div class="guide-section-header">
+        <span class="guide-step-number">3</span>
+        <span class="guide-step-label">来自陌生人的陪伴</span>
+      </div>
+      <div class="help-card-preview">
+        <div class="help-card-icon" id="helpCardIcon">🎲</div>
+        <div class="help-card-text" id="helpCardText">点击抽一张属于你的互助卡</div>
+        <button class="btn btn-primary" onclick="drawHelpCard()">抽一张</button>
+        <div class="help-card-sub">每一条都来自真实的人</div>
+      </div>
+    </section>
+
+    <section class="guide-section" data-step="4">
+      <div class="guide-section-header">
+        <span class="guide-step-number">4</span>
+        <span class="guide-step-label">你不是一个人</span>
+      </div>
+
+      <div class="danmu-section">
+        <div class="danmu-label">💬 陌生人弹幕</div>
+        <div class="danmu-track-wrap">
+          <div class="danmu-track" id="danmuTrack"></div>
         </div>
       </div>
-      <div class="help-post">
-        <div class="help-post-text">又自伤了，但比上次少了一道，算进步吗</div>
-        <div class="help-post-footer">
-          <span class="help-post-time">5分钟前</span>
-          <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+
+      <div class="help-section">
+        <div class="help-section-header">
+          <span class="help-section-icon"></span>
+          <div>
+            <div class="help-section-title">说点什么吧</div>
+            <div class="help-section-subtitle">不用写很多，一句话也可以</div>
+          </div>
+        </div>
+        <textarea class="help-textarea" id="helpPost" placeholder="今天发生了什么？随便说一句..."></textarea>
+        <div class="help-footer">
+          <span></span>
+          <button class="btn btn-primary" onclick="postHelp()" style="padding: 8px 18px; font-size: 13px;">发布</button>
         </div>
       </div>
-      <div class="help-post">
-        <div class="help-post-text">测出来我是"阴暗爬行型"，笑死，确实</div>
-        <div class="help-post-footer">
-          <span class="help-post-time">10分钟前</span>
-          <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+
+      <div class="help-posts-title">最新互助</div>
+      <div id="helpPosts">
+        <div class="help-post">
+          <div class="help-post-text">今天凌晨三点还没睡，但看到这句话突然觉得没那么孤单了</div>
+          <div class="help-post-footer">
+            <span class="help-post-time">刚刚</span>
+            <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+          </div>
+        </div>
+        <div class="help-post">
+          <div class="help-post-text">又自伤了，但比上次少了一道，算进步吗</div>
+          <div class="help-post-footer">
+            <span class="help-post-time">5分钟前</span>
+            <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+          </div>
+        </div>
+        <div class="help-post">
+          <div class="help-post-text">测出来我是"阴暗爬行型"，笑死，确实</div>
+          <div class="help-post-footer">
+            <span class="help-post-time">10分钟前</span>
+            <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   </main>
 
   <nav class="bottom-nav">
@@ -134,7 +152,7 @@
         <span>合集</span>
       </a>
       <a href="tools.html" class="bottom-nav-item">
-        <span class="bottom-nav-icon">🛠️</span>
+        <span class="bottom-nav-icon">️</span>
         <span>工具</span>
       </a>
       <a href="about.html" class="bottom-nav-item">
@@ -160,6 +178,7 @@
       loadDailyQuote();
       checkNightTime();
       initDanmu();
+      initGuideReveal();
     });
 
     function loadDailyQuote() {
@@ -176,10 +195,12 @@
       var quote = getRandomQuote();
       var el = document.getElementById('dailyQuote');
       el.style.opacity = '0';
+      el.style.transform = 'translateY(8px)';
       setTimeout(function() {
         el.textContent = quote;
         el.style.opacity = '1';
-      }, 200);
+        el.style.transform = 'translateY(0)';
+      }, 250);
     }
 
     function checkNightTime() {
@@ -202,12 +223,19 @@
     function drawHelpCard() {
       var cards = tools.helpCards;
       var card = cards[Math.floor(Math.random() * cards.length)];
-      document.getElementById('helpCardIcon').textContent = card.icon || '✨';
-      document.getElementById('helpCardText').textContent = card.text;
-      document.getElementById('helpCardIcon').style.animation = 'none';
+      var iconEl = document.getElementById('helpCardIcon');
+      var textEl = document.getElementById('helpCardText');
+      iconEl.style.opacity = '0';
+      textEl.style.opacity = '0';
+      iconEl.style.transform = 'scale(0.5) rotate(-15deg)';
       setTimeout(function() {
-        document.getElementById('helpCardIcon').style.animation = 'float 3s ease-in-out infinite';
-      }, 10);
+        iconEl.textContent = card.icon || '✨';
+        textEl.textContent = card.text;
+        iconEl.style.opacity = '1';
+        textEl.style.opacity = '1';
+        iconEl.style.transform = 'scale(1) rotate(0deg)';
+        iconEl.style.animation = 'float 3s ease-in-out infinite';
+      }, 300);
     }
 
     function postHelp() {
@@ -251,6 +279,21 @@
       posts.unshift({ content: content, time: new Date().toISOString() });
       if (posts.length > 50) posts = posts.slice(0, 50);
       localStorage.setItem('helpPosts', JSON.stringify(posts));
+    }
+
+    function initGuideReveal() {
+      var sections = document.querySelectorAll('.guide-section');
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('guide-section--visible');
+          }
+        });
+      }, { threshold: 0.1 });
+
+      sections.forEach(function(section) {
+        observer.observe(section);
+      });
     }
   </script>
 </body>
