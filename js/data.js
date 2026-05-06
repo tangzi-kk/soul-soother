@@ -182,12 +182,12 @@ var tools = {
 
   // 精神天气
   weather: [
-    { emoji: "☀️", label: "晴天", desc: "今天状态不错，继续保持" },
-    { emoji: "🌤️", label: "多云", desc: "有点低落，但还能撑" },
-    { emoji: "🌧️", label: "小雨", desc: "想哭就哭，哭完记得喝水" },
-    { emoji: "⛈️", label: "暴雨", desc: "需要有人陪，抽张互助卡吧" },
-    { emoji: "🌫️", label: "雾霾", desc: "麻木也是正常的，先休息" },
-    { emoji: "🌋", label: "火山", desc: "很危险，去急救包看看" },
+    { icon: "sun", label: "晴天", desc: "今天状态不错，继续保持" },
+    { icon: "cloud", label: "多云", desc: "有点低落，但还能撑" },
+    { icon: "rain", label: "小雨", desc: "想哭就哭，哭完记得喝水" },
+    { icon: "storm", label: "暴雨", desc: "需要有人陪，抽张互助卡吧" },
+    { icon: "fog", label: "雾霾", desc: "麻木也是正常的，先休息" },
+    { icon: "volcano", label: "火山", desc: "很危险，去急救包看看" },
   ]
 };
 
@@ -199,7 +199,7 @@ var quizzes = [
     id: "mental-state",
     name: "测测你的精神状态有多美丽",
     description: "用荒诞的题目检测你的精神状态，结果可能让你笑出声",
-    icon: "🧠",
+    icon: "brain",
     duration: "2分钟",
     questions: [
       {
@@ -322,7 +322,7 @@ var quizzes = [
     id: "safety-check",
     name: "我现在安全吗？",
     description: "不是娱乐测试，是一个快速自检工具",
-    icon: "🛡️",
+    icon: "shield",
     duration: "1分钟",
     questions: [
       {
@@ -402,7 +402,7 @@ var collections = [
     url: "https://www.pixelthoughts.co/",
     category: "websites",
     tags: ["放松", "专注", "深夜"],
-    icon: "✨",
+    icon: "star",
   },
   {
     id: "fluid-simulation",
@@ -411,7 +411,7 @@ var collections = [
     url: "https://paveldogreat.github.io/WebGL-Fluid-Simulation/",
     category: "games",
     tags: ["放松", "解压", "无聊"],
-    icon: "🌊",
+    icon: "droplet",
   },
   {
     id: "weave-silk",
@@ -420,7 +420,7 @@ var collections = [
     url: "http://weavesilk.com/",
     category: "games",
     tags: ["放松", "专注", "无聊"],
-    icon: "🎨",
+    icon: "pen",
   },
   {
     id: "window-swap",
@@ -429,7 +429,7 @@ var collections = [
     url: "https://window-swap.com/",
     category: "websites",
     tags: ["放松", "开心", "失眠"],
-    icon: "🪟",
+    icon: "window",
   },
   {
     id: "rainy-mood",
@@ -438,7 +438,7 @@ var collections = [
     url: "https://rainymood.com/",
     category: "websites",
     tags: ["放松", "睡眠", "深夜"],
-    icon: "🌧️",
+    icon: "rain",
   },
   {
     id: "soft-murmur",
@@ -447,7 +447,7 @@ var collections = [
     url: "https://asoftmurmur.com/",
     category: "websites",
     tags: ["放松", "睡眠", "专注"],
-    icon: "🎵",
+    icon: "music",
   },
   {
     id: "pointer-pointer",
@@ -456,7 +456,7 @@ var collections = [
     url: "https://pointerpointer.com/",
     category: "games",
     tags: ["开心", "无聊", "解压"],
-    icon: "👆",
+    icon: "pointer",
   },
   {
     id: "thisissand",
@@ -465,7 +465,7 @@ var collections = [
     url: "https://thisissand.com/",
     category: "games",
     tags: ["放松", "专注", "无聊"],
-    icon: "⏳",
+    icon: "sand",
   },
 ];
 

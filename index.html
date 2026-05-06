@@ -10,6 +10,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
 </head>
 <body>
+  <!-- 全屏引力场背景 -->
+  <div class="gravity-bg" id="gravityBg"></div>
+
   <div id="app">
     <!-- 顶部圆点导航 -->
     <div class="page-indicator" id="pageIndicator">
@@ -37,9 +40,6 @@
             <div class="night-rescue-text" id="nightRescueText"></div>
           </div>
 
-          <!-- 引力场画布 -->
-          <div class="gravity-canvas-wrap" id="gravityCanvas"></div>
-
           <!-- 主标题 -->
           <div class="hero">
             <span class="hero-label">Soul Soother</span>
@@ -50,19 +50,19 @@
           <!-- 状态入口 -->
           <div class="state-selector">
             <button class="state-btn state-danger" onclick="goToPage(4)">
-              <span class="state-btn-icon">🆘</span>
+              <svg class="state-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
               <span class="state-btn-text">我快撑不住了</span>
             </button>
             <button class="state-btn state-warm" onclick="goToPage(1)">
-              <span class="state-btn-icon">✨</span>
+              <svg class="state-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
               <span class="state-btn-text">随机开心一秒</span>
             </button>
             <button class="state-btn state-calm" onclick="goToPage(2)">
-              <span class="state-btn-icon">🧠</span>
+              <svg class="state-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
               <span class="state-btn-text">测测今日精神状态</span>
             </button>
             <button class="state-btn state-soft" onclick="goToPage(3)">
-              <span class="state-btn-icon">🤗</span>
+              <svg class="state-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
               <span class="state-btn-text">抽一张互助卡</span>
             </button>
           </div>
@@ -74,7 +74,9 @@
               <h2 class="section-title">今日精神天气</h2>
             </div>
             <div class="weather-card" id="weatherCard" onclick="showWeatherDetail()">
-              <div class="weather-emoji" id="weatherEmoji">🌤️</div>
+              <div class="weather-emoji" id="weatherEmoji">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+              </div>
               <div class="weather-label" id="weatherLabel">多云转抽象</div>
               <div class="weather-desc" id="weatherDesc">有点低落，但还能撑</div>
             </div>
@@ -159,22 +161,22 @@
             </div>
             <div class="mini-games">
               <div class="mini-game-card" onclick="playGame('blanket')">
-                <div class="mini-game-emoji">🐕</div>
+                <svg class="mini-game-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 <div class="mini-game-title">给小狗盖被子</div>
                 <div class="mini-game-desc">点击让小狗暖和起来</div>
               </div>
               <div class="mini-game-card" onclick="playGame('trash')">
-                <div class="mini-game-emoji">🗑️</div>
+                <svg class="mini-game-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path></svg>
                 <div class="mini-game-title">把坏念头拖进垃圾桶</div>
                 <div class="mini-game-desc">长按拖拽，释放压力</div>
               </div>
               <div class="mini-game-card" onclick="playGame('light')">
-                <div class="mini-game-emoji">💡</div>
+                <svg class="mini-game-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
                 <div class="mini-game-title">给脑子关灯</div>
                 <div class="mini-game-desc">点击关闭所有灯光</div>
               </div>
               <div class="mini-game-card" onclick="playGame('settle')">
-                <div class="mini-game-emoji">📊</div>
+                <svg class="mini-game-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                 <div class="mini-game-title">今日活着结算</div>
                 <div class="mini-game-desc">看看今天完成了什么</div>
               </div>
@@ -246,7 +248,7 @@
           <!-- 结果页面 -->
           <div id="resultPage" class="hidden">
             <div class="quiz-result">
-              <div class="quiz-result-emoji" id="resultEmoji"></div>
+              <div class="quiz-result-icon" id="resultIcon"></div>
               <div class="quiz-result-type-label" id="resultType"></div>
               <div class="quiz-result-title" id="resultTitle"></div>
               <div class="quiz-result-tagline" id="resultTagline"></div>
@@ -329,7 +331,7 @@
                   </div>
                 </div>
                 <div class="help-post">
-                  <div class="help-post-text">测出来我是"阴暗爬行型"，笑死，确实</div>
+                  <div class="help-post-text">测出来我是阴暗爬行型，笑死，确实</div>
                   <div class="help-post-footer">
                     <span class="help-post-time">10分钟前</span>
                     <button class="hug-btn" onclick="sendHug(this)">抱抱</button>

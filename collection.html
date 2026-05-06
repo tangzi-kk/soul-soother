@@ -2,12 +2,13 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=393, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=393, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>治愈合集 - Soul Soother</title>
   <meta name="description" content="收集、测评、整理能让人短暂放松、开心一秒钟的小游戏、治愈网页、互动工具">
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <style>
     @media screen and (max-width: 393px) {
       html { font-size: 15px; }
@@ -18,15 +19,18 @@
   </style>
 </head>
 <body>
+  <!-- 文字引力场背景 -->
+  <div class="gravity-bg" id="gravityBg"></div>
+
   <main class="main-content">
     <h1 class="page-title">治愈合集</h1>
     <p class="page-subtitle">收集了一些可能让你放松一小会儿的东西</p>
 
-    <div class="category-tabs">
-      <button class="category-tab active" onclick="filterCategory('all', this)">全部</button>
-      <button class="category-tab" onclick="filterCategory('games', this)">小游戏</button>
-      <button class="category-tab" onclick="filterCategory('websites', this)">治愈网页</button>
-      <button class="category-tab" onclick="filterCategory('tools', this)">互动工具</button>
+    <div class="category-tabs" role="tablist">
+      <button class="category-tab active" role="tab" aria-selected="true" onclick="filterCategory('all', this)">全部</button>
+      <button class="category-tab" role="tab" aria-selected="false" onclick="filterCategory('games', this)">小游戏</button>
+      <button class="category-tab" role="tab" aria-selected="false" onclick="filterCategory('websites', this)">治愈网页</button>
+      <button class="category-tab" role="tab" aria-selected="false" onclick="filterCategory('tools', this)">互动工具</button>
     </div>
 
     <div class="collection-grid" id="collectionGrid"></div>
@@ -120,13 +124,23 @@
       var tabs = document.querySelectorAll('.category-tab');
       for (var i = 0; i < tabs.length; i++) {
         tabs[i].classList.remove('active');
+        tabs[i].setAttribute('aria-selected', 'false');
       }
       el.classList.add('active');
+      el.setAttribute('aria-selected', 'true');
       renderCollections();
     }
 
     document.addEventListener('DOMContentLoaded', function() {
       renderCollections();
+    });
+  </script>
+  <script src="js/p5-gravity.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.GravityP5) {
+        window.GravityP5.init('gravityBg');
+      }
     });
   </script>
 </body>

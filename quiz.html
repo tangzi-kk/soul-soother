@@ -2,12 +2,13 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=393, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=393, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>趣味测评 - Soul Soother</title>
   <meta name="description" content="用荒诞的题目检测你的精神状态，结果可能让你笑出声">
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <style>
     @media screen and (max-width: 393px) {
       html { font-size: 15px; }
@@ -18,6 +19,9 @@
   </style>
 </head>
 <body>
+  <!-- 文字引力场背景 -->
+  <div class="gravity-bg" id="gravityBg"></div>
+
   <main class="main-content">
     <div class="disclaimer">
       <strong>温馨提示</strong><br>
@@ -33,7 +37,7 @@
 
     <div id="quizPage" class="hidden">
       <div class="quiz-container">
-        <div class="quiz-progress">
+        <div class="quiz-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
           <div class="quiz-progress-bar">
             <div class="quiz-progress-fill" id="progressFill"></div>
           </div>
@@ -64,11 +68,11 @@
 
           <div class="result-actions">
             <button class="cta cta-primary" onclick="shareResult()">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:middle;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:middle;" aria-hidden="true"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
               分享
             </button>
             <button class="cta cta-ghost" onclick="restartQuiz()">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:middle;"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:middle;" aria-hidden="true"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
               再测
             </button>
           </div>
@@ -193,6 +197,7 @@
 
       var progress = ((currentQuestion + 1) / currentQuiz.questions.length) * 100;
       document.getElementById('progressFill').style.width = progress + '%';
+      document.getElementById('progressBar').setAttribute('aria-valuenow', Math.round(progress));
       document.getElementById('progressText').textContent = (currentQuestion + 1) + '/' + currentQuiz.questions.length;
 
       document.getElementById('prevBtn').style.visibility = currentQuestion === 0 ? 'hidden' : 'visible';
@@ -303,6 +308,14 @@
       document.getElementById('resultPage').classList.add('hidden');
       document.getElementById('quizList').classList.remove('hidden');
     }
+  </script>
+  <script src="js/p5-gravity.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.GravityP5) {
+        window.GravityP5.init('gravityBg');
+      }
+    });
   </script>
 </body>
 </html>

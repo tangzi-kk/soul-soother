@@ -2,12 +2,13 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=393, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=393, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>关于与安全 - Soul Soother</title>
   <meta name="description" content="了解 Soul Soother 的愿景、安全声明和求助资源">
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
   <style>
     @media screen and (max-width: 393px) {
       html { font-size: 15px; }
@@ -18,16 +19,19 @@
   </style>
 </head>
 <body>
+  <!-- 文字引力场背景 -->
+  <div class="gravity-bg" id="gravityBg"></div>
+
   <main class="main-content">
     <h1 class="page-title">关于与安全</h1>
     <p class="page-subtitle">了解我们，也了解如何保护自己</p>
 
     <div class="about-section">
       <h2 class="about-section-title">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:middle;"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:middle;" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
         关于 Soul Soother
       </h2>
-      <div style="background: var(--color-surface); padding: var(--space-5); border: 1px solid var(--color-border);">
+      <div class="about-section-box">
         <div class="about-section-text">
           Soul Soother 是一个面向极端情绪状态人群的轻量级趣味治愈网站。我们不提供医学诊断，也不替代心理咨询，而是用 Z 世代最懂的"抽象自嘲"语言，让濒临崩溃的人在会心一笑中获得短暂的喘息和陪伴。
         </div>
@@ -42,15 +46,15 @@
 
     <div class="about-section">
       <h2 class="about-section-title">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:middle;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:middle;" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
         安全声明
       </h2>
-      <div style="background: var(--color-surface); padding: var(--space-5); border: 1px solid var(--color-border);">
-        <div style="font-size: var(--text-small); color: var(--color-slate); line-height: 1.8;">
-          <div style="margin-bottom: var(--space-3);"><strong>免责声明：</strong></div>
-          <div style="margin-bottom: var(--space-3);">Soul Soother 不是医疗产品，不提供医学诊断、治疗建议或心理咨询服务。本网站的所有内容仅供娱乐、放松和陪伴目的。</div>
-          <div style="margin-bottom: var(--space-3);"><strong>隐私保护：</strong></div>
-          <div style="margin-bottom: var(--space-3);">我们不收集任何用户数据，不使用 Cookie，不使用第三方追踪工具。所有操作均在本地完成。</div>
+      <div class="about-section-box">
+        <div class="about-section-body">
+          <div class="about-section-block"><strong>免责声明：</strong></div>
+          <div class="about-section-block">Soul Soother 不是医疗产品，不提供医学诊断、治疗建议或心理咨询服务。本网站的所有内容仅供娱乐、放松和陪伴目的。</div>
+          <div class="about-section-block"><strong>隐私保护：</strong></div>
+          <div class="about-section-block">我们不收集任何用户数据，不使用 Cookie，不使用第三方追踪工具。所有操作均在本地完成。</div>
           <div><strong>内容安全：</strong></div>
           <div>所有收录内容经过人工筛选，不包含详细自杀方法、不美化自杀、不提供医疗建议。</div>
         </div>
@@ -59,11 +63,11 @@
 
     <div class="about-section" id="help">
       <h2 class="about-section-title">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:middle;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:middle;" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
         求助资源
       </h2>
-      <div style="background: var(--color-surface); padding: var(--space-5); border: 1px solid var(--color-border);">
-        <div style="font-size: var(--text-small); margin-bottom: var(--space-4); color: var(--color-slate);">
+      <div class="about-section-box">
+        <div class="about-section-intro">
           如果你感到情绪低落或有心理困扰，以下资源可能对你有帮助：
         </div>
         <div class="help-resources">
@@ -84,7 +88,7 @@
             <a href="tel:400-161-9995" class="help-resource-phone">400-161-9995</a>
           </div>
         </div>
-        <div style="margin-top: var(--space-4); padding: var(--space-3); background: rgba(232, 168, 124, 0.1); font-size: var(--text-small); color: var(--color-slate);">
+        <div class="emergency-box">
           <strong>紧急情况：</strong>如果你或你认识的人正处于危险中，请立即拨打 120（急救）或 110（报警），或前往最近的医院急诊科。
         </div>
       </div>
@@ -92,14 +96,14 @@
 
     <div class="about-section">
       <h2 class="about-section-title">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:middle;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:8px;vertical-align:middle;" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
         联系我们
       </h2>
-      <div style="background: var(--color-surface); padding: var(--space-5); border: 1px solid var(--color-border);">
-        <div style="font-size: var(--text-small); color: var(--color-slate); line-height: 1.8;">
+      <div class="about-section-box">
+        <div class="about-section-contact">
           如有任何关于安全、隐私或伦理的问题，欢迎通过以下方式联系我们：
         </div>
-        <div style="margin-top: var(--space-3);">
+        <div class="about-section-action">
           <a href="https://github.com/tangzi-kk/soul-soother" target="_blank" class="cta cta-ghost">GitHub 仓库</a>
         </div>
       </div>
@@ -135,5 +139,13 @@
       <a href="https://github.com/tangzi-kk/soul-soother" target="_blank">GitHub</a>
     </div>
   </footer>
+  <script src="js/p5-gravity.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.GravityP5) {
+        window.GravityP5.init('gravityBg');
+      }
+    });
+  </script>
 </body>
 </html>
