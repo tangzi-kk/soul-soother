@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=393, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <title>Soul Soother — 用抽象接住崩溃</title>
@@ -12,9 +12,38 @@
   <link href="https://cdn.jsdelivr.net/npm/alibaba-puhuiti-2/Alibaba-PuHuiTi-Bold/Alibaba-PuHuiTi-Bold.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/alibaba-puhuiti-2/Alibaba-PuHuiTi-Regular/Alibaba-PuHuiTi-Regular.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* 引力场提示 */
+    .gravity-hint {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: var(--text-caption);
+      letter-spacing: var(--tracking-caption);
+      color: var(--color-slate);
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: 100;
+      animation: hintFade 3s ease forwards;
+      animation-delay: 1s;
+      text-align: center;
+    }
+    @keyframes hintFade {
+      0% { opacity: 0.6; }
+      70% { opacity: 0.6; }
+      100% { opacity: 0; }
+    }
+    /* 引力点样式 */
+    .gravity-dot {
+      box-shadow: 0 0 0 2px rgba(115, 138, 229, 0.2);
+    }
+  </style>
 </head>
 <body>
-  <main class="main-content">
+  <div class="gravity-hint">点击任意位置，感受文字的呼吸</div>
+
+  <main class="main-content" id="gravityContainer">
     <div class="disclaimer">
       <strong>温馨提示</strong> — Soul Soother 是一个趣味治愈内容合集网站，所有内容仅供娱乐和放松，不能替代专业医疗建议。
     </div>
@@ -47,26 +76,6 @@
           </button>
         </div>
       </div>
-    </section>
-
-    <!-- 核心创新：文字引力场入口 -->
-    <section class="section">
-      <a href="art.html" class="art-entry">
-        <div class="art-entry-visual">
-          <div class="art-entry-dot"></div>
-          <div class="art-entry-line"></div>
-          <div class="art-entry-text text-breathe">用文字治愈自己</div>
-        </div>
-        <div class="art-entry-content">
-          <div class="art-entry-label">交互实验</div>
-          <div class="art-entry-title">文字引力场</div>
-          <div class="art-entry-desc">点击屏幕，让文字像有生命一样被吸引重组</div>
-          <div class="cta cta-primary" style="margin-top: var(--space-4);">
-            进入体验
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </div>
-        </div>
-      </a>
     </section>
 
     <!-- Action Grid: 2x2 画廊网格，hover 时顶部出现 accent 线条 -->
@@ -197,11 +206,19 @@
   </footer>
 
   <script src="js/data.js"></script>
+  <script src="js/gravity.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       loadDailyQuote();
       checkNightTime();
       initDanmu();
+
+      // 初始化引力场
+      setTimeout(function() {
+        if (window.GravityField) {
+          window.GravityField.init('#gravityContainer');
+        }
+      }, 500);
     });
 
     function loadDailyQuote() {
