@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>趣味测评 - Soul Soother</title>
+  <meta name="description" content="用荒诞的题目检测你的精神状态，结果可能让你笑出声">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="main-content">
+    <div class="disclaimer">
+      <strong>🌿 温馨提示</strong><br>
+      以下测试仅供娱乐，非医学诊断。如果你感到情绪低落或有心理困扰，建议寻求专业帮助。
+    </div>
+
+    <div id="quizList">
+      <h1 class="page-title">趣味测评</h1>
+      <p class="page-subtitle">用荒诞的题目检测你的精神状态，结果可能让你笑出声</p>
+
+      <div id="quizCards"></div>
+    </div>
+
+    <div id="quizPage" class="hidden">
+      <div class="quiz-container">
+        <div class="quiz-progress">
+          <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="progressFill"></div>
+          </div>
+          <span class="quiz-progress-text" id="progressText">1/8</span>
+        </div>
+
+        <div id="questionContainer">
+          <div class="quiz-question" id="questionText"></div>
+          <div class="quiz-options" id="optionsContainer"></div>
+        </div>
+
+        <div class="quiz-nav">
+          <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">上一题</button>
+          <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">下一题</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="resultPage" class="hidden">
+      <div class="quiz-container">
+        <div class="quiz-result">
+          <div class="quiz-result-emoji" id="resultEmoji"></div>
+          <div class="quiz-result-type-label" id="resultType"></div>
+          <div class="quiz-result-title" id="resultTitle"></div>
+          <div class="quiz-result-tagline" id="resultTagline"></div>
+          <div class="quiz-result-desc" id="resultDesc"></div>
+          <div class="quiz-result-advice" id="resultAdvice"></div>
+
+          <div class="result-actions">
+            <button class="btn btn-primary" onclick="shareResult()">📤 分享</button>
+            <button class="btn btn-secondary" onclick="restartQuiz()">🔄 再测</button>
+          </div>
+
+          <div class="result-rec-title">适合你的内容</div>
+          <div id="recommendations"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <a href="index.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🏠</span>
+        <span>首页</span>
+      </a>
+      <a href="quiz.html" class="bottom-nav-item active">
+        <span class="bottom-nav-icon">🧠</span>
+        <span>测评</span>
+      </a>
+      <a href="collection.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🎮</span>
+        <span>合集</span>
+      </a>
+      <a href="tools.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🛠️</span>
+        <span>工具</span>
+      </a>
+      <a href="about.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">ℹ️</span>
+        <span>关于</span>
+      </a>
+    </div>
+  </nav>
+
+  <footer class="footer">
+    <div class="footer-text">Soul Soother - 用抽象接住崩溃，用玩笑降低痛感</div>
+    <div class="footer-text">本网站仅供娱乐和放松，不能替代专业医疗建议</div>
+    <div class="footer-links">
+      <a href="about.html">关于我们</a>
+      <a href="about.html#help">求助资源</a>
+      <a href="https://github.com/yourusername/soul-soother" target="_blank">GitHub</a>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script>
+    const resultEmojis = {
+      'atmer': '💸',
+      'zzzz': '💤',
+      'malo': '🐒',
+      'shadow-roach': '🪳',
+      'hedgehog': '🦔',
+      'chameleon': '🦎',
+      'ghost': '👻',
+      'blackhole': '🕳️',
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+      renderQuizList();
+    });
+
+    function renderQuizList() {
+      const container = document.getElementById('quizCards');
+      container.innerHTML = quizzes.map(q => `
+        <div class="quiz-card" onclick="startQuiz('${q.id}')">
+          <div class="quiz-card-header">
+            <span class="quiz-card-icon">${q.icon}</span>
+            <div>
+              <div class="quiz-card-title">${q.name}</div>
+              <div class="quiz-card-desc">${q.description}</div>
+            </div>
+          </div>
+          <div class="quiz-card-meta">
+            <span class="quiz-card-time">⏱️ ${q.duration}</span>
+            <button class="btn btn-primary" style="padding: 8px 18px; font-size: 13px;">开始测试</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    let currentQuiz = null;
+    let currentQuestion = 0;
+    let answers = [];
+
+    function startQuiz(quizId) {
+      currentQuiz = quizzes.find(q => q.id === quizId);
+      currentQuestion = 0;
+      answers = [];
+
+      document.getElementById('quizList').classList.add('hidden');
+      document.getElementById('quizPage').classList.remove('hidden');
+      document.getElementById('resultPage').classList.add('hidden');
+
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const question = currentQuiz.questions[currentQuestion];
+      document.getElementById('questionText').textContent = question.text;
+
+      const optionsHtml = question.options.map((option, index) => `
+        <div class="quiz-option ${answers[currentQuestion] === index ? 'selected' : ''}" onclick="selectOption(${index})">
+          ${option.text}
+        </div>
+      `).join('');
+      document.getElementById('optionsContainer').innerHTML = optionsHtml;
+
+      const progress = ((currentQuestion + 1) / currentQuiz.questions.length) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+      document.getElementById('progressText').textContent = `${currentQuestion + 1}/${currentQuiz.questions.length}`;
+
+      document.getElementById('prevBtn').style.visibility = currentQuestion === 0 ? 'hidden' : 'visible';
+      document.getElementById('nextBtn').textContent = currentQuestion === currentQuiz.questions.length - 1 ? '查看结果' : '下一题';
+    }
+
+    function selectOption(index) {
+      answers[currentQuestion] = index;
+      renderQuestion();
+    }
+
+    function nextQuestion() {
+      if (answers[currentQuestion] === undefined) {
+        alert('选一个吧，反正没有标准答案');
+        return;
+      }
+
+      if (currentQuestion < currentQuiz.questions.length - 1) {
+        currentQuestion++;
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQuestion > 0) {
+        currentQuestion--;
+        renderQuestion();
+      }
+    }
+
+    function showResult() {
+      let score = 0;
+      answers.forEach((answerIndex, questionIndex) => {
+        score += currentQuiz.questions[questionIndex].options[answerIndex].value;
+      });
+
+      let result = currentQuiz.results.find(r => score >= r.minScore && score <= r.maxScore);
+      if (!result) result = currentQuiz.results[currentQuiz.results.length - 1];
+
+      document.getElementById('resultEmoji').textContent = resultEmojis[result.id] || '🎭';
+      document.getElementById('resultType').textContent = result.type || '';
+      document.getElementById('resultTitle').textContent = result.name;
+      document.getElementById('resultTagline').textContent = result.tagline;
+      document.getElementById('resultDesc').textContent = result.description;
+      document.getElementById('resultAdvice').textContent = result.advice;
+
+      const recommendations = [
+        { name: 'Pixel Thoughts', desc: '60秒冥想，把烦恼放进星星里', icon: '✨', url: 'collection.html' },
+        { name: '流体模拟', desc: '鼠标划过产生美丽的色彩流动', icon: '🌊', url: 'collection.html' },
+        { name: '发疯文学生成器', desc: '输入情绪，生成发疯文学', icon: '📝', url: 'tools.html#fengwen' },
+      ];
+
+      document.getElementById('recommendations').innerHTML = recommendations.map(r => `
+        <a href="${r.url}" style="text-decoration: none; color: inherit;">
+          <div class="recommendation-item">
+            <span class="recommendation-icon">${r.icon}</span>
+            <div>
+              <div class="recommendation-name">${r.name}</div>
+              <div class="recommendation-desc">${r.desc}</div>
+            </div>
+          </div>
+        </a>
+      `).join('');
+
+      document.getElementById('quizPage').classList.add('hidden');
+      document.getElementById('resultPage').classList.remove('hidden');
+    }
+
+    function shareResult() {
+      const title = document.getElementById('resultTitle').textContent;
+      const text = `我在 Soul Soother 测出来是「${title}」，快来测测你的精神状态！`;
+
+      if (navigator.share) {
+        navigator.share({ title: 'Soul Soother 测评结果', text });
+      } else {
+        navigator.clipboard.writeText(text).then(() => {
+          alert('结果已复制到剪贴板');
+        });
+      }
+    }
+
+    function restartQuiz() {
+      document.getElementById('resultPage').classList.add('hidden');
+      document.getElementById('quizList').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>治愈合集 - Soul Soother</title>
+  <meta name="description" content="收集、测评、整理能让人短暂放松、开心一秒钟的小游戏、治愈网页、互动工具">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="main-content">
+    <h1 class="page-title">治愈合集</h1>
+    <p class="page-subtitle">收集了一些可能让你放松一小会儿的东西</p>
+
+    <div class="category-tabs">
+      <button class="category-tab active" onclick="filterCategory('all', this)">全部</button>
+      <button class="category-tab" onclick="filterCategory('games', this)">🎮 小游戏</button>
+      <button class="category-tab" onclick="filterCategory('websites', this)">🌊 治愈网页</button>
+      <button class="category-tab" onclick="filterCategory('tools', this)">🧘 互动工具</button>
+    </div>
+
+    <div class="collection-grid" id="collectionGrid"></div>
+  </main>
+
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <a href="index.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🏠</span>
+        <span>首页</span>
+      </a>
+      <a href="quiz.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🧠</span>
+        <span>测评</span>
+      </a>
+      <a href="collection.html" class="bottom-nav-item active">
+        <span class="bottom-nav-icon">🎮</span>
+        <span>合集</span>
+      </a>
+      <a href="tools.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🛠️</span>
+        <span>工具</span>
+      </a>
+      <a href="about.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">ℹ️</span>
+        <span>关于</span>
+      </a>
+    </div>
+  </nav>
+
+  <footer class="footer">
+    <div class="footer-text">Soul Soother - 用抽象接住崩溃，用玩笑降低痛感</div>
+    <div class="footer-text">本网站仅供娱乐和放松，不能替代专业医疗建议</div>
+    <div class="footer-links">
+      <a href="about.html">关于我们</a>
+      <a href="about.html#help">求助资源</a>
+      <a href="https://github.com/yourusername/soul-soother" target="_blank">GitHub</a>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script>
+    let currentCategory = 'all';
+
+    function renderCollections() {
+      const grid = document.getElementById('collectionGrid');
+      const filtered = currentCategory === 'all'
+        ? collections
+        : collections.filter(c => c.category === currentCategory);
+
+      grid.innerHTML = filtered.map(item => `
+        <a href="${item.url}" target="_blank" rel="noopener" class="collection-item">
+          <span class="collection-item-icon">${item.icon}</span>
+          <div class="collection-item-content">
+            <div class="collection-item-title">${item.name}</div>
+            <div class="collection-item-desc">${item.description}</div>
+            <div class="collection-item-tags">
+              ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+            </div>
+            <div class="collection-item-mood">${item.mood || ''}</div>
+            <div class="collection-item-ratings">
+              ${item.ratings ? `
+                <span class="rating-dim"><span class="rating-dim-label">趣</span><span class="rating-stars">${renderStars(item.ratings.fun)}</span></span>
+                <span class="rating-dim"><span class="rating-dim-label">轻</span><span class="rating-stars">${renderStars(item.ratings.ease)}</span></span>
+                <span class="rating-dim"><span class="rating-dim-label">愈</span><span class="rating-stars">${renderStars(item.ratings.relief)}</span></span>
+              ` : ''}
+            </div>
+            ${item.review ? `<div class="collection-item-review">"${item.review}"</div>` : ''}
+          </div>
+        </a>
+      `).join('');
+    }
+
+    function filterCategory(category, el) {
+      currentCategory = category;
+      document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
+      el.classList.add('active');
+      renderCollections();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      renderCollections();
+    });
+  </script>
+</body>
+</html>

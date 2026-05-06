@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>互动工具 - Soul Soother</title>
+  <meta name="description" content="发疯文学生成器、精神状态检测器、想死替代方案生成器等互动工具">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="main-content">
+    <h1 class="page-title">互动工具</h1>
+    <p class="page-subtitle">一些可能让你笑一笑的小工具</p>
+
+    <div class="tool-card" id="fengwen">
+      <div class="tool-card-title">📝 发疯文学生成器</div>
+      <div class="tool-card-desc">输入你的情绪关键词，生成一段发疯文学</div>
+      <input type="text" class="generator-input" id="fengwenInput" placeholder="输入情绪，如：想死、崩溃、孤独...">
+      <button class="btn btn-primary" onclick="generateFengwenOutput()">生成发疯文学</button>
+      <div class="generator-output" id="fengwenOutput"></div>
+    </div>
+
+    <div class="tool-card" id="alt-plan">
+      <div class="tool-card-title">💡 "想死"替代方案</div>
+      <div class="tool-card-desc">当你想死的时候，看看还有什么可以先做完</div>
+      <button class="btn btn-primary" onclick="generateAlternative()">生成替代方案</button>
+      <div class="generator-output" id="alternativeOutput"></div>
+    </div>
+
+    <div class="tool-card" id="help-card">
+      <div class="tool-card-title">💝 互助卡</div>
+      <div class="tool-card-desc">抽一张互助卡，给自己或给别人</div>
+      <div style="text-align: center; padding: 24px; background: var(--gradient-card); border-radius: 18px; border: 1px solid rgba(128, 225, 207, 0.15);">
+        <div style="font-size: 48px; margin-bottom: 16px; animation: float 3s ease-in-out infinite;" id="helpCardIcon">🎲</div>
+        <div style="font-size: 18px; font-weight: 600; margin-bottom: 12px;" id="helpCardText">点击抽取你的互助卡</div>
+        <button class="btn btn-primary" onclick="drawHelpCard()">抽一张</button>
+      </div>
+    </div>
+
+    <div class="tool-card">
+      <div class="tool-card-title">🧠 精神状态快速检测</div>
+      <div class="tool-card-desc">快速回答几个问题，看看你今天精神状态如何</div>
+      <div id="quickCheck">
+        <div style="margin-bottom: 16px;">
+          <div style="font-size: 14px; margin-bottom: 12px; font-weight: 600;">1. 你现在的能量状态？</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <button class="btn btn-secondary" onclick="quickCheck(1)" style="justify-content: flex-start;">🔋 满格 — 今天能大杀四方</button>
+            <button class="btn btn-secondary" onclick="quickCheck(2)" style="justify-content: flex-start;">🔋 一半 — 够用就行</button>
+            <button class="btn btn-secondary" onclick="quickCheck(3)" style="justify-content: flex-start;">🪫 快没电了 — 别跟我说话</button>
+            <button class="btn btn-secondary" onclick="quickCheck(4)" style="justify-content: flex-start;">💀 早就关机了 — 但还在硬撑</button>
+          </div>
+        </div>
+      </div>
+      <div id="quickResult" class="hidden" style="background: var(--primary-50); border-radius: 16px; padding: 20px; text-align: center; border: 1px solid rgba(188, 204, 220, 0.15);">
+        <div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;" id="quickResultTitle"></div>
+        <div style="font-size: 14px; color: var(--text-secondary);" id="quickResultText"></div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <a href="index.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🏠</span>
+        <span>首页</span>
+      </a>
+      <a href="quiz.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🧠</span>
+        <span>测评</span>
+      </a>
+      <a href="collection.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🎮</span>
+        <span>合集</span>
+      </a>
+      <a href="tools.html" class="bottom-nav-item active">
+        <span class="bottom-nav-icon">🛠️</span>
+        <span>工具</span>
+      </a>
+      <a href="about.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">ℹ️</span>
+        <span>关于</span>
+      </a>
+    </div>
+  </nav>
+
+  <footer class="footer">
+    <div class="footer-text">Soul Soother - 用抽象接住崩溃，用玩笑降低痛感</div>
+    <div class="footer-text">本网站仅供娱乐和放松，不能替代专业医疗建议</div>
+    <div class="footer-links">
+      <a href="about.html">关于我们</a>
+      <a href="about.html#help">求助资源</a>
+      <a href="https://github.com/yourusername/soul-soother" target="_blank">GitHub</a>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script>
+    function generateFengwenOutput() {
+      const input = document.getElementById('fengwenInput').value.trim();
+      if (!input) {
+        alert('输入点什么吧，比如"想死"、"崩溃"');
+        return;
+      }
+
+      const output = generateFengwen(input);
+      const outputEl = document.getElementById('fengwenOutput');
+      outputEl.textContent = output;
+      outputEl.classList.add('show');
+    }
+
+    function generateAlternative() {
+      const output = getAlternative();
+      const outputEl = document.getElementById('alternativeOutput');
+      outputEl.innerHTML = `${output.text}<span class="alt-type-tag">${output.type}</span>`;
+      outputEl.classList.add('show');
+    }
+
+    const helpCards = tools.helpCards;
+
+    function drawHelpCard() {
+      const card = helpCards[Math.floor(Math.random() * helpCards.length)];
+      document.getElementById('helpCardIcon').textContent = card.icon;
+      document.getElementById('helpCardText').textContent = card.text;
+      document.getElementById('helpCardIcon').style.animation = 'none';
+      setTimeout(() => {
+        document.getElementById('helpCardIcon').style.animation = 'float 3s ease-in-out infinite';
+      }, 10);
+    }
+
+    function quickCheck(level) {
+      const results = {
+        1: { title: "🔋 能量满格", text: "恭喜！你今天状态不错，建议把这份能量存起来，因为明天可能就用完了" },
+        2: { title: "🔋 能量一半", text: "正常状态。建议先完成最重要的一件事，其他的可以明天再说" },
+        3: { title: "🪫 快没电了", text: "你的能量即将耗尽。建议立即躺平，充电至少8小时" },
+        4: { title: "💀 已关机但硬撑", text: "检测到你是传说级疯批。建议：1. 放下手机 2. 躺下 3. 闭上眼睛 4. 明天再说" },
+      };
+
+      const result = results[level];
+      document.getElementById('quickResultTitle').textContent = result.title;
+      document.getElementById('quickResultText').textContent = result.text;
+      document.getElementById('quickCheck').classList.add('hidden');
+      document.getElementById('quickResult').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

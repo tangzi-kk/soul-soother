@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Soul Soother - 心灵抚慰者</title>
+  <meta name="description" content="一个面向极端情绪状态人群的轻量级趣味治愈网站，用Z世代最懂的抽象自嘲语言，让濒临崩溃的人在会心一笑中获得短暂的喘息">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="main-content">
+    <div class="disclaimer">
+      <strong>🌿 温馨提示</strong><br>
+      Soul Soother 是一个趣味治愈内容合集网站，所有内容仅供娱乐和放松，不能替代专业医疗建议。如果你感到情绪低落或有心理困扰，建议寻求专业帮助。
+    </div>
+
+    <div class="daily-quote fade-in">
+      <div class="daily-quote-label">✨ 今日抽象</div>
+      <div class="daily-quote-text" id="dailyQuote">加载中...</div>
+      <div class="daily-quote-footer">
+        <span class="daily-quote-date" id="dailyDate"></span>
+        <button class="btn-refresh" onclick="refreshQuote()">🔄 换一句</button>
+      </div>
+    </div>
+
+    <div id="nightRescue" class="night-rescue hidden">
+      <div class="night-rescue-title">🌙 深夜急救包</div>
+      <div class="night-rescue-text" id="nightRescueText"></div>
+    </div>
+
+    <div class="danmu-section">
+      <div class="danmu-label">💬 来自陌生人的陪伴</div>
+      <div class="danmu-track-wrap">
+        <div class="danmu-track" id="danmuTrack"></div>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <span class="section-title">快速入口</span>
+    </div>
+    <div class="quick-links-scroll">
+      <a href="quiz.html" class="quick-link">
+        <div class="quick-link-icon">🧠</div>
+        <div class="quick-link-title">精神状态检测</div>
+        <div class="quick-link-desc">测测你有多抽象</div>
+      </a>
+      <a href="tools.html#fengwen" class="quick-link">
+        <div class="quick-link-icon">📝</div>
+        <div class="quick-link-title">发疯文学生成</div>
+        <div class="quick-link-desc">把情绪变成段子</div>
+      </a>
+      <a href="collection.html" class="quick-link">
+        <div class="quick-link-icon">🎮</div>
+        <div class="quick-link-title">治愈小游戏</div>
+        <div class="quick-link-desc">无聊时随便玩</div>
+      </a>
+      <a href="tools.html#help-card" class="quick-link">
+        <div class="quick-link-icon">💝</div>
+        <div class="quick-link-title">抽互助卡</div>
+        <div class="quick-link-desc">今天也有人陪你</div>
+      </a>
+      <a href="tools.html#alt-plan" class="quick-link">
+        <div class="quick-link-icon">🔮</div>
+        <div class="quick-link-title">替代计划</div>
+        <div class="quick-link-desc">先别急着死</div>
+      </a>
+    </div>
+
+    <div class="help-card-preview">
+      <div class="help-card-icon">💝</div>
+      <div class="help-card-text" id="helpCardPreview">点击抽一张属于你的互助卡</div>
+      <button class="btn btn-primary" onclick="drawHelpCard()">🎲 抽一张</button>
+      <div class="help-card-sub">来自陌生人的无声陪伴</div>
+    </div>
+
+    <div class="help-section">
+      <div class="help-section-header">
+        <span class="help-section-icon">🆘</span>
+        <div>
+          <div class="help-section-title">求助 / 互助</div>
+          <div class="help-section-subtitle">今天有点撑不住？来这里发一句</div>
+        </div>
+      </div>
+      <textarea class="help-textarea" id="helpPost" placeholder="今天发生了什么？随便说一句..."></textarea>
+      <div class="help-footer">
+        <span>不用写很多，一句话也可以</span>
+        <button class="btn btn-primary" onclick="postHelp()" style="padding: 8px 18px; font-size: 13px;">发布</button>
+      </div>
+    </div>
+
+    <div class="help-posts-title">最新互助</div>
+    <div id="helpPosts">
+      <div class="help-post">
+        <div class="help-post-text">今天凌晨三点还没睡，但看到这句话突然觉得没那么孤单了</div>
+        <div class="help-post-footer">
+          <span class="help-post-time">刚刚</span>
+          <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+        </div>
+      </div>
+      <div class="help-post">
+        <div class="help-post-text">又自伤了，但比上次少了一道，算进步吗</div>
+        <div class="help-post-footer">
+          <span class="help-post-time">5分钟前</span>
+          <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+        </div>
+      </div>
+      <div class="help-post">
+        <div class="help-post-text">测出来我是"阴暗爬行型"，笑死，确实</div>
+        <div class="help-post-footer">
+          <span class="help-post-time">10分钟前</span>
+          <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <a href="index.html" class="bottom-nav-item active">
+        <span class="bottom-nav-icon">🏠</span>
+        <span>首页</span>
+      </a>
+      <a href="quiz.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🧠</span>
+        <span>测评</span>
+      </a>
+      <a href="collection.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🎮</span>
+        <span>合集</span>
+      </a>
+      <a href="tools.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🛠️</span>
+        <span>工具</span>
+      </a>
+      <a href="about.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">ℹ️</span>
+        <span>关于</span>
+      </a>
+    </div>
+  </nav>
+
+  <footer class="footer">
+    <div class="footer-text">Soul Soother - 用抽象接住崩溃，用玩笑降低痛感</div>
+    <div class="footer-text">本网站仅供娱乐和放松，不能替代专业医疗建议</div>
+    <div class="footer-links">
+      <a href="about.html">关于我们</a>
+      <a href="about.html#help">求助资源</a>
+      <a href="https://github.com/yourusername/soul-soother" target="_blank">GitHub</a>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      loadDailyQuote();
+      checkNightTime();
+      initDanmu();
+      loadHelpPosts();
+    });
+
+    function loadDailyQuote() {
+      const quote = getDailyQuote();
+      document.getElementById('dailyQuote').textContent = quote;
+      document.getElementById('dailyDate').textContent = new Date().toLocaleDateString('zh-CN', {
+        month: 'long',
+        day: 'numeric',
+        weekday: 'long'
+      });
+    }
+
+    function refreshQuote() {
+      const quote = getRandomQuote();
+      const el = document.getElementById('dailyQuote');
+      el.style.opacity = '0';
+      setTimeout(() => {
+        el.textContent = quote;
+        el.style.opacity = '1';
+      }, 200);
+    }
+
+    function checkNightTime() {
+      if (isNightTime()) {
+        document.getElementById('nightRescue').classList.remove('hidden');
+        document.getElementById('nightRescueText').textContent = getNightRescue();
+      }
+    }
+
+    function initDanmu() {
+      const track = document.getElementById('danmuTrack');
+      let html = '';
+      const allDanmu = [...danmuList, ...danmuList];
+      allDanmu.forEach((text, i) => {
+        html += `<span class="danmu-item">${text}</span>`;
+      });
+      track.innerHTML = html;
+    }
+
+    const helpCards = tools.helpCards;
+
+    function drawHelpCard() {
+      const card = helpCards[Math.floor(Math.random() * helpCards.length)];
+      document.getElementById('helpCardPreview').textContent = card.icon + ' ' + card.text;
+      document.getElementById('helpCardPreview').style.animation = 'none';
+      setTimeout(() => {
+        document.getElementById('helpCardPreview').style.animation = 'fadeIn 0.4s ease-out';
+      }, 10);
+    }
+
+    function postHelp() {
+      const content = document.getElementById('helpPost').value.trim();
+      if (!content) {
+        alert('写点什么吧，哪怕只有一个字');
+        return;
+      }
+
+      const crisisWords = ['自杀', '想死', '自残', '跳楼', '割腕', '上吊', '毒药'];
+      const hasCrisis = crisisWords.some(word => content.includes(word));
+
+      if (hasCrisis) {
+        alert('检测到你可能处于危机中。\n\n请立即联系：\n全国心理援助热线：400-161-9995\n北京回龙观医院危机干预：010-82951332\n生命热线：400-821-1215\n\n你并不孤单，帮助是可获得的。');
+        return;
+      }
+
+      const postsContainer = document.getElementById('helpPosts');
+      const newPost = document.createElement('div');
+      newPost.className = 'help-post fade-in';
+      newPost.innerHTML = `
+        <div class="help-post-text">${content}</div>
+        <div class="help-post-footer">
+          <span class="help-post-time">刚刚</span>
+          <button class="hug-btn" onclick="sendHug(this)">🫂 抱抱</button>
+        </div>
+      `;
+      postsContainer.insertBefore(newPost, postsContainer.firstChild);
+      document.getElementById('helpPost').value = '';
+
+      saveHelpPost(content);
+    }
+
+    function sendHug(btn) {
+      btn.classList.add('hugged');
+      btn.textContent = '🫂 已抱抱';
+      btn.disabled = true;
+    }
+
+    function saveHelpPost(content) {
+      let posts = JSON.parse(localStorage.getItem('helpPosts') || '[]');
+      posts.unshift({ content, time: new Date().toISOString() });
+      if (posts.length > 50) posts = posts.slice(0, 50);
+      localStorage.setItem('helpPosts', JSON.stringify(posts));
+    }
+
+    function loadHelpPosts() {
+    }
+  </script>
+</body>
+</html>
