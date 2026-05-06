@@ -20,9 +20,11 @@
   --color-border: #e8e8e8;
   --color-border-subtle: #f0f0f0;
 
-  /* Typography Tokens - Gill Sans Nova fallback */
-  --font-display: "Gill Sans", "Gill Sans MT", "Trebuchet MS", sans-serif;
-  --font-body: "Gill Sans", "Gill Sans MT", "Trebuchet MS", sans-serif;
+  /* Typography Tokens - 中文适配 */
+  /* Display: 阿里妈妈数黑体 - 几何感强，适合大标题 */
+  --font-display: "Alimama ShuHei", "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  /* Body: 阿里巴巴普惠体 - 清晰稳重，适合正文 */
+  --font-body: "Alibaba PuHuiTi", "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
 
   /* Type Scale - Major Second (1.125) from 14px base */
   --text-display: 28px;
@@ -1392,4 +1394,388 @@ body {
   body {
     padding-bottom: 0;
   }
+}
+
+/* ========================================
+   中文文字拟人化动效
+   灵感来自 Shupatto 产品交互
+   ======================================== */
+
+/* 文字呼吸动效 - 像有生命一样 */
+@keyframes textBreathe {
+  0%, 100% {
+    letter-spacing: var(--tracking-heading);
+    opacity: 1;
+  }
+  50% {
+    letter-spacing: calc(var(--tracking-heading) + 0.05em);
+    opacity: 0.85;
+  }
+}
+
+.text-breathe {
+  animation: textBreathe 4s ease-in-out infinite;
+}
+
+/* 文字逐字浮现 - 像慢慢展开 */
+@keyframes charReveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.char-reveal span {
+  display: inline-block;
+  opacity: 0;
+  animation: charReveal 0.6s ease forwards;
+}
+
+/* 文字蜷缩 - 像折叠起来 */
+@keyframes textCurl {
+  0% {
+    letter-spacing: var(--tracking-heading);
+    transform: scale(1);
+  }
+  50% {
+    letter-spacing: -0.02em;
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+  100% {
+    letter-spacing: var(--tracking-heading);
+    transform: scale(1);
+  }
+}
+
+.text-curl {
+  animation: textCurl 3s ease-in-out infinite;
+  display: inline-block;
+}
+
+/* 文字脉冲 - 像心跳 */
+@keyframes textPulse {
+  0%, 100% {
+    transform: scale(1);
+    font-weight: var(--weight-heading);
+  }
+  50% {
+    transform: scale(1.02);
+    font-weight: calc(var(--weight-heading) + 100);
+  }
+}
+
+.text-pulse {
+  animation: textPulse 2s ease-in-out infinite;
+  display: inline-block;
+}
+
+/* 文字摇摆 - 像不安的情绪 */
+@keyframes textWobble {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-1deg); }
+  75% { transform: rotate(1deg); }
+}
+
+.text-wobble {
+  animation: textWobble 3s ease-in-out infinite;
+  display: inline-block;
+  transform-origin: center bottom;
+}
+
+/* 文字消散 - 像烟雾散去 */
+@keyframes textDissolve {
+  0% {
+    opacity: 1;
+    filter: blur(0);
+    letter-spacing: var(--tracking-heading);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(4px);
+    letter-spacing: calc(var(--tracking-heading) + 0.2em);
+  }
+}
+
+.text-dissolve {
+  animation: textDissolve 2s ease forwards;
+}
+
+/* 文字重组 - 像重新振作 */
+@keyframes textReform {
+  0% {
+    opacity: 0;
+    filter: blur(4px);
+    letter-spacing: calc(var(--tracking-heading) + 0.15em);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    letter-spacing: var(--tracking-heading);
+  }
+}
+
+.text-reform {
+  animation: textReform 1s ease forwards;
+}
+
+/* 情绪滑杆样式 - 像 Shupatto 的参数控制 */
+.mood-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--color-border);
+  outline: none;
+  margin: var(--space-6) 0;
+}
+
+.mood-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--color-accent);
+  cursor: pointer;
+  border: 2px solid var(--color-canvas);
+  box-shadow: 0 0 0 1px var(--color-border);
+  transition: transform var(--transition-fast);
+}
+
+.mood-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.mood-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--color-accent);
+  cursor: pointer;
+  border: 2px solid var(--color-canvas);
+  box-shadow: 0 0 0 1px var(--color-border);
+}
+
+/* 文字权重响应 - 随滑杆变化 */
+.mood-text-light {
+  font-weight: 300;
+  color: var(--color-slate);
+  transition: all 0.3s ease;
+}
+
+.mood-text-heavy {
+  font-weight: 700;
+  color: var(--color-ink);
+  transition: all 0.3s ease;
+}
+
+/* 打字机动效 */
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typewriter 2s steps(20) forwards;
+}
+
+/* 文字漂浮 - 像思绪飘散 */
+@keyframes textFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  33% {
+    transform: translateY(-6px) rotate(0.5deg);
+    opacity: 0.9;
+  }
+  66% {
+    transform: translateY(-3px) rotate(-0.5deg);
+    opacity: 0.95;
+  }
+}
+
+.text-float {
+  animation: textFloat 5s ease-in-out infinite;
+  display: inline-block;
+}
+
+/* 故障艺术文字 - 像情绪崩溃 */
+@keyframes glitch {
+  0%, 100% {
+    transform: translate(0);
+    clip-path: inset(0 0 0 0);
+  }
+  20% {
+    transform: translate(-2px, 1px);
+    clip-path: inset(20% 0 60% 0);
+  }
+  40% {
+    transform: translate(2px, -1px);
+    clip-path: inset(50% 0 30% 0);
+  }
+  60% {
+    transform: translate(-1px, 2px);
+    clip-path: inset(10% 0 70% 0);
+  }
+  80% {
+    transform: translate(1px, -2px);
+    clip-path: inset(40% 0 40% 0);
+  }
+}
+
+.text-glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.text-glitch::before,
+.text-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.text-glitch:hover::before {
+  opacity: 0.8;
+  color: var(--color-accent);
+  animation: glitch 0.3s ease infinite;
+  z-index: -1;
+}
+
+.text-glitch:hover::after {
+  opacity: 0.8;
+  color: var(--color-slate);
+  animation: glitch 0.3s ease infinite reverse;
+  z-index: -2;
+}
+
+/* 响应式文字大小 - 像呼吸 */
+@keyframes textScale {
+  0%, 100% { font-size: 1em; }
+  50% { font-size: 1.05em; }
+}
+
+.text-scale {
+  animation: textScale 3s ease-in-out infinite;
+  display: inline-block;
+}
+
+/* ========================================
+   文字引力场入口卡片
+   ======================================== */
+
+.art-entry {
+  display: block;
+  background: var(--color-canvas);
+  border: 1px solid var(--color-border);
+  text-decoration: none;
+  color: var(--color-charcoal);
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: var(--gap-section);
+}
+
+.art-entry::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transition: transform var(--transition-base);
+}
+
+.art-entry:hover::before,
+.art-entry:active::before {
+  transform: scaleX(1);
+}
+
+.art-entry:hover {
+  border-color: var(--color-charcoal);
+}
+
+.art-entry-visual {
+  position: relative;
+  height: 160px;
+  background: var(--color-canvas-warm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.art-entry-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  position: absolute;
+  animation: dotFloat 3s ease-in-out infinite;
+}
+
+.art-entry-line {
+  width: 1px;
+  height: 40px;
+  background: var(--color-border);
+  position: absolute;
+  top: 50%;
+  margin-top: 4px;
+}
+
+.art-entry-text {
+  font-family: var(--font-display);
+  font-size: var(--text-heading);
+  font-weight: var(--weight-display);
+  letter-spacing: var(--tracking-heading);
+  color: var(--color-charcoal);
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes dotFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.art-entry-content {
+  padding: var(--space-6);
+}
+
+.art-entry-label {
+  font-size: var(--text-caption);
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+}
+
+.art-entry-title {
+  font-family: var(--font-display);
+  font-size: var(--text-heading-lg);
+  font-weight: var(--weight-display);
+  letter-spacing: var(--tracking-heading);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-2);
+}
+
+.art-entry-desc {
+  font-size: var(--text-body);
+  letter-spacing: var(--tracking-body);
+  line-height: var(--leading-loose);
+  color: var(--color-slate);
 }
