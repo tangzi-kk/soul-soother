@@ -404,7 +404,108 @@ body {
 
 .section-more:active { color: var(--primary-600); }
 
-/* === Quick Links Scroll === */
+/* === Guide Intro === */
+.guide-intro {
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.guide-intro-emoji {
+  font-size: 48px;
+  margin-bottom: var(--space-3);
+  animation: float 3s ease-in-out infinite;
+}
+
+.guide-intro-title {
+  font-size: var(--text-2xl);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: var(--space-2);
+  color: var(--text-primary);
+}
+
+.guide-intro-desc {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* === Action Grid === */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.action-grid > *:last-child {
+  grid-column: 1 / -1;
+}
+
+.action-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(188, 204, 220, 0.15);
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+  animation: staggerFadeIn 0.5s var(--transition-base) forwards;
+  animation-delay: var(--delay, 0s);
+  opacity: 0;
+}
+
+.action-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--accent-50), var(--primary-50));
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.action-card:active { transform: scale(0.96) translateY(3px); box-shadow: var(--shadow-sm); }
+.action-card:active::before { opacity: 0.6; }
+
+.action-card-icon {
+  font-size: 44px;
+  margin-bottom: var(--space-3);
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.08));
+  transition: transform var(--transition-spring);
+}
+
+.action-card:active .action-card-icon { transform: scale(1.15) rotate(-5deg); }
+
+.action-card-title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.action-card-desc {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  line-height: 1.4;
+  position: relative;
+  z-index: 1;
+  font-weight: 500;
+}
+
+/* === Quick Links Scroll (legacy, kept for compatibility) === */
 .quick-links-scroll {
   display: flex;
   gap: 12px;
