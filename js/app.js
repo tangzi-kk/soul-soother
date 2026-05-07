@@ -14,6 +14,77 @@
   // 页面名称
   var pageNames = ['首页', '开心', '测评', '互助', '急救'];
 
+  // ========================================
+  // 音效系统
+  // ========================================
+
+  var soundEnabled = true;
+  var audioCache = {};
+
+  var SOUNDS = {
+    click: 'audio/click-crisp.mp3',
+    ding: 'audio/ding-soft.mp3',
+    bubble: 'audio/bubble-pop.mp3',
+    cardFlip: 'audio/card-flip.mp3',
+    pageFlip: 'audio/page-flip.mp3',
+    bell: 'audio/bell-happy.mp3',
+    success: 'audio/success-chime.mp3',
+    magic: 'audio/magic-sparkle.mp3',
+    whoosh: 'audio/whoosh-soft.mp3',
+    transition: 'audio/transition-soft.mp3',
+    easterBounce: 'audio/easter-bounce.mp3',
+    easterFun: 'audio/easter-fun.mp3',
+    easterMagic: 'audio/easter-magic.mp3',
+    easterStar: 'audio/easter-star.mp3',
+    easterWand: 'audio/easter-wand.mp3',
+    easterBell: 'audio/easter-bell.mp3',
+    easterDing: 'audio/easter-ding.mp3'
+  };
+
+  var EASTER_EGG_SOUNDS = [
+    'easterBounce', 'easterFun', 'easterMagic',
+    'easterStar', 'easterWand', 'easterBell', 'easterDing'
+  ];
+
+  function getAudio(name) {
+    if (!SOUNDS[name]) return null;
+    if (!audioCache[name]) {
+      var audio = new Audio(SOUNDS[name]);
+      audio.volume = 0.3;
+      audioCache[name] = audio;
+    }
+    return audioCache[name];
+  }
+
+  function playSound(name) {
+    if (!soundEnabled) return;
+    var audio = getAudio(name);
+    if (!audio) return;
+    audio.currentTime = 0;
+    audio.play().catch(function() {});
+  }
+
+  function playEasterEgg() {
+    if (!soundEnabled) return;
+    var idx = Math.floor(Math.random() * EASTER_EGG_SOUNDS.length);
+    playSound(EASTER_EGG_SOUNDS[idx]);
+  }
+
+  window.toggleSound = function() {
+    soundEnabled = !soundEnabled;
+    var btn = document.getElementById('soundToggle');
+    if (btn) {
+      btn.classList.toggle('muted', !soundEnabled);
+      var label = btn.querySelector('.sound-label');
+      if (label) label.textContent = soundEnabled ? '音效' : '静音';
+    }
+    if (soundEnabled) playSound('ding');
+  };
+
+  window.isSoundEnabled = function() { return soundEnabled; };
+  window.playSound = playSound;
+  window.playEasterEgg = playEasterEgg;
+
   // Toast 提示
   function showToast(message) {
     var existing = document.querySelector('.app-toast');
@@ -64,6 +135,8 @@
 
     isScrolling = true;
     currentPage = index;
+
+    playSound('pageFlip');
 
     var pageWidth = container.offsetWidth;
     container.scrollTo({
@@ -184,6 +257,7 @@
 
   window.showWeatherDetail = function() {
     var weather = getWeather();
+    playSound('bubble');
     showToast('今日精神天气：' + weather.label + ' — ' + weather.desc);
   };
 
@@ -199,6 +273,8 @@
 
   window.refreshQuote = function() {
     if (typeof getRandomQuote !== 'function') return;
+
+    playSound('click');
 
     var quote = getRandomQuote();
     var el = document.getElementById('dailyQuote');
@@ -221,6 +297,8 @@
   window.randomFeed = function() {
     if (typeof getRandomFeed !== 'function') return;
 
+    playSound('bubble');
+
     var feed = getRandomFeed();
     var contentEl = document.getElementById('feedContent');
     contentEl.style.opacity = '0';
@@ -237,6 +315,7 @@
       'light': '你给脑子关了一盏灯！脑子说：终于可以休息一下了。',
       'settle': '今日活着结算：今天还活着、今天喝了水、今天呼吸了、今天没爆炸。总计：+100 生存分'
     };
+    playEasterEgg();
     showToast(messages[game] || '操作完成');
   };
 
@@ -249,6 +328,7 @@
       return;
     }
 
+    playSound('magic');
     var result = generateFengwen(input);
     var output = document.getElementById('fengwenOutput');
     output.textContent = result;
@@ -265,6 +345,7 @@
     }
 
     var result = translateBadThought(input);
+    playSound('whoosh');
     var output = document.getElementById('thoughtOutput');
     output.innerHTML = '<strong>翻译结果：</strong><br>' + result;
     output.classList.add('show');
@@ -339,6 +420,8 @@
   window.startQuiz = function(quizId) {
     if (typeof quizzes === 'undefined') return;
 
+    playSound('click');
+
     for (var i = 0; i < quizzes.length; i++) {
       if (quizzes[i].id === quizId) {
         currentQuiz = quizzes[i];
@@ -377,6 +460,7 @@
 
   window.selectOption = function(index) {
     answers[currentQuestion] = index;
+    playSound('ding');
     renderQuestion();
   };
 
