@@ -1580,6 +1580,12 @@
               </span>
               <span class="quick-action-text">翻译情绪</span>
             </button>
+            <button class="quick-action-btn" onclick="showPlaySection('games')">
+              <span class="quick-action-icon">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="4" width="20" height="20" rx="4" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><circle cx="10" cy="14" r="2" fill="currentColor" opacity="0.5"/><circle cx="18" cy="14" r="2" fill="currentColor" opacity="0.5"/><path d="M10 18c0 2 1.8 4 4 4s4-2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+              <span class="quick-action-text">玩个小游戏</span>
+            </button>
           </div>
         </div>
 
@@ -1688,6 +1694,21 @@
             <div class="generator-output" id="thought-output"></div>
           </div>
         </div>
+
+        <!-- 玩个小游戏区域 -->
+        <div class="play-section" id="play-games">
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 28 28" fill="none" style="vertical-align:middle;margin-right:6px;"><rect x="4" y="4" width="20" height="20" rx="4" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><circle cx="10" cy="14" r="2" fill="currentColor" opacity="0.5"/><circle cx="18" cy="14" r="2" fill="currentColor" opacity="0.5"/><path d="M10 18c0 2 1.8 4 4 4s4-2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            玩个小游戏
+          </div>
+          <div class="card">
+            <div style="font-size:13px;color:var(--cocoa);margin-bottom:12px;">推荐一些能让你放松一小会儿的东西：</div>
+            <div class="game-list" id="game-list">
+              <!-- 动态生成 -->
+            </div>
+            <button class="btn btn-ghost" style="margin-top: 14px;" onclick="randomGame()">换一批推荐</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1715,6 +1736,39 @@
       </button>
     </nav>
   </div>
+
+  <!-- ═══════════════════════════════════════
+       核心函数（必须在HTML引用之前定义）
+       ═══════════════════════════════════════ -->
+  <script>
+    // 页面列表，用于滑动切换时确定顺序
+    const pages = ['home', 'checkin', 'mutual', 'kit', 'play'];
+    let currentPageIndex = 0;
+
+    // 切换页面
+    // pageName: 目标页面标识（home/checkin/mutual/kit/play）
+    // 隐藏所有页面，显示目标页面，更新底部tab激活状态
+    function showPage(pageName) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + pageName).classList.add('active');
+      document.querySelectorAll('.tab-item').forEach(l => l.classList.remove('active'));
+      document.querySelectorAll('.tab-item[data-page="' + pageName + '"]').forEach(l => l.classList.add('active'));
+      document.getElementById('app').scrollTop = 0;
+      currentPageIndex = pages.indexOf(pageName);
+
+      // 进入检测页面时，重置小缓对话
+      if (pageName === 'checkin') {
+        resetXiaohuanChat();
+      }
+    }
+
+    // 显示/隐藏缓一缓子页面
+    function showPlaySection(sectionName) {
+      document.querySelectorAll('.play-section').forEach(s => s.classList.remove('active'));
+      document.getElementById('play-' + sectionName).classList.add('active');
+      document.getElementById('app').scrollTop = 0;
+    }
+  </script>
 
   <!-- ═══════════════════════════════════════
        音效系统
@@ -1974,7 +2028,134 @@
         document.getElementById('ai-apikey').value = config.apiKey || '';
         document.getElementById('ai-baseurl').value = config.baseUrl || '';
       }
+      
+      // 加载音效设置
+      loadSoundSettings();
     }
+
+    // ═══════════════════════════════════════
+    //  音效设置功能
+    // ═══════════════════════════════════════
+
+    let soundEnabled = true;
+    let soundVolume = 0.5;
+
+    // 设置音效开关
+    function setSoundEnabled(enabled) {
+      soundEnabled = enabled;
+      updateSoundButtons();
+    }
+
+    // 更新音效按钮状态
+    function updateSoundButtons() {
+      const onBtn = document.getElementById('sound-on-btn');
+      const offBtn = document.getElementById('sound-off-btn');
+      if (onBtn && offBtn) {
+        if (soundEnabled) {
+          onBtn.className = 'btn btn-primary';
+          offBtn.className = 'btn btn-ghost';
+        } else {
+          onBtn.className = 'btn btn-ghost';
+          offBtn.className = 'btn btn-primary';
+        }
+      }
+    }
+
+    // 更新音量显示
+    function updateVolumeDisplay(value) {
+      const display = document.getElementById('volume-value');
+      if (display) {
+        display.textContent = value + '%';
+      }
+      soundVolume = value / 100;
+    }
+
+    // 保存音效设置
+    function saveSoundSettings() {
+      const settings = {
+        enabled: soundEnabled,
+        volume: soundVolume
+      };
+      localStorage.setItem('soulsoother_sound_settings', JSON.stringify(settings));
+    }
+
+    // 加载音效设置
+    function loadSoundSettings() {
+      const saved = localStorage.getItem('soulsoother_sound_settings');
+      if (saved) {
+        const settings = JSON.parse(saved);
+        soundEnabled = settings.enabled !== false;
+        soundVolume = settings.volume !== undefined ? settings.volume : 0.5;
+        
+        // 更新UI
+        const volumeInput = document.getElementById('sound-volume');
+        if (volumeInput) {
+          volumeInput.value = Math.round(soundVolume * 100);
+          updateVolumeDisplay(Math.round(soundVolume * 100));
+        }
+        updateSoundButtons();
+      }
+    }
+
+    // 修改播放音效函数，添加开关和音量控制
+    const originalPlayClickSound = playClickSound;
+    playClickSound = function(type) {
+      if (!soundEnabled) return;
+      
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        const presets = {
+          soft: { freq: 800, type: 'sine', duration: 0.08, vol: 0.08 },
+          bubble: { freq: 600, type: 'sine', duration: 0.12, vol: 0.06 },
+          pop: { freq: 1200, type: 'triangle', duration: 0.05, vol: 0.05 },
+          deep: { freq: 400, type: 'sine', duration: 0.15, vol: 0.07 }
+        };
+        const p = presets[type] || presets.soft;
+
+        osc.type = p.type;
+        osc.frequency.setValueAtTime(p.freq, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(p.freq * 0.5, ctx.currentTime + p.duration);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(2000, ctx.currentTime);
+
+        // 应用音量设置
+        const finalVol = p.vol * soundVolume;
+        gain.gain.setValueAtTime(finalVol, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + p.duration);
+
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + p.duration);
+      } catch (e) {
+        // 静默失败
+      }
+    };
+
+    // 保存配置时同时保存音效设置
+    const originalSaveAIConfig = saveAIConfig;
+    saveAIConfig = function() {
+      const provider = document.getElementById('ai-provider').value;
+      const model = document.getElementById('ai-model').value;
+      const apiKey = document.getElementById('ai-apikey').value;
+      const baseUrl = document.getElementById('ai-baseurl').value;
+
+      const config = { provider, model, apiKey, baseUrl };
+      localStorage.setItem('soulsoother_ai_config', JSON.stringify(config));
+      
+      // 保存音效设置
+      saveSoundSettings();
+      
+      alert('配置已保存到本地浏览器');
+      closeAIConfig();
+    };
   </script>
 
   <!-- AI配置弹窗 -->
@@ -2016,7 +2197,25 @@
         <input type="text" id="ai-baseurl" placeholder="使用默认" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:rgba(255,255,255,0.8);">
       </div>
 
-      <div style="display:flex;gap:8px;">
+      <!-- 音效设置 -->
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px;">🔊 音效设置</div>
+        
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">音效开关</label>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary" id="sound-on-btn" style="flex:1;" onclick="setSoundEnabled(true)">开启</button>
+            <button class="btn btn-ghost" id="sound-off-btn" style="flex:1;" onclick="setSoundEnabled(false)">关闭</button>
+          </div>
+        </div>
+        
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">音量 <span id="volume-value">50%</span></label>
+          <input type="range" id="sound-volume" min="0" max="100" value="50" style="width:100%;" oninput="updateVolumeDisplay(this.value)">
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:16px;">
         <button class="btn btn-ghost" style="flex:1;" onclick="closeAIConfig()">取消</button>
         <button class="btn btn-primary" id="ai-test-btn" style="flex:1;" onclick="testAIConnection()">测试连接</button>
         <button class="btn btn-primary" style="flex:1;background:var(--success);" onclick="saveAIConfig()">保存</button>
@@ -2426,31 +2625,6 @@
     });
 
     // ═══════════════════════════════════════
-    //  页面切换
-    // ═══════════════════════════════════════
-
-    // 页面列表，用于滑动切换时确定顺序
-    const pages = ['home', 'checkin', 'mutual', 'kit', 'play'];
-    let currentPageIndex = 0;
-
-    // 切换页面
-    // pageName: 目标页面标识（home/checkin/mutual/kit/play）
-    // 隐藏所有页面，显示目标页面，更新底部tab激活状态
-    function showPage(pageName) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-' + pageName).classList.add('active');
-      document.querySelectorAll('.tab-item').forEach(l => l.classList.remove('active'));
-      document.querySelectorAll('.tab-item[data-page="' + pageName + '"]').forEach(l => l.classList.add('active'));
-      document.getElementById('app').scrollTop = 0;
-      currentPageIndex = pages.indexOf(pageName);
-
-      // 进入检测页面时，重置小缓对话
-      if (pageName === 'checkin') {
-        resetXiaohuanChat();
-      }
-    }
-
-    // ═══════════════════════════════════════
     //  左右滑动切换页面
     // ═══════════════════════════════════════
 
@@ -2572,6 +2746,155 @@
         total: allMemories.length,
         lastTime: allMemories.length > 0 ? allMemories[allMemories.length - 1].timestamp : null
       };
+    }
+
+    // ═══════════════════════════════════════
+    //  治愈游戏推荐数据
+    // ═══════════════════════════════════════
+
+    const healingGames = [
+      {
+        id: "pixel-thoughts",
+        name: "Pixel Thoughts",
+        desc: "60秒冥想，把烦恼放进星星里",
+        url: "https://www.pixelthoughts.co/",
+        category: "websites",
+        tags: ["放松", "专注", "深夜"],
+        icon: "⭐"
+      },
+      {
+        id: "fluid-simulation",
+        name: "流体模拟",
+        desc: "鼠标划过产生美丽的色彩流动",
+        url: "https://paveldogreat.github.io/WebGL-Fluid-Simulation/",
+        category: "games",
+        tags: ["放松", "解压", "无聊"],
+        icon: "💧"
+      },
+      {
+        id: "weave-silk",
+        name: "Weave Silk",
+        desc: "对称绘画工具，画出美丽的光影图案",
+        url: "http://weavesilk.com/",
+        category: "games",
+        tags: ["放松", "专注", "无聊"],
+        icon: "🎨"
+      },
+      {
+        id: "window-swap",
+        name: "Window Swap",
+        desc: "看世界各地陌生人窗外的风景",
+        url: "https://window-swap.com/",
+        category: "websites",
+        tags: ["放松", "开心", "失眠"],
+        icon: "🪟"
+      },
+      {
+        id: "rainy-mood",
+        name: "Rainy Mood",
+        desc: "经典雨声背景音",
+        url: "https://rainymood.com/",
+        category: "websites",
+        tags: ["放松", "睡眠", "深夜"],
+        icon: "🌧️"
+      },
+      {
+        id: "soft-murmur",
+        name: "A Soft Murmur",
+        desc: "自定义环境音",
+        url: "https://asoftmurmur.com/",
+        category: "websites",
+        tags: ["放松", "睡眠", "专注"],
+        icon: "🎵"
+      },
+      {
+        id: "pointer-pointer",
+        name: "Pointer Pointer",
+        desc: "把鼠标放在屏幕上，网站会找出一张手指指向你鼠标位置的照片",
+        url: "https://pointerpointer.com/",
+        category: "games",
+        tags: ["开心", "无聊", "解压"],
+        icon: "👆"
+      },
+      {
+        id: "thisissand",
+        name: "thisissand",
+        desc: "在屏幕上倒沙子，堆积成你想要的样子",
+        url: "https://thisissand.com/",
+        category: "games",
+        tags: ["放松", "专注", "无聊"],
+        icon: "🏖️"
+      },
+      {
+        id: "neave-tv",
+        name: "Neave.TV",
+        desc: "随机播放有趣的视频，像开盲盒一样",
+        url: "https://neave.tv/",
+        category: "websites",
+        tags: ["开心", "无聊", "解压"],
+        icon: "📺"
+      },
+      {
+        id: "little-alchemy",
+        name: "Little Alchemy",
+        desc: "从四大元素开始，合成新物品",
+        url: "https://littlealchemy.com/",
+        category: "games",
+        tags: ["专注", "无聊", "解压"],
+        icon: "⚗️"
+      },
+      {
+        id: "patatap",
+        name: "Patatap",
+        desc: "键盘上的每个键都对应一个音效和动画",
+        url: "https://patatap.com/",
+        category: "games",
+        tags: ["开心", "解压", "无聊"],
+        icon: "🎹"
+      },
+      {
+        id: "the-quiet-place",
+        name: "The Quiet Place",
+        desc: "一个让你安静的网页",
+        url: "http://thequietplaceproject.com/thequietplace",
+        category: "websites",
+        tags: ["放松", "睡眠", "深夜"],
+        icon: "🤫"
+      }
+    ];
+
+    // 渲染游戏推荐列表
+    function renderGames() {
+      const container = document.getElementById('game-list');
+      if (!container) return;
+
+      // 随机选择4个游戏
+      const shuffled = shuffle([...healingGames]);
+      const selected = shuffled.slice(0, 4);
+
+      let html = '';
+      selected.forEach(game => {
+        const tagsHtml = game.tags.map(tag => '<span class="game-tag">' + tag + '</span>').join('');
+        html +=
+          '<a href="' + game.url + '" target="_blank" rel="noopener" class="game-item" style="display:block;padding:12px;margin-bottom:8px;background:rgba(128,112,95,0.04);border-radius:12px;text-decoration:none;color:inherit;transition:all 0.2s;">' +
+          '<div style="display:flex;align-items:center;gap:12px;">' +
+          '<div style="font-size:28px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(115,138,229,0.1);border-radius:10px;">' + game.icon + '</div>' +
+          '<div style="flex:1;">' +
+          '<div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:2px;">' + game.name + '</div>' +
+          '<div style="font-size:12px;color:var(--cocoa);margin-bottom:4px;">' + game.desc + '</div>' +
+          '<div style="display:flex;gap:4px;flex-wrap:wrap;">' + tagsHtml + '</div>' +
+          '</div>' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cocoa-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>' +
+          '</div>' +
+          '</a>';
+      });
+
+      container.innerHTML = html;
+    }
+
+    // 随机换一批游戏
+    function randomGame() {
+      renderGames();
     }
 
     // ═══════════════════════════════════════
