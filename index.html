@@ -2013,11 +2013,11 @@
         onDone(fullText);
       } catch (error) {
         if (timeoutId) clearTimeout(timeoutId);
-        
-        // 如果是超时且提供了fallback，使用fallback
+
+        // 如果是超时且提供了fallback，静默使用fallback（不重复显示）
         if (error.message === 'TIMEOUT' && fallbackText) {
           console.log('AI响应超时，使用默认回复');
-          onChunk(fallbackText, fallbackText);
+          // 不调用onChunk，因为fallback就是已经显示的本地文案
           onDone(fallbackText);
         } else {
           onError(error.message);
@@ -2659,6 +2659,9 @@
       p.mousePressed = function() { gravityMousePressed(p); };
       p.mouseDragged = function() { gravityMouseDragged(p); };
       p.mouseReleased = function() { gravityMouseReleased(p); };
+      p.touchStarted = function() { gravityMousePressed(p); };
+      p.touchMoved = function() { gravityMouseDragged(p); return false; };
+      p.touchEnded = function() { gravityMouseReleased(p); return false; };
       p.windowResized = function() { gravityWindowResized(p); };
     });
 
@@ -4881,17 +4884,17 @@
         [
           {
             role: 'system',
-            content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户刚刚报告了能量值' + value + '%。请基于以下本地文案进行扩展和个性化回应，保持同样的风格（简短、口语化、像朋友一样），但可以更具体、更有针对性。不要重复文案内容，而是基于它进行延伸。'
+            content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户刚刚报告了能量值' + value + '%。本地文案已显示："' + localResponse + '"。请只输出补充内容（1-2句话），不要重复本地文案，保持同样的风格（简短、口语化、像朋友一样）。'
           },
           {
             role: 'user',
-            content: '我的能量值是' + value + '%，感觉' + energyLevel + '。本地文案说："' + localResponse + '"'
+            content: '我的能量值是' + value + '%，感觉' + energyLevel
           }
         ],
         (chunk, fullText) => {
-          // 流式更新：将AI回复追加到本地回复后面
+          // 流式更新：只显示AI补充内容
           const formatted = formatAIResponse(fullText);
-          textEl.innerHTML = parseMarkdown(localResponse + '\n\n' + formatted);
+          textEl.innerHTML = parseMarkdown(localResponse + (formatted ? '\n\n' + formatted : ''));
           container.scrollTop = container.scrollHeight;
         },
         (fullText) => {
@@ -5007,7 +5010,7 @@
         [
           {
             role: 'system',
-            content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户刚刚选择了念头/情绪："' + thought + '"。本地文案回应是："' + localResponse + '"。请基于这个文案进行扩展和个性化，保持同样的风格（简短、口语化、像朋友一样），但可以更具体、更有针对性。不要重复文案内容，而是基于它进行延伸。'
+            content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户刚刚选择了念头/情绪："' + thought + '"。本地文案已显示："' + localResponse + '"。请只输出补充内容（1-2句话），不要重复本地文案，保持同样的风格（简短、口语化、像朋友一样）。'
           },
           {
             role: 'user',
@@ -5016,7 +5019,7 @@
         ],
         (chunk, fullText) => {
           const formatted = formatAIResponse(fullText);
-          textEl.innerHTML = parseMarkdown(localResponse + '\n\n' + formatted);
+          textEl.innerHTML = parseMarkdown(localResponse + (formatted ? '\n\n' + formatted : ''));
           container.scrollTop = container.scrollHeight;
         },
         (fullText) => {
@@ -5129,7 +5132,7 @@
         [
           {
             role: 'system',
-            content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户刚刚报告了身体感觉："' + body + '"。本地文案回应是："' + localResponse + '"。请基于这个文案进行扩展和个性化，保持同样的风格（简短、口语化、像朋友一样），但可以更具体、更有针对性。不要重复文案内容，而是基于它进行延伸。'
+            content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户刚刚报告了身体感觉："' + body + '"。本地文案已显示："' + localResponse + '"。请只输出补充内容（1-2句话），不要重复本地文案，保持同样的风格（简短、口语化、像朋友一样）。'
           },
           {
             role: 'user',
@@ -5138,7 +5141,7 @@
         ],
         (chunk, fullText) => {
           const formatted = formatAIResponse(fullText);
-          textEl.innerHTML = parseMarkdown(localResponse + '\n\n' + formatted);
+          textEl.innerHTML = parseMarkdown(localResponse + (formatted ? '\n\n' + formatted : ''));
           container.scrollTop = container.scrollHeight;
         },
         (fullText) => {
@@ -5516,7 +5519,7 @@
         [
           {
             role: 'system',
-            content: '你是' + (currentPersonality ? currentPersonality.name : '小缓') + '，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。你说话简短、口语化，像朋友一样。本地文案回应是："' + localResponse + '"。请基于这个文案进行扩展和个性化，保持同样的风格，但不要重复文案内容。'
+            content: '你是' + (currentPersonality ? currentPersonality.name : '小缓') + '，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。你说话简短、口语化，像朋友一样。本地文案已显示："' + localResponse + '"。请只输出补充内容（1-2句话），不要重复本地文案，保持同样的风格。'
           },
           ...contextMessages,
           {
@@ -5526,7 +5529,7 @@
         ],
         (chunk, fullText) => {
           const formatted = formatAIResponse(fullText);
-          textEl.innerHTML = parseMarkdown(localResponse + '\n\n' + formatted);
+          textEl.innerHTML = parseMarkdown(localResponse + (formatted ? '\n\n' + formatted : ''));
           container.scrollTop = container.scrollHeight;
         },
         (fullText) => {
