@@ -2622,7 +2622,8 @@
           }
         } else if (word.isFading) {
           // 丧词汇被点击后淡出
-          word.fadeOpacity -= 0.02;
+          const fadeSpeed = word.fadeSpeed || 0.02;
+          word.fadeOpacity -= fadeSpeed;
           if (word.fadeOpacity <= 0) {
             word.fadeOpacity = 0;
             // 在旁边生成一个积极词汇替代
@@ -2720,7 +2721,6 @@
         pt.x += pt.vx;
         pt.y += pt.vy;
         pt.life -= pt.decay;
-        pt.vy += 0.05; // 轻微重力
 
         if (pt.life <= 0) {
           particles.splice(i, 1);
@@ -2729,10 +2729,46 @@
 
         p.push();
         p.translate(pt.x, pt.y);
+
         const c = p.color(pt.color);
-        p.fill(p.red(c), p.green(c), p.blue(c), pt.life * 255);
-        p.noStroke();
-        p.ellipse(0, 0, pt.size * pt.life, pt.size * pt.life);
+        const alpha = pt.life * 255;
+
+        if (pt.type === 'sparkle') {
+          // 闪光粒子：旋转的星形
+          pt.rotation += pt.rotationSpeed || 0;
+          p.rotate(pt.rotation);
+          p.fill(p.red(c), p.green(c), p.blue(c), alpha);
+          p.noStroke();
+          // 绘制四角星
+          const size = pt.size * pt.life;
+          p.beginShape();
+          for (let j = 0; j < 4; j++) {
+            const angle = (p.TWO_PI / 4) * j - p.HALF_PI;
+            const r = j % 2 === 0 ? size : size * 0.4;
+            p.vertex(Math.cos(angle) * r, Math.sin(angle) * r);
+          }
+          p.endShape(p.CLOSE);
+          // 中心光点
+          p.fill(255, alpha * 0.8);
+          p.ellipse(0, 0, size * 0.3, size * 0.3);
+        } else if (pt.type === 'dissolve') {
+          // 消散粒子：向上飘散的小圆点
+          pt.vy -= 0.02; // 向上浮力
+          const size = pt.shrink ? pt.size * pt.life : pt.size;
+          p.fill(p.red(c), p.green(c), p.blue(c), alpha * 0.6);
+          p.noStroke();
+          p.ellipse(0, 0, size, size);
+          // 外圈光晕
+          p.fill(p.red(c), p.green(c), p.blue(c), alpha * 0.2);
+          p.ellipse(0, 0, size * 2, size * 2);
+        } else {
+          // 默认粒子
+          pt.vy += 0.05; // 轻微重力
+          p.fill(p.red(c), p.green(c), p.blue(c), alpha);
+          p.noStroke();
+          p.ellipse(0, 0, pt.size * pt.life, pt.size * pt.life);
+        }
+
         p.pop();
       }
     }
@@ -2772,7 +2808,7 @@
         if (d < threshold) {
           clicked = true;
           if (word.isPositive) {
-            // 点击积极词汇：被吸引放大，变色，粒子特效
+            // 点击积极词汇：抓住一点光 ✨
             word.isAttracted = true;
             word.targetX = containerWidth / 2;
             word.targetY = containerHeight / 2;
@@ -2783,16 +2819,23 @@
             comboCount++;
             updateComboDisplay();
 
-            // 粒子特效
-            createParticles(null, word.x, word.y, word.color, 8 + comboCount * 2);
+            // 金色光芒粒子特效
+            createSparkleParticles(word.x, word.y, word.color, 12 + comboCount * 3);
+
+            // 播放音效
+            playClickSound('soft');
           } else {
-            // 点击丧词汇：淡出，被积极词汇替代，粒子特效
+            // 点击丧词汇：让黑暗退散 🌫️
             word.isFading = true;
+            word.fadeSpeed = 0.05; // 加速淡出
             comboCount = 0;
             updateComboDisplay();
 
-            // 灰色粒子
-            createParticles(null, word.x, word.y, '#a09588', 5);
+            // 消散粒子特效
+            createDissolveParticles(word.x, word.y, '#a09588', 8);
+
+            // 播放音效
+            playClickSound('soft');
           }
           break;
         }
@@ -2811,8 +2854,50 @@
 
           comboCount++;
           updateComboDisplay();
-          createParticles(null, mx, my, word.color, 6);
+          createSparkleParticles(mx, my, word.color, 8);
+          playClickSound('soft');
         }
+      }
+    }
+
+    // 创建闪光粒子（积极词汇 - 抓住一点光）
+    function createSparkleParticles(x, y, color, count) {
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 / count) * i + Math.random() * 0.5;
+        const speed = 2 + Math.random() * 4;
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 1,
+          decay: 0.015 + Math.random() * 0.02,
+          size: 3 + Math.random() * 5,
+          color: color,
+          type: 'sparkle',
+          rotation: Math.random() * Math.PI * 2,
+          rotationSpeed: (Math.random() - 0.5) * 0.2
+        });
+      }
+    }
+
+    // 创建消散粒子（丧词汇 - 让黑暗退散）
+    function createDissolveParticles(x, y, color, count) {
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 1 + Math.random() * 3;
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - 1, // 稍微向上飘
+          life: 1,
+          decay: 0.025 + Math.random() * 0.02,
+          size: 2 + Math.random() * 4,
+          color: color,
+          type: 'dissolve',
+          shrink: true
+        });
       }
     }
 
@@ -2839,67 +2924,88 @@
         return;
       }
 
+      // 触摸状态跟踪
+      let touchStartMX = 0;
+      let touchStartMY = 0;
+      let touchDragged = false;
+      let touchPressStart = 0;
+      let touchDraggedWord = null;
+      let touchDragOffsetX = 0;
+      let touchDragOffsetY = 0;
+
       canvas.addEventListener('touchstart', function(e) {
         const touch = e.touches[0];
         const rect = canvas.getBoundingClientRect();
         const mx = touch.clientX - rect.left;
         const my = touch.clientY - rect.top;
 
+        touchStartMX = mx;
+        touchStartMY = my;
+        touchDragged = false;
+        touchPressStart = Date.now();
+        touchDraggedWord = null;
+
         // 检查是否按住了某个词
-        let hitWord = false;
         for (let word of gravityWords) {
           const d = Math.sqrt((mx - word.x) ** 2 + (my - word.y) ** 2);
           const threshold = word.fontSize * word.scale * 1.5;
           if (d < threshold) {
-            hitWord = true;
-            dragStartX = mx;
-            dragStartY = my;
-            hasDragged = false;
-            pressStartTime = Date.now();
-            draggedWord = word;
-            dragOffsetX = mx - word.x;
-            dragOffsetY = my - word.y;
+            touchDraggedWord = word;
+            touchDragOffsetX = mx - word.x;
+            touchDragOffsetY = my - word.y;
             word.isDragging = true;
             break;
           }
         }
 
-        // 只有点击到词汇时才阻止默认行为
-        if (hitWord) {
+        // 点击到词汇时阻止默认行为
+        if (touchDraggedWord) {
           e.preventDefault();
           e.stopPropagation();
         }
       }, { passive: false });
 
       canvas.addEventListener('touchmove', function(e) {
-        if (draggedWord && draggedWord.isDragging) {
+        if (touchDraggedWord && touchDraggedWord.isDragging) {
           e.preventDefault();
           e.stopPropagation();
           const touch = e.touches[0];
           const rect = canvas.getBoundingClientRect();
-          draggedWord.x = (touch.clientX - rect.left) - dragOffsetX;
-          draggedWord.y = (touch.clientY - rect.top) - dragOffsetY;
-          draggedWord.vx = 0;
-          draggedWord.vy = 0;
-          hasDragged = true;
+          const newX = (touch.clientX - rect.left) - touchDragOffsetX;
+          const newY = (touch.clientY - rect.top) - touchDragOffsetY;
+
+          // 只有移动超过5px才算拖拽
+          if (Math.abs(newX - touchDraggedWord.x) > 5 || Math.abs(newY - touchDraggedWord.y) > 5) {
+            touchDragged = true;
+          }
+
+          touchDraggedWord.x = newX;
+          touchDraggedWord.y = newY;
+          touchDraggedWord.vx = 0;
+          touchDraggedWord.vy = 0;
         }
       }, { passive: false });
 
       canvas.addEventListener('touchend', function(e) {
-        if (draggedWord) {
+        const pressDuration = Date.now() - touchPressStart;
+
+        if (touchDraggedWord) {
           e.preventDefault();
           e.stopPropagation();
-          const pressDuration = Date.now() - pressStartTime;
+
           // 长按特效需要在设置中开启
           const isLongPress = isLongPressEnabled() && pressDuration >= LONG_PRESS_THRESHOLD;
 
-          draggedWord.isDragging = false;
-          draggedWord = null;
+          touchDraggedWord.isDragging = false;
+          touchDraggedWord = null;
 
-          if (!hasDragged && !isLongPress) {
+          if (!touchDragged && !isLongPress) {
             // 没有拖动且不是长按，执行点击逻辑
-            handleWordClick(null, dragStartX, dragStartY);
+            handleWordClick(null, touchStartMX, touchStartMY);
           }
+        } else {
+          // 没有点击到词汇，也执行点击逻辑（随机激活积极词汇）
+          handleWordClick(null, touchStartMX, touchStartMY);
         }
       }, { passive: false });
     }
@@ -2999,7 +3105,7 @@
 
       selectors.forEach(selector => {
         document.querySelectorAll(selector).forEach(el => {
-          // 阻止触摸事件冒泡到app层
+          // 阻止触摸事件冒泡到app层（只阻止app的滑动切换，不影响document上的彩蛋监听）
           el.addEventListener('touchstart', function(e) {
             e.stopPropagation();
           }, { passive: true });
@@ -6172,83 +6278,108 @@
     let danmuAnimationId = null;
 
     // 初始化弹幕墙
+    let danmuTrackLastSpawn = []; // 记录每条轨道上次发射时间
+    let danmuPool = []; // 弹幕池
+
     function initDanmu() {
       const container = document.getElementById('danmu-container');
+      if (!container) return;
       container.innerHTML = '';
       danmuItems = [];
+      danmuTrackLastSpawn = [];
 
-      const trackHeight = 24;
-      const maxTracks = Math.floor(200 / trackHeight);
-      const containerWidth = 393;
-
-      // 打乱弹幕顺序，增加随机性
-      const shuffledDanmus = shuffle([...danmus]);
-
-      shuffledDanmus.forEach((text, i) => {
-        const el = document.createElement('div');
-        el.className = 'danmu-item';
-        el.textContent = text;
-
-        // 测量文字宽度
-        const measureEl = document.createElement('span');
-        measureEl.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:12px;';
-        measureEl.textContent = text;
-        document.body.appendChild(measureEl);
-        const textWidth = measureEl.offsetWidth + 20; // padding
-        document.body.removeChild(measureEl);
-
-        // 分配到不同轨道
-        const track = i % maxTracks;
-        el.style.top = (4 + track * trackHeight) + 'px';
-
-        // 初始位置：在容器右侧外
-        const startX = containerWidth;
-        el.style.transform = 'translateX(' + startX + 'px)';
-
-        container.appendChild(el);
-
-        // 存储弹幕数据用于动画
-        danmuItems.push({
-          el: el,
-          x: startX,
-          width: textWidth,
-          speed: (containerWidth + textWidth) / 120, // 2秒穿过容器 (60fps * 2s)
-          track: track
-        });
-
-        // 2秒后移除弹幕
-        setTimeout(() => {
-          if (el.parentNode) el.remove();
-        }, 2000);
-      });
+      // 初始化弹幕池
+      danmuPool = shuffle([...danmus]);
 
       // 启动动画循环
       if (danmuAnimationId) cancelAnimationFrame(danmuAnimationId);
       animateDanmu();
     }
 
+    // 创建单个弹幕
+    function createDanmuItem(text, track, startX) {
+      const container = document.getElementById('danmu-container');
+      if (!container) return null;
+
+      const el = document.createElement('div');
+      el.className = 'danmu-item';
+      el.textContent = text;
+
+      // 测量文字宽度
+      const measureEl = document.createElement('span');
+      measureEl.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font-size:12px;';
+      measureEl.textContent = text;
+      document.body.appendChild(measureEl);
+      const textWidth = measureEl.offsetWidth + 20;
+      document.body.removeChild(measureEl);
+
+      const trackHeight = 24;
+      el.style.top = (4 + track * trackHeight) + 'px';
+      el.style.transform = 'translateX(' + startX + 'px)';
+
+      container.appendChild(el);
+
+      return {
+        el: el,
+        x: startX,
+        width: textWidth,
+        speed: (393 + textWidth) / 300, // 约5秒穿过容器
+        track: track
+      };
+    }
+
     // 弹幕动画循环
+    let lastDanmuSpawnTime = 0;
+
     function animateDanmu() {
       const containerWidth = 393;
+      const trackHeight = 24;
+      const maxTracks = Math.floor(200 / trackHeight);
+      const now = Date.now();
 
-      // 清理已移除的元素
-      danmuItems = danmuItems.filter(item => item.el.parentNode);
+      // 定期补充新弹幕（每800ms补充一批）
+      if (now - lastDanmuSpawnTime > 800) {
+        lastDanmuSpawnTime = now;
 
-      danmuItems.forEach(item => {
+        // 每条轨道有概率发射弹幕
+        for (let track = 0; track < maxTracks; track++) {
+          // 检查这条轨道是否已经有弹幕
+          const hasDanmuInTrack = danmuItems.some(item =>
+            item.track === track && item.x > containerWidth - 150
+          );
+
+          // 如果轨道空闲，有概率发射
+          if (!hasDanmuInTrack && Math.random() < 0.4) {
+            // 从弹幕池取一条
+            if (danmuPool.length === 0) {
+              danmuPool = shuffle([...danmus]);
+            }
+            const text = danmuPool.pop();
+            const item = createDanmuItem(text, track, containerWidth);
+            if (item) danmuItems.push(item);
+          }
+        }
+      }
+
+      // 清理已移除的元素并更新位置
+      danmuItems = danmuItems.filter(item => {
+        if (!item.el.parentNode) return false;
+
         // 向左移动
         item.x -= item.speed;
 
-        // 如果完全移出左侧，标记移除
+        // 如果完全移出左侧，移除DOM
         if (item.x < -item.width) {
-          if (item.el.parentNode) item.el.remove();
+          item.el.remove();
+          return false;
         }
 
         item.el.style.transform = 'translateX(' + item.x + 'px)';
+        return true;
       });
 
-      if (danmuItems.length > 0) {
-        danmuAnimationId = requestAnimationFrame(animateDanmu);
-      }
+      // 持续运行动画循环
+      danmuAnimationId = requestAnimationFrame(animateDanmu);
     }
 
     // 发布留言
