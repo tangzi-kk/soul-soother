@@ -2359,12 +2359,15 @@
     let dragStartX = 0;
     let dragStartY = 0;
     let hasDragged = false;
+    let pressStartTime = 0;
+    const LONG_PRESS_THRESHOLD = 300; // 长按阈值：300ms
 
     function gravityMousePressed(p) {
       if (p.mouseX > 0 && p.mouseX < p.width && p.mouseY > 0 && p.mouseY < p.height) {
         dragStartX = p.mouseX;
         dragStartY = p.mouseY;
         hasDragged = false;
+        pressStartTime = Date.now();
 
         // 检查是否按住了某个词
         for (let word of gravityWords) {
@@ -2392,13 +2395,17 @@
     }
 
     function gravityMouseReleased(p) {
+      const pressDuration = Date.now() - pressStartTime;
+      const isLongPress = pressDuration >= LONG_PRESS_THRESHOLD;
+
       if (draggedWord) {
         draggedWord.isDragging = false;
         draggedWord = null;
-      } else if (!hasDragged) {
-        // 没有拖动，执行点击逻辑
+      } else if (!hasDragged && !isLongPress) {
+        // 没有拖动且不是长按，执行点击逻辑
         handleWordClick(p, dragStartX, dragStartY);
       }
+      // 长按（超过300ms）不执行点击，避免和拖动冲突
     }
 
     function initGravityWords(p) {
