@@ -1929,61 +1929,99 @@
     }
 
     // 调用大模型API（流式）
-    async function callAIStream(messages, onChunk, onDone, onError) {
+    // 超过1.5秒未收到响应则使用默认回复
+    async function callAIStream(messages, onChunk, onDone, onError, fallbackText) {
       const config = getAIConfig();
-      try {
-        const response = await fetch(config.baseUrl + '/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + config.apiKey
-          },
-          body: JSON.stringify({
-            model: config.model || 'minimaxai/minimax-m2.7',
-            messages: messages,
-            temperature: 1,
-            top_p: 0.95,
-            max_tokens: 8192,
-            stream: true
-          })
-        });
+      let hasResponse = false;
+      let timeoutId = null;
 
-        if (!response.ok) {
-          throw new Error('API请求失败: ' + response.status);
-        }
+      // 设置1.5秒超时
+      const timeoutPromise = new Promise((_, reject) => {
+        timeoutId = setTimeout(() => {
+          if (!hasResponse) {
+            reject(new Error('TIMEOUT'));
+          }
+        }, 1500);
+      });
 
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-        let fullText = '';
+      const fetchPromise = (async () => {
+        try {
+          const response = await fetch(config.baseUrl + '/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + config.apiKey
+            },
+            body: JSON.stringify({
+              model: config.model || 'minimaxai/minimax-m2.7',
+              messages: messages,
+              temperature: 1,
+              top_p: 0.95,
+              max_tokens: 8192,
+              stream: true
+            })
+          });
 
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
+          if (!response.ok) {
+            throw new Error('API请求失败: ' + response.status);
+          }
 
-          const chunk = decoder.decode(value, { stream: true });
-          const lines = chunk.split('\n');
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder();
+          let fullText = '';
 
-          for (const line of lines) {
-            if (line.startsWith('data: ')) {
-              const data = line.slice(6);
-              if (data === '[DONE]') continue;
-              try {
-                const json = JSON.parse(data);
-                const content = json.choices?.[0]?.delta?.content || '';
-                if (content) {
-                  fullText += content;
-                  onChunk(content, fullText);
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            // 收到数据，标记有响应
+            if (!hasResponse) {
+              hasResponse = true;
+              if (timeoutId) clearTimeout(timeoutId);
+            }
+
+            const chunk = decoder.decode(value, { stream: true });
+            const lines = chunk.split('\n');
+
+            for (const line of lines) {
+              if (line.startsWith('data: ')) {
+                const data = line.slice(6);
+                if (data === '[DONE]') continue;
+                try {
+                  const json = JSON.parse(data);
+                  const content = json.choices?.[0]?.delta?.content || '';
+                  if (content) {
+                    fullText += content;
+                    onChunk(content, fullText);
+                  }
+                } catch (e) {
+                  // 忽略解析错误
                 }
-              } catch (e) {
-                // 忽略解析错误
               }
             }
           }
-        }
 
+          return fullText;
+        } catch (error) {
+          throw error;
+        }
+      })();
+
+      try {
+        // 使用Promise.race实现超时
+        const fullText = await Promise.race([fetchPromise, timeoutPromise]);
         onDone(fullText);
       } catch (error) {
-        onError(error.message);
+        if (timeoutId) clearTimeout(timeoutId);
+        
+        // 如果是超时且提供了fallback，使用fallback
+        if (error.message === 'TIMEOUT' && fallbackText) {
+          console.log('AI响应超时，使用默认回复');
+          onChunk(fallbackText, fallbackText);
+          onDone(fallbackText);
+        } else {
+          onError(error.message);
+        }
       }
     }
 
@@ -4859,10 +4897,10 @@
         (fullText) => {
           // AI完成，移除思考提示
           if (thinkingEl.parentNode) thinkingEl.remove();
-          
+
           // 保存到对话记忆
           saveChatMemory('energy', value + '%', localResponse + '\n\n' + fullText);
-          
+
           // 显示下一步按钮
           const btnContainer = document.createElement('div');
           btnContainer.className = 'chat-options';
@@ -4878,10 +4916,10 @@
           // AI失败，只保留本地回应
           console.log('AI辅助失败，使用本地回应:', error);
           if (thinkingEl.parentNode) thinkingEl.remove();
-          
+
           // 保存到对话记忆
           saveChatMemory('energy', value + '%', localResponse);
-          
+
           const btnContainer = document.createElement('div');
           btnContainer.className = 'chat-options';
           const btn = document.createElement('button');
@@ -4891,7 +4929,8 @@
           btnContainer.appendChild(btn);
           container.appendChild(btnContainer);
           container.scrollTop = container.scrollHeight;
-        }
+        },
+        localResponse
       );
     }
 
@@ -4982,10 +5021,10 @@
         },
         (fullText) => {
           if (thinkingEl.parentNode) thinkingEl.remove();
-          
+
           // 保存到对话记忆
           saveChatMemory('thought', thought, localResponse + '\n\n' + fullText);
-          
+
           const btnContainer = document.createElement('div');
           btnContainer.className = 'chat-options';
           const nextBtn = document.createElement('button');
@@ -4999,10 +5038,10 @@
         (error) => {
           console.log('AI辅助失败，使用本地回应:', error);
           if (thinkingEl.parentNode) thinkingEl.remove();
-          
+
           // 保存到对话记忆
           saveChatMemory('thought', thought, localResponse);
-          
+
           const btnContainer = document.createElement('div');
           btnContainer.className = 'chat-options';
           const nextBtn = document.createElement('button');
@@ -5012,7 +5051,8 @@
           btnContainer.appendChild(nextBtn);
           container.appendChild(btnContainer);
           container.scrollTop = container.scrollHeight;
-        }
+        },
+        localResponse
       );
     }
 
@@ -5103,10 +5143,10 @@
         },
         (fullText) => {
           if (thinkingEl.parentNode) thinkingEl.remove();
-          
+
           // 保存到对话记忆
           saveChatMemory('body', body, localResponse + '\n\n' + fullText);
-          
+
           const btnContainer = document.createElement('div');
           btnContainer.className = 'chat-options';
           const resultBtn = document.createElement('button');
@@ -5120,10 +5160,10 @@
         (error) => {
           console.log('AI辅助失败，使用本地回应:', error);
           if (thinkingEl.parentNode) thinkingEl.remove();
-          
+
           // 保存到对话记忆
           saveChatMemory('body', body, localResponse);
-          
+
           const btnContainer = document.createElement('div');
           btnContainer.className = 'chat-options';
           const resultBtn = document.createElement('button');
@@ -5133,7 +5173,8 @@
           btnContainer.appendChild(resultBtn);
           container.appendChild(btnContainer);
           container.scrollTop = container.scrollHeight;
-        }
+        },
+        localResponse
       );
     }
 
@@ -5187,6 +5228,7 @@
               container.scrollTop = container.scrollHeight;
 
               // 调用AI生成结果分析
+              const localResultText = getResultResponse(checkInData.energy);
               callAIStream(
                 [
                   {
@@ -5211,6 +5253,7 @@
                     const suggestionEl = suggestionBubble.querySelector('.typing-text');
                     container.scrollTop = container.scrollHeight;
 
+                    const localSuggestion = generateSuggestion();
                     callAIStream(
                       [
                         {
@@ -5303,14 +5346,14 @@
 
                         container.appendChild(bottomContainer);
                         container.scrollTop = container.scrollHeight;
-                      }
+                      },
+                      localSuggestion
                     );
                   }, 400);
                 },
                 (error) => {
                   // AI失败，使用本地结果
-                  const resultText = getResultResponse(checkInData.energy);
-                  resultTextEl.textContent = resultText;
+                  resultTextEl.textContent = localResultText;
 
                   setTimeout(() => {
                     const suggestion = generateSuggestion();
@@ -5359,7 +5402,8 @@
                       container.scrollTop = container.scrollHeight;
                     });
                   }, 400);
-                }
+                },
+                localResultText
               );
             }, 800);
           }, 600);
@@ -5487,23 +5531,24 @@
         },
         (fullText) => {
           if (thinkingEl.parentNode) thinkingEl.remove();
-          
+
           // 保存到对话记忆
           saveChatMemory('chat', userText, localResponse + '\n\n' + fullText);
-          
+
           // 显示继续输入框
           showFreeInput(container);
         },
         (error) => {
           console.log('AI辅助失败，使用本地回应:', error);
           if (thinkingEl.parentNode) thinkingEl.remove();
-          
+
           // 保存到对话记忆
           saveChatMemory('chat', userText, localResponse);
-          
+
           // 显示继续输入框
           showFreeInput(container);
-        }
+        },
+        localResponse
       );
     }
 
