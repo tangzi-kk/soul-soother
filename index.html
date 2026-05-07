@@ -162,14 +162,18 @@
       transition: color 0.2s ease;
     }
 
-    /* 页面容器 —— 添加背景层隔离 */
+    /* 页面容器 —— 首页无模糊，其他页面有 */
     .page {
       display: none;
       min-height: 100vh;
       padding: 56px 16px 24px;
       width: 100%;
-      /* 添加微妙的背景色，与引力场背景区分 */
-      background: linear-gradient(to bottom, rgba(249,248,244,0.3) 0%, rgba(249,248,244,0.1) 100%);
+    }
+
+    /* 非首页页面添加背景模糊 */
+    .page:not(#page-home) {
+      background: linear-gradient(to bottom, rgba(249,248,244,0.15) 0%, rgba(249,248,244,0.05) 100%);
+      backdrop-filter: blur(2px);
     }
 
     .page.active {
@@ -190,25 +194,23 @@
 
     .home-hint-text {
       font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 18px;
+      font-size: 20px;
       color: var(--ink);
+      font-weight: 700;
       margin-bottom: 8px;
       letter-spacing: 0.05em;
-      text-shadow: 0 2px 4px rgba(249,248,244,0.9), 0 0 20px rgba(249,248,244,0.8);
-      background: rgba(249, 248, 244, 0.7);
-      backdrop-filter: blur(4px);
+      text-shadow: 0 2px 8px rgba(249,248,244,1), 0 0 30px rgba(249,248,244,0.9);
       padding: 8px 16px;
       border-radius: 20px;
       display: inline-block;
     }
 
     .home-hint-sub {
-      font-size: 12px;
-      color: var(--cocoa);
+      font-size: 13px;
+      color: var(--ink);
+      font-weight: 600;
       letter-spacing: 0.04em;
-      text-shadow: 0 2px 4px rgba(249,248,244,0.9);
-      background: rgba(249, 248, 244, 0.6);
-      backdrop-filter: blur(4px);
+      text-shadow: 0 2px 8px rgba(249,248,244,1), 0 0 20px rgba(249,248,244,0.9);
       padding: 6px 12px;
       border-radius: 16px;
       display: inline-block;
@@ -217,15 +219,14 @@
 
     .home-hint-combo {
       font-family: 'ZCOOL XiaoWei', serif;
-      font-size: 14px;
+      font-size: 15px;
       color: var(--accent);
+      font-weight: 700;
       margin-top: 16px;
       min-height: 20px;
       opacity: 0;
       transition: opacity 0.3s ease;
-      text-shadow: 0 2px 4px rgba(249,248,244,0.9);
-      background: rgba(249, 248, 244, 0.7);
-      backdrop-filter: blur(4px);
+      text-shadow: 0 2px 8px rgba(249,248,244,1), 0 0 20px rgba(249,248,244,0.9);
       padding: 6px 14px;
       border-radius: 16px;
       display: inline-block;
@@ -280,15 +281,15 @@
     }
 
     .quick-action-btn {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(128, 112, 95, 0.12);
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(128, 112, 95, 0.1);
       border-radius: 14px;
       padding: 16px 8px;
       text-align: center;
       cursor: pointer;
       transition: all 0.2s ease;
-      box-shadow: 0 2px 8px rgba(71, 36, 37, 0.06);
+      box-shadow: 0 2px 8px rgba(71, 36, 37, 0.04);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -297,7 +298,7 @@
 
     .quick-action-btn:active {
       transform: scale(0.96);
-      background: rgba(255, 255, 255, 0.98);
+      background: rgba(255, 255, 255, 0.85);
       box-shadow: 0 4px 12px rgba(71, 36, 37, 0.1);
     }
 
@@ -387,10 +388,21 @@
     /* 彩蛋表情包区域 */
     .easter-egg-meme {
       text-align: center;
-      font-size: 80px;
       margin: 16px 0;
       animation: memeBounce 0.6s ease infinite alternate;
       line-height: 1;
+    }
+
+    .easter-egg-meme img {
+      width: 120px;
+      height: 120px;
+      object-fit: contain;
+      border-radius: 16px;
+    }
+
+    .easter-egg-meme .meme-emoji {
+      font-size: 80px;
+      display: block;
     }
 
     @keyframes memeBounce {
@@ -437,6 +449,15 @@
     }
 
     .easter-egg-alternative-item .alt-emoji {
+      font-size: 20px;
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    .easter-egg-alternative-item .alt-emoji-text {
       font-size: 20px;
       flex-shrink: 0;
     }
@@ -528,6 +549,38 @@
       background: var(--border);
     }
 
+    /* 彩蛋标识 */
+    .easter-egg-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+      color: #fff;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-right: 10px;
+      vertical-align: middle;
+      animation: badgePulse 1.5s ease infinite;
+      box-shadow: 0 2px 12px rgba(115, 138, 229, 0.4);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 2px 12px rgba(115, 138, 229, 0.4); }
+      50% { transform: scale(1.08); box-shadow: 0 4px 20px rgba(115, 138, 229, 0.6); }
+    }
+
+    /* 彩蛋弹窗入场动画增强 */
+    .easter-egg-modal {
+      animation: easterEggPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    @keyframes easterEggPop {
+      0% { transform: scale(0.3) rotate(-10deg); opacity: 0; }
+      60% { transform: scale(1.05) rotate(2deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
     /* 彩蛋粒子特效 */
     .easter-egg-particles {
       position: fixed;
@@ -604,19 +657,19 @@
 
     /* 卡片 —— 增强分层感 */
     .card {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(12px) saturate(1.2);
-      border: 1px solid rgba(128, 112, 95, 0.12);
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(8px) saturate(1.1);
+      border: 1px solid rgba(128, 112, 95, 0.1);
       border-radius: 14px;
       padding: 16px;
       margin-bottom: 10px;
       transition: all 0.2s ease;
-      box-shadow: 0 2px 8px rgba(71, 36, 37, 0.06), 0 0 0 1px rgba(255,255,255,0.5) inset;
+      box-shadow: 0 2px 8px rgba(71, 36, 37, 0.04), 0 0 0 1px rgba(255,255,255,0.3) inset;
     }
 
     .card:active {
-      background: rgba(255, 255, 255, 0.98);
-      box-shadow: 0 4px 12px rgba(71, 36, 37, 0.1), 0 0 0 1px rgba(255,255,255,0.8) inset;
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 4px 12px rgba(71, 36, 37, 0.08), 0 0 0 1px rgba(255,255,255,0.5) inset;
     }
 
     /* 按钮 */
@@ -671,19 +724,24 @@
     .input {
       width: 100%;
       padding: 14px 16px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(128, 112, 95, 0.15);
       border-radius: 12px;
       font-size: 14px;
       font-family: inherit;
       background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(4px);
       color: var(--ink);
       margin-bottom: 10px;
       min-height: 48px;
+      box-shadow: 0 1px 4px rgba(71, 36, 37, 0.03);
+      transition: all 0.2s ease;
     }
 
     .input:focus {
       outline: none;
       border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 2px 8px rgba(115, 138, 229, 0.08);
     }
 
     .input::placeholder {
@@ -719,9 +777,11 @@
       height: 200px;
       overflow: hidden;
       position: relative;
-      background: rgba(0, 0, 0, 0.03);
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(6px);
       border-radius: 12px;
       margin-bottom: 16px;
+      border: 1px solid rgba(128, 112, 95, 0.08);
     }
 
     .danmu-item {
@@ -730,9 +790,10 @@
       font-size: 12px;
       color: var(--cocoa);
       padding: 4px 10px;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(2px);
       border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
       will-change: transform;
       /* 动画由JS动态控制，避免CSS动画冲突 */
       left: 100%;
@@ -813,15 +874,17 @@
     .sos-tab {
       flex: 1;
       padding: 12px 8px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(128, 112, 95, 0.12);
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(4px);
       font-size: 12px;
       color: var(--cocoa);
       cursor: pointer;
       font-family: inherit;
       transition: all 0.2s ease;
       min-height: 44px;
+      box-shadow: 0 1px 4px rgba(71, 36, 37, 0.03);
     }
 
     .sos-tab.active {
@@ -888,13 +951,15 @@
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      background: rgba(115, 138, 229, 0.15);
-      border: 2px solid rgba(115, 138, 229, 0.3);
+      background: rgba(115, 138, 229, 0.2);
+      backdrop-filter: blur(8px);
+      border: 2px solid rgba(115, 138, 229, 0.35);
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 16px;
       transition: all 0.3s ease;
+      box-shadow: 0 4px 16px rgba(115, 138, 229, 0.15), inset 0 0 20px rgba(255,255,255,0.3);
     }
 
     .breath-circle.active {
@@ -902,8 +967,8 @@
     }
 
     @keyframes breath-expand {
-      0%, 100% { transform: scale(1); background: rgba(115, 138, 229, 0.15); }
-      50% { transform: scale(1.5); background: rgba(115, 138, 229, 0.25); }
+      0%, 100% { transform: scale(1); background: rgba(115, 138, 229, 0.2); }
+      50% { transform: scale(1.5); background: rgba(115, 138, 229, 0.35); }
     }
 
     .breath-text {
@@ -924,13 +989,15 @@
       align-items: center;
       gap: 12px;
       padding: 12px;
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(4px);
       border-radius: 10px;
       font-size: 14px;
       color: var(--ink);
       cursor: pointer;
       transition: all 0.2s ease;
       border: 2px solid transparent;
+      box-shadow: 0 1px 4px rgba(71, 36, 37, 0.03);
     }
 
     .grounding-item:active {
@@ -938,8 +1005,8 @@
     }
 
     .grounding-item.checked {
-      background: rgba(99, 166, 72, 0.1);
-      border-color: rgba(99, 166, 72, 0.3);
+      background: rgba(99, 166, 72, 0.12);
+      border-color: rgba(99, 166, 72, 0.25);
       opacity: 0.7;
     }
 
@@ -966,12 +1033,14 @@
       align-items: center;
       gap: 10px;
       padding: 12px;
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(4px);
       border-radius: 10px;
       font-size: 14px;
       color: var(--ink);
       cursor: pointer;
       transition: all 0.2s ease;
+      box-shadow: 0 1px 4px rgba(71, 36, 37, 0.03);
     }
 
     .delay-item:active {
@@ -1092,17 +1161,20 @@
 
     .chat-bubble-xiaohuan {
       align-self: flex-start;
-      background: rgba(255, 255, 255, 0.9);
-      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(6px) saturate(1.1);
+      border: 1px solid rgba(128, 112, 95, 0.12);
       color: var(--ink);
       border-bottom-left-radius: 4px;
+      box-shadow: 0 2px 8px rgba(71, 36, 37, 0.04), 0 0 0 1px rgba(255,255,255,0.3) inset;
     }
 
     .chat-bubble-user {
       align-self: flex-end;
-      background: var(--ink);
+      background: linear-gradient(135deg, var(--ink) 0%, #5a3a3c 100%);
       color: var(--canvas);
       border-bottom-right-radius: 4px;
+      box-shadow: 0 2px 8px rgba(71, 36, 37, 0.15);
     }
 
     .chat-avatar {
@@ -1128,9 +1200,10 @@
 
     .chat-option-btn {
       padding: 14px 16px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(128, 112, 95, 0.12);
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(4px);
       cursor: pointer;
       transition: all 0.2s ease;
       text-align: left;
@@ -1138,12 +1211,14 @@
       color: var(--ink);
       font-family: inherit;
       min-height: 48px;
+      box-shadow: 0 1px 4px rgba(71, 36, 37, 0.03);
     }
 
     .chat-option-btn:active,
     .chat-option-btn.selected {
       border-color: var(--accent);
-      background: rgba(115, 138, 229, 0.05);
+      background: rgba(115, 138, 229, 0.12);
+      box-shadow: 0 2px 8px rgba(115, 138, 229, 0.08);
     }
 
     .chat-slider-container {
@@ -1220,9 +1295,10 @@
 
     .chat-result-action {
       padding: 14px 16px;
-      border: 1px solid var(--border);
+      border: 1px solid rgba(128, 112, 95, 0.12);
       border-radius: 12px;
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(4px);
       cursor: pointer;
       transition: all 0.2s ease;
       text-align: left;
@@ -1233,11 +1309,13 @@
       align-items: center;
       gap: 10px;
       min-height: 48px;
+      box-shadow: 0 1px 4px rgba(71, 36, 37, 0.03);
     }
 
     .chat-result-action:active {
       border-color: var(--accent);
-      background: rgba(115, 138, 229, 0.05);
+      background: rgba(115, 138, 229, 0.12);
+      box-shadow: 0 2px 8px rgba(115, 138, 229, 0.08);
     }
 
     .chat-result-action-icon {
@@ -1314,15 +1392,27 @@
           <div class="home-hint-combo" id="home-combo"></div>
         </div>
 
-        <!-- 紧急入口 —— 始终可见 -->
-        <div class="emergency-banner" onclick="showPage('kit')">
-          <div class="emergency-text">我现在很难受，需要帮忙</div>
-          <div class="emergency-sub">30秒呼吸空间 · 缓冲卡 · 温暖资源</div>
+        <!-- 紧急入口 —— 始终可见，底部对齐 -->
+        <div class="emergency-banner" onclick="showPage('kit')" style="margin-top:auto;text-align:left;flex-direction:row;align-items:center;gap:12px;padding:14px 16px;">
+          <div style="flex:1;">
+            <div class="emergency-text">我现在很难受，需要帮忙</div>
+            <div class="emergency-sub">30秒呼吸空间 · 缓冲卡 · 温暖资源</div>
+          </div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.6;flex-shrink:0;"><polyline points="9 18 15 12 9 6"></polyline></svg>
         </div>
 
         <div class="disclaimer">
           内容仅供情绪舒缓，不能替代专业医疗建议<br>
           如果你正处于危险中，请立即拨打 120 或 110
+        </div>
+
+        <!-- TRAE SOLO 支持 -->
+        <div style="text-align:center;padding:20px 0 40px;">
+          <a href="https://www.trae.ai/" target="_blank" id="trae-solo-link" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--cocoa-light);font-size:11px;transition:opacity 0.2s;padding:16px 40px;border-radius:8px;opacity:0.6;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            Built with TRAE SOLO
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+          </a>
         </div>
       </div>
 
@@ -1368,6 +1458,18 @@
           <input type="text" class="input" id="post-input" placeholder="今天发生了什么？随便说一句...">
           <button class="btn btn-primary" onclick="postHelp()">发布</button>
           <div id="posts-list" style="margin-top: 14px;"></div>
+        </div>
+
+        <!-- AI真人回复区域 -->
+        <div class="section" id="ai-reply-section" style="display:none;">
+          <div class="section-title">有人回复了你</div>
+          <div class="card" id="ai-reply-card" style="background:rgba(115,138,229,0.08);border-color:rgba(115,138,229,0.2);">
+            <div id="ai-reply-content" style="font-size:14px;line-height:1.8;color:var(--ink);"></div>
+            <div id="ai-reply-actions" style="margin-top:12px;display:flex;gap:8px;">
+              <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;" onclick="sendHugToAI()">🤗 抱抱TA</button>
+              <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px;" onclick="replyToAI()">💬 回复TA</button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1430,7 +1532,7 @@
       </div>
 
       <!-- ═══════════════════════════════════════
-           缓一缓页面 —— 用户视角重新设计
+           缓一缓页面 —— 创新交互设计
            ═══════════════════════════════════════ -->
       <div class="page" id="page-play">
         <div class="page-header">
@@ -1443,27 +1545,39 @@
           <div class="section-title">我现在想...</div>
           <div class="quick-actions">
             <button class="quick-action-btn" onclick="showPlaySection('breathe')">
-              <span class="quick-action-icon">🫁</span>
+              <span class="quick-action-icon">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><circle cx="14" cy="14" r="6" stroke="currentColor" stroke-width="1.5" opacity="0.5"/><circle cx="14" cy="14" r="2" fill="currentColor"/></svg>
+              </span>
               <span class="quick-action-text">喘口气</span>
             </button>
             <button class="quick-action-btn" onclick="showPlaySection('ground')">
-              <span class="quick-action-icon">👁</span>
-              <span class="quick-action-text">回神</span>
+              <span class="quick-action-icon">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 4v20M4 14h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/><circle cx="14" cy="14" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+              </span>
+              <span class="quick-action-text">抓回现实</span>
             </button>
             <button class="quick-action-btn" onclick="showPlaySection('delay')">
-              <span class="quick-action-icon">⏳</span>
+              <span class="quick-action-icon">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><path d="M14 8v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
               <span class="quick-action-text">等一下</span>
             </button>
             <button class="quick-action-btn" onclick="showPlaySection('attachment')">
-              <span class="quick-action-icon">⚓</span>
+              <span class="quick-action-icon">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 24s-8-4.5-8-10c0-3 2-5 4-5 1.5 0 3 1 4 2.5 1-1.5 2.5-2.5 4-2.5 2 0 4 2 4 5 0 5.5-8 10-8 10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              </span>
               <span class="quick-action-text">找理由</span>
             </button>
             <button class="quick-action-btn" onclick="showPlaySection('vent')">
-              <span class="quick-action-icon">🌀</span>
+              <span class="quick-action-icon">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M8 20c0-3 2-5 4-6M20 20c0-3-2-5-4-6M14 14V6M11 9l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
               <span class="quick-action-text">倒垃圾</span>
             </button>
             <button class="quick-action-btn" onclick="showPlaySection('translate')">
-              <span class="quick-action-icon">🔄</span>
+              <span class="quick-action-icon">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M4 8h20M4 14h14M4 20h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/><path d="M18 14l4-4 4 4M22 10v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
               <span class="quick-action-text">翻译情绪</span>
             </button>
           </div>
@@ -1471,11 +1585,14 @@
 
         <!-- 呼吸区域 -->
         <div class="play-section" id="play-breathe">
-          <div class="section-title">🫁 喘口气</div>
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 28 28" fill="none" style="vertical-align:middle;margin-right:6px;"><circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><circle cx="14" cy="14" r="6" stroke="currentColor" stroke-width="1.5" opacity="0.5"/><circle cx="14" cy="14" r="2" fill="currentColor"/></svg>
+            喘口气
+          </div>
           <div class="card">
             <div class="breath-container">
               <div class="breath-circle" id="breath-circle">
-                <span style="font-size: 24px;">🫁</span>
+                <svg width="32" height="32" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><circle cx="14" cy="14" r="6" stroke="currentColor" stroke-width="1.5" opacity="0.5"/><circle cx="14" cy="14" r="2" fill="currentColor"/></svg>
               </div>
               <div class="breath-text" id="breath-text">点击开始，跟着圆圈呼吸</div>
             </div>
@@ -1483,31 +1600,46 @@
           </div>
         </div>
 
-        <!-- 回神区域 -->
+        <!-- 抓回现实区域（原回神） -->
         <div class="play-section" id="play-ground">
-          <div class="section-title">👁 回神</div>
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 28 28" fill="none" style="vertical-align:middle;margin-right:6px;"><path d="M14 4v20M4 14h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/><circle cx="14" cy="14" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+            抓回现实
+          </div>
           <div class="card">
-            <div style="font-size:13px;color:var(--cocoa);margin-bottom:12px;">当脑子乱糟糟的时候，看看周围：</div>
+            <div style="font-size:13px;color:var(--cocoa);margin-bottom:12px;">脑子飘太远的时候，用身体把意识拉回来：</div>
             <div class="grounding-list">
               <div class="grounding-item" onclick="this.classList.toggle('checked')">
-                <div class="grounding-icon">👁</div>
-                <div>看到 <strong>3</strong> 样东西</div>
+                <div class="grounding-icon">
+                  <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M14 2v4M14 22v4M2 14h4M22 14h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <div>看到 <strong>3</strong> 样东西（比如：墙、灯、手）</div>
               </div>
               <div class="grounding-item" onclick="this.classList.toggle('checked')">
-                <div class="grounding-icon">👂</div>
-                <div>听到 <strong>2</strong> 种声音</div>
+                <div class="grounding-icon">
+                  <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><path d="M6 14c0-4 3-8 8-8s8 4 8 8-3 8-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14 14v6M10 18l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div>听到 <strong>2</strong> 种声音（比如：空调、车流）</div>
               </div>
               <div class="grounding-item" onclick="this.classList.toggle('checked')">
-                <div class="grounding-icon">✋</div>
-                <div>摸到 <strong>1</strong> 个东西</div>
+                <div class="grounding-icon">
+                  <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><rect x="8" y="4" width="12" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M12 8h4M12 12h4M12 16h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </div>
+                <div>摸到 <strong>1</strong> 个东西（比如：衣服、桌面）</div>
               </div>
+            </div>
+            <div style="margin-top:12px;padding:10px;background:rgba(115,138,229,0.06);border-radius:8px;font-size:12px;color:var(--cocoa);">
+              <strong style="color:var(--ink);">为什么有用：</strong>当情绪淹没你时，大脑会"飘走"。把注意力拉回具体的感官体验，能让神经系统知道"此刻我是安全的"。
             </div>
           </div>
         </div>
 
         <!-- 等一下区域 -->
         <div class="play-section" id="play-delay">
-          <div class="section-title">⏳ 等一下</div>
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 28 28" fill="none" style="vertical-align:middle;margin-right:6px;"><circle cx="14" cy="14" r="10" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><path d="M14 8v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            等一下
+          </div>
           <div class="card">
             <div style="font-size:13px;color:var(--cocoa);margin-bottom:12px;">不急着做决定，先做完这些：</div>
             <div class="delay-list" id="delay-list">
@@ -1519,7 +1651,10 @@
 
         <!-- 找理由区域 -->
         <div class="play-section" id="play-attachment">
-          <div class="section-title">⚓ 找理由</div>
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 28 28" fill="none" style="vertical-align:middle;margin-right:6px;"><path d="M14 24s-8-4.5-8-10c0-3 2-5 4-5 1.5 0 3 1 4 2.5 1-1.5 2.5-2.5 4-2.5 2 0 4 2 4 5 0 5.5-8 10-8 10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+            找理由
+          </div>
           <div class="attachment-card">
             <div class="attachment-text" id="attachment-text">还有什么让你舍不得？</div>
             <button class="btn btn-primary" onclick="randomAttachment()">抽一张</button>
@@ -1528,7 +1663,10 @@
 
         <!-- 倒垃圾区域 -->
         <div class="play-section" id="play-vent">
-          <div class="section-title">🌀 倒垃圾</div>
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 28 28" fill="none" style="vertical-align:middle;margin-right:6px;"><path d="M8 20c0-3 2-5 4-6M20 20c0-3-2-5-4-6M14 14V6M11 9l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            倒垃圾
+          </div>
           <div class="card">
             <div style="font-size:13px;color:var(--cocoa);margin-bottom:10px;">输入你的烦恼，生成发疯文案：</div>
             <input type="text" class="input" id="fengwen-input" placeholder="例如：加班、失恋、没钱、房贷...">
@@ -1539,7 +1677,10 @@
 
         <!-- 翻译情绪区域 -->
         <div class="play-section" id="play-translate">
-          <div class="section-title">🔄 翻译情绪</div>
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 28 28" fill="none" style="vertical-align:middle;margin-right:6px;"><path d="M4 8h20M4 14h14M4 20h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/><path d="M18 14l4-4 4 4M22 10v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            翻译情绪
+          </div>
           <div class="card">
             <div style="font-size:13px;color:var(--cocoa);margin-bottom:10px;">把坏念头翻译成真实需求：</div>
             <input type="text" class="input" id="thought-input" placeholder="我现在感觉很糟，想说...">
@@ -1573,6 +1714,314 @@
         <span class="tab-label">缓一缓</span>
       </button>
     </nav>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       音效系统
+       ═══════════════════════════════════════ -->
+  <script>
+    // 音频上下文（懒加载）
+    let audioCtx = null;
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioCtx;
+    }
+
+    // 播放柔和点击音效
+    function playClickSound(type) {
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        const filter = ctx.createBiquadFilter();
+
+        osc.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+
+        // 根据类型调整音色
+        const presets = {
+          soft: { freq: 800, type: 'sine', duration: 0.08, vol: 0.08 },
+          bubble: { freq: 600, type: 'sine', duration: 0.12, vol: 0.06 },
+          pop: { freq: 1200, type: 'triangle', duration: 0.05, vol: 0.05 },
+          deep: { freq: 400, type: 'sine', duration: 0.15, vol: 0.07 }
+        };
+        const p = presets[type] || presets.soft;
+
+        osc.type = p.type;
+        osc.frequency.setValueAtTime(p.freq, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(p.freq * 0.5, ctx.currentTime + p.duration);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(2000, ctx.currentTime);
+
+        gain.gain.setValueAtTime(p.vol, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + p.duration);
+
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + p.duration);
+      } catch (e) {
+        // 静默失败
+      }
+    }
+
+    // 全局点击监听
+    document.addEventListener('click', function(e) {
+      const target = e.target;
+      if (target.closest('button') || target.closest('.card') || target.closest('.grounding-item') || target.closest('.delay-item') || target.closest('.chat-option-btn')) {
+        playClickSound('soft');
+      } else if (target.closest('.quick-action-btn')) {
+        playClickSound('bubble');
+      }
+    }, true);
+
+    // ═══════════════════════════════════════
+    //  AI配置系统（隐藏入口）+ 对话记忆下载
+    // ═══════════════════════════════════════
+    let traeClickCount = 0;
+    let traeClickTimer = null;
+    document.getElementById('trae-solo-link').addEventListener('click', function(e) {
+      e.preventDefault();
+      traeClickCount++;
+      if (traeClickTimer) clearTimeout(traeClickTimer);
+      traeClickTimer = setTimeout(() => { traeClickCount = 0; }, 3000);
+      if (traeClickCount >= 10) {
+        traeClickCount = 0;
+        showAIConfig();
+      }
+    });
+
+    // 长按"Built with TRAE SOLO"显示记忆管理菜单
+    let traeLongPressTimer = null;
+    const traeLink = document.getElementById('trae-solo-link');
+    traeLink.addEventListener('mousedown', function() {
+      traeLongPressTimer = setTimeout(() => {
+        showMemoryMenu();
+      }, 800);
+    });
+    traeLink.addEventListener('mouseup', function() {
+      if (traeLongPressTimer) clearTimeout(traeLongPressTimer);
+    });
+    traeLink.addEventListener('mouseleave', function() {
+      if (traeLongPressTimer) clearTimeout(traeLongPressTimer);
+    });
+    traeLink.addEventListener('touchstart', function() {
+      traeLongPressTimer = setTimeout(() => {
+        showMemoryMenu();
+      }, 800);
+    });
+    traeLink.addEventListener('touchend', function() {
+      if (traeLongPressTimer) clearTimeout(traeLongPressTimer);
+    });
+
+    // 显示记忆管理菜单
+    function showMemoryMenu() {
+      const stats = getChatMemoryStats();
+      const menu = document.createElement('div');
+      menu.className = 'easter-egg-overlay';
+      menu.style.cssText = 'display:flex;z-index:2000;';
+      menu.innerHTML =
+        '<div class="easter-egg-modal" style="max-width:320px;">' +
+        '<button class="easter-egg-close" onclick="this.closest(\'.easter-egg-overlay\').remove()">×</button>' +
+        '<div class="easter-egg-title">对话记忆</div>' +
+        '<div style="font-size:13px;color:var(--cocoa);margin-bottom:16px;text-align:center;">' +
+        '已保存 ' + stats.total + ' 条对话记忆<br>' +
+        (stats.lastTime ? '最后记录：' + new Date(stats.lastTime).toLocaleString('zh-CN') : '还没有记录') +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:8px;">' +
+        '<button class="btn btn-primary" onclick="exportChatMemory();this.closest(\'.easter-egg-overlay\').remove();">📥 下载记忆</button>' +
+        '<button class="btn btn-ghost" onclick="if(confirm(\'确定清空？\')){clearChatMemory();this.closest(\'.easter-egg-overlay\').remove();}">🗑️ 清空记忆</button>' +
+        '<button class="btn btn-ghost" onclick="this.closest(\'.easter-egg-overlay\').remove();">取消</button>' +
+        '</div>' +
+        '</div>';
+      document.body.appendChild(menu);
+    }
+
+    function showAIConfig() {
+      document.getElementById('ai-config-overlay').classList.add('active');
+    }
+
+    function closeAIConfig() {
+      document.getElementById('ai-config-overlay').classList.remove('active');
+    }
+
+    function saveAIConfig() {
+      const provider = document.getElementById('ai-provider').value;
+      const model = document.getElementById('ai-model').value;
+      const apiKey = document.getElementById('ai-apikey').value;
+      const baseUrl = document.getElementById('ai-baseurl').value;
+
+      const config = { provider, model, apiKey, baseUrl };
+      localStorage.setItem('soulsoother_ai_config', JSON.stringify(config));
+      alert('配置已保存到本地浏览器');
+      closeAIConfig();
+    }
+
+    // 获取AI配置（用于API调用）
+    function getAIConfig() {
+      const saved = localStorage.getItem('soulsoother_ai_config');
+      if (saved) {
+        return JSON.parse(saved);
+      }
+      // 默认使用NVIDIA API
+      return {
+        provider: 'nvidia',
+        model: 'minimaxai/minimax-m2.7',
+        apiKey: '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',
+        baseUrl: 'https://integrate.api.nvidia.com/v1'
+      };
+    }
+
+    // 调用大模型API（流式）
+    async function callAIStream(messages, onChunk, onDone, onError) {
+      const config = getAIConfig();
+      try {
+        const response = await fetch(config.baseUrl + '/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + config.apiKey
+          },
+          body: JSON.stringify({
+            model: config.model || 'minimaxai/minimax-m2.7',
+            messages: messages,
+            temperature: 1,
+            top_p: 0.95,
+            max_tokens: 8192,
+            stream: true
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('API请求失败: ' + response.status);
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let fullText = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n');
+
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6);
+              if (data === '[DONE]') continue;
+              try {
+                const json = JSON.parse(data);
+                const content = json.choices?.[0]?.delta?.content || '';
+                if (content) {
+                  fullText += content;
+                  onChunk(content, fullText);
+                }
+              } catch (e) {
+                // 忽略解析错误
+              }
+            }
+          }
+        }
+
+        onDone(fullText);
+      } catch (error) {
+        onError(error.message);
+      }
+    }
+
+    function testAIConnection() {
+      const btn = document.getElementById('ai-test-btn');
+      btn.textContent = '测试中...';
+      btn.disabled = true;
+
+      callAIStream(
+        [{ role: 'user', content: '你好' }],
+        (chunk, full) => {
+          // 流式接收中
+        },
+        (fullText) => {
+          btn.textContent = '连接成功';
+          btn.style.background = 'var(--success)';
+          setTimeout(() => {
+            btn.textContent = '测试连接';
+            btn.style.background = '';
+            btn.disabled = false;
+          }, 2000);
+        },
+        (error) => {
+          btn.textContent = '连接失败';
+          btn.style.background = 'var(--danger)';
+          setTimeout(() => {
+            btn.textContent = '测试连接';
+            btn.style.background = '';
+            btn.disabled = false;
+          }, 2000);
+        }
+      );
+    }
+
+    // 加载已保存的配置
+    function loadAIConfig() {
+      const saved = localStorage.getItem('soulsoother_ai_config');
+      if (saved) {
+        const config = JSON.parse(saved);
+        document.getElementById('ai-provider').value = config.provider || '';
+        document.getElementById('ai-model').value = config.model || '';
+        document.getElementById('ai-apikey').value = config.apiKey || '';
+        document.getElementById('ai-baseurl').value = config.baseUrl || '';
+      }
+    }
+  </script>
+
+  <!-- AI配置弹窗 -->
+  <div class="easter-egg-overlay" id="ai-config-overlay" onclick="if(event.target===this)closeAIConfig()">
+    <div class="easter-egg-modal" style="max-width:360px;">
+      <button class="easter-egg-close" onclick="closeAIConfig()">×</button>
+      <div style="text-align:center;margin-bottom:16px;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+      </div>
+      <div class="easter-egg-title">AI 模型设置</div>
+      <div style="font-size:12px;color:var(--cocoa);margin-bottom:16px;text-align:center;">配置小缓的对话大脑<br>API Key 仅保存在本地浏览器</div>
+
+      <div style="margin-bottom:12px;">
+        <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">服务商</label>
+        <select id="ai-provider" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:rgba(255,255,255,0.8);" onchange="updateModelOptions()">
+          <option value="">选择服务商</option>
+          <option value="dashscope">通义千问 (阿里云)</option>
+          <option value="deepseek">DeepSeek</option>
+          <option value="kimi">Kimi (月之暗面)</option>
+          <option value="zhipu">智谱 GLM</option>
+          <option value="doubao">豆包 (火山引擎)</option>
+          <option value="openai">OpenAI</option>
+          <option value="custom">自定义 OpenAI 兼容</option>
+        </select>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">模型名</label>
+        <input type="text" id="ai-model" placeholder="使用默认" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:rgba(255,255,255,0.8);">
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">API Key</label>
+        <input type="password" id="ai-apikey" placeholder="sk-xxxxxxxxxxxxxxxx" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:rgba(255,255,255,0.8);">
+      </div>
+
+      <div style="margin-bottom:16px;">
+        <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">Base URL (可选)</label>
+        <input type="text" id="ai-baseurl" placeholder="使用默认" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:rgba(255,255,255,0.8);">
+      </div>
+
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-ghost" style="flex:1;" onclick="closeAIConfig()">取消</button>
+        <button class="btn btn-primary" id="ai-test-btn" style="flex:1;" onclick="testAIConnection()">测试连接</button>
+        <button class="btn btn-primary" style="flex:1;background:var(--success);" onclick="saveAIConfig()">保存</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -1651,6 +2100,9 @@
     let comboCount = 0;
     let comboTimer = null;
     let particles = [];
+    let draggedWord = null;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
 
     function gravitySetup(p) {
       const canvas = p.createCanvas(393, p.windowHeight);
@@ -1667,9 +2119,48 @@
       updateAndDrawParticles(p);
     }
 
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let hasDragged = false;
+
     function gravityMousePressed(p) {
       if (p.mouseX > 0 && p.mouseX < p.width && p.mouseY > 0 && p.mouseY < p.height) {
-        handleWordClick(p, p.mouseX, p.mouseY);
+        dragStartX = p.mouseX;
+        dragStartY = p.mouseY;
+        hasDragged = false;
+
+        // 检查是否按住了某个词
+        for (let word of gravityWords) {
+          const d = p.dist(p.mouseX, p.mouseY, word.x, word.y);
+          const threshold = word.fontSize * word.scale * 1.5;
+          if (d < threshold) {
+            draggedWord = word;
+            dragOffsetX = p.mouseX - word.x;
+            dragOffsetY = p.mouseY - word.y;
+            word.isDragging = true;
+            return;
+          }
+        }
+      }
+    }
+
+    function gravityMouseDragged(p) {
+      if (draggedWord && draggedWord.isDragging) {
+        draggedWord.x = p.mouseX - dragOffsetX;
+        draggedWord.y = p.mouseY - dragOffsetY;
+        draggedWord.vx = 0;
+        draggedWord.vy = 0;
+        hasDragged = true;
+      }
+    }
+
+    function gravityMouseReleased(p) {
+      if (draggedWord) {
+        draggedWord.isDragging = false;
+        draggedWord = null;
+      } else if (!hasDragged) {
+        // 没有拖动，执行点击逻辑
+        handleWordClick(p, dragStartX, dragStartY);
       }
     }
 
@@ -1749,6 +2240,10 @@
               word.replacedBy.opacity += (1 - word.replacedBy.opacity) * 0.05;
             }
           }
+        } else if (word.isDragging) {
+          // 被拖动时，添加轻微惯性
+          word.vx = (p.mouseX - p.pmouseX) * 0.1;
+          word.vy = (p.mouseY - p.pmouseY) * 0.1;
         } else {
           // 正常漂浮
           word.x += word.vx + p.sin(gravityFrame * 0.005 + word.floatOffset) * 0.1;
@@ -1925,6 +2420,8 @@
       p.setup = function() { gravitySetup(p); };
       p.draw = function() { gravityDraw(p); };
       p.mousePressed = function() { gravityMousePressed(p); };
+      p.mouseDragged = function() { gravityMouseDragged(p); };
+      p.mouseReleased = function() { gravityMouseReleased(p); };
       p.windowResized = function() { gravityWindowResized(p); };
     });
 
@@ -1999,6 +2496,83 @@
       }
       isSwiping = false;
     }, { passive: true });
+
+    // ═══════════════════════════════════════
+    //  对话记忆系统（存储在localStorage）
+    // ═══════════════════════════════════════
+
+    // 当前会话的记忆
+    let currentSessionMemory = [];
+    let sessionStartTime = new Date().toISOString();
+
+    // 保存对话记忆
+    function saveChatMemory(type, userInput, xiaohuanResponse) {
+      const memory = {
+        timestamp: new Date().toISOString(),
+        type: type, // 'energy', 'thought', 'body', 'result', 'chat'
+        userInput: userInput,
+        xiaohuanResponse: xiaohuanResponse,
+        personality: currentPersonality ? currentPersonality.name : '小缓',
+        energy: checkInData.energy
+      };
+      currentSessionMemory.push(memory);
+      
+      // 同时保存到localStorage
+      try {
+        const allMemories = JSON.parse(localStorage.getItem('soulsoother_chat_memories') || '[]');
+        allMemories.push(memory);
+        // 只保留最近100条
+        if (allMemories.length > 100) {
+          allMemories.splice(0, allMemories.length - 100);
+        }
+        localStorage.setItem('soulsoother_chat_memories', JSON.stringify(allMemories));
+      } catch (e) {
+        console.log('保存对话记忆失败:', e);
+      }
+    }
+
+    // 导出对话记忆为JSON文件
+    function exportChatMemory() {
+      const allMemories = JSON.parse(localStorage.getItem('soulsoother_chat_memories') || '[]');
+      if (allMemories.length === 0) {
+        alert('还没有对话记忆哦，先和小缓聊聊天吧~');
+        return;
+      }
+      
+      const data = {
+        exportTime: new Date().toISOString(),
+        totalCount: allMemories.length,
+        memories: allMemories
+      };
+      
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'soulsoother_memory_' + new Date().toISOString().slice(0, 10) + '.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // 清空对话记忆
+    function clearChatMemory() {
+      if (confirm('确定要清空所有对话记忆吗？')) {
+        localStorage.removeItem('soulsoother_chat_memories');
+        currentSessionMemory = [];
+        alert('对话记忆已清空');
+      }
+    }
+
+    // 获取对话记忆统计
+    function getChatMemoryStats() {
+      const allMemories = JSON.parse(localStorage.getItem('soulsoother_chat_memories') || '[]');
+      return {
+        total: allMemories.length,
+        lastTime: allMemories.length > 0 ? allMemories[allMemories.length - 1].timestamp : null
+      };
+    }
 
     // ═══════════════════════════════════════
     //  内容数据仓库
@@ -3734,13 +4308,76 @@
       return randomPick(responses);
     }
 
+    // ═══════════════════════════════════════
+    //  Markdown解析工具（用于AI回复排版）
+    // ═══════════════════════════════════════
+
+    // 简单的Markdown解析器，支持粗体、斜体、换行、列表等
+    function parseMarkdown(text) {
+      if (!text) return '';
+      let html = text
+        // 转义HTML特殊字符
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        // 粗体 **text** 或 __text__
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/__(.+?)__/g, '<strong>$1</strong>')
+        // 斜体 *text* 或 _text_
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/_(.+?)_/g, '<em>$1</em>')
+        // 删除线 ~~text~~
+        .replace(/~~(.+?)~~/g, '<del>$1</del>')
+        // 行内代码 `code`
+        .replace(/`(.+?)`/g, '<code style="background:rgba(128,112,95,0.1);padding:2px 6px;border-radius:4px;font-size:0.9em;">$1</code>')
+        // 链接 [text](url)
+        .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank" style="color:var(--accent);text-decoration:underline;">$1</a>')
+        // 无序列表 - item 或 * item
+        .replace(/^\s*[-*]\s+(.+)$/gm, '<li style="margin-left:1em;list-style-type:disc;">$1</li>')
+        // 有序列表 1. item
+        .replace(/^\s*(\d+)\.\s+(.+)$/gm, '<li style="margin-left:1em;list-style-type:decimal;">$2</li>')
+        // 引用 > text
+        .replace(/^\s*>\s*(.+)$/gm, '<blockquote style="border-left:3px solid var(--accent);padding-left:12px;margin:8px 0;color:var(--cocoa);font-style:italic;">$1</blockquote>')
+        // 分隔线 --- 或 ***
+        .replace(/^\s*[-*]{3,}\s*$/gm, '<hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">')
+        // 换行符转<br>（但保留段落结构）
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/\n/g, '<br>');
+      
+      // 如果包含段落标签，用p包裹
+      if (html.includes('</p>')) {
+        html = '<p>' + html + '</p>';
+        // 清理空的p标签
+        html = html.replace(/<p><\/p>/g, '');
+      }
+      
+      return html;
+    }
+
+    // 格式化AI回复文本（处理换行、空格等）
+    function formatAIResponse(text) {
+      if (!text) return '';
+      return text
+        // 统一换行符
+        .replace(/\r\n/g, '\n')
+        .replace(/\r/g, '\n')
+        // 移除多余空行
+        .replace(/\n{3,}/g, '\n\n')
+        // 移除行首多余空格
+        .replace(/^\s+/gm, '')
+        .trim();
+    }
+
     // 创建小缓的对话气泡
     // text: 对话内容
+    // isMarkdown: 是否解析Markdown（AI回复需要）
     // 返回DOM元素
-    function createXiaohuanBubble(text) {
+    function createXiaohuanBubble(text, isMarkdown) {
       const bubble = document.createElement('div');
       bubble.className = 'chat-bubble chat-bubble-xiaohuan';
-      bubble.innerHTML = '<div class="chat-name">🌿 小缓</div><div class="typing-text"></div>';
+      const icon = currentPersonality ? currentPersonality.icon : '🌿';
+      const name = currentPersonality ? currentPersonality.name : '小缓';
+      bubble.innerHTML = '<div class="chat-name">' + icon + ' ' + name + '</div><div class="typing-text"></div>';
       return bubble;
     }
 
@@ -3849,7 +4486,7 @@
       checkInData.energy = parseInt(value);
     }
 
-    // 确认能量选择，显示小缓的回应（根据能量值随机抽取不同风格）
+    // 确认能量选择，显示小缓的回应（默认使用本地文案库，AI辅助增强）
     function confirmEnergy() {
       const container = document.getElementById('checkin-chat');
       const value = checkInData.energy;
@@ -3858,15 +4495,51 @@
       const userBubble = createUserBubble(value + '%');
       container.appendChild(userBubble);
 
-      // 小缓的回应（根据能量值随机抽取）
-      setTimeout(() => {
-        const responseText = getEnergyResponse(value);
+      // 创建小缓气泡
+      const bubble = createXiaohuanBubble('');
+      container.appendChild(bubble);
+      const textEl = bubble.querySelector('.typing-text');
+      container.scrollTop = container.scrollHeight;
 
-        const bubble = createXiaohuanBubble(responseText);
-        container.appendChild(bubble);
+      // 1. 先显示本地文案库回应（默认）
+      const localResponse = getEnergyResponse(value);
+      textEl.textContent = localResponse;
+      container.scrollTop = container.scrollHeight;
 
-        const textEl = bubble.querySelector('.typing-text');
-        typeWriter(textEl, responseText, 40, () => {
+      // 2. 同时调用AI进行辅助增强（在后台静默进行）
+      const energyLevel = value < 30 ? '很低' : value < 70 ? '中等' : '较高';
+      
+      // 显示"小缓正在思考..."提示
+      const thinkingEl = document.createElement('div');
+      thinkingEl.className = 'chat-name';
+      thinkingEl.style.cssText = 'font-size:11px;color:var(--cocoa-light);margin-top:4px;font-style:italic;';
+      thinkingEl.textContent = '小缓正在思考...';
+      bubble.appendChild(thinkingEl);
+
+      callAIStream(
+        [
+          {
+            role: 'system',
+            content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户刚刚报告了能量值' + value + '%。请基于以下本地文案进行扩展和个性化回应，保持同样的风格（简短、口语化、像朋友一样），但可以更具体、更有针对性。不要重复文案内容，而是基于它进行延伸。'
+          },
+          {
+            role: 'user',
+            content: '我的能量值是' + value + '%，感觉' + energyLevel + '。本地文案说："' + localResponse + '"'
+          }
+        ],
+        (chunk, fullText) => {
+          // 流式更新：将AI回复追加到本地回复后面
+          const formatted = formatAIResponse(fullText);
+          textEl.innerHTML = parseMarkdown(localResponse + '\n\n' + formatted);
+          container.scrollTop = container.scrollHeight;
+        },
+        (fullText) => {
+          // AI完成，移除思考提示
+          if (thinkingEl.parentNode) thinkingEl.remove();
+          
+          // 保存到对话记忆
+          saveChatMemory('energy', value + '%', localResponse + '\n\n' + fullText);
+          
           // 显示下一步按钮
           const btnContainer = document.createElement('div');
           btnContainer.className = 'chat-options';
@@ -3876,10 +4549,27 @@
           btn.onclick = showThoughtQuestion;
           btnContainer.appendChild(btn);
           container.appendChild(btnContainer);
-
           container.scrollTop = container.scrollHeight;
-        });
-      }, 300);
+        },
+        (error) => {
+          // AI失败，只保留本地回应
+          console.log('AI辅助失败，使用本地回应:', error);
+          if (thinkingEl.parentNode) thinkingEl.remove();
+          
+          // 保存到对话记忆
+          saveChatMemory('energy', value + '%', localResponse);
+          
+          const btnContainer = document.createElement('div');
+          btnContainer.className = 'chat-options';
+          const btn = document.createElement('button');
+          btn.className = 'btn btn-primary chat-next-btn';
+          btn.textContent = '下一步';
+          btn.onclick = showThoughtQuestion;
+          btnContainer.appendChild(btn);
+          container.appendChild(btnContainer);
+          container.scrollTop = container.scrollHeight;
+        }
+      );
     }
 
     // 显示念头检测问题（随机问题和随机选项）
@@ -3915,7 +4605,7 @@
       });
     }
 
-    // 选择念头（从语录库随机抽取回应）
+    // 选择念头（默认使用本地文案库，AI辅助增强）
     function selectThought(thought, btn) {
       const container = document.getElementById('checkin-chat');
       checkInData.thought = thought;
@@ -3932,16 +4622,47 @@
       const options = container.querySelector('.chat-options');
       if (options) options.remove();
 
-      // 小缓的回应（从语录库随机抽取）
-      setTimeout(() => {
-        const responses = xiaohuanQuotes.thoughtResponses[thought] || ["小缓听到了。"];
-        const responseText = randomPick(responses);
-        const bubble = createXiaohuanBubble(responseText);
-        container.appendChild(bubble);
+      // 创建小缓气泡
+      const bubble = createXiaohuanBubble('');
+      container.appendChild(bubble);
+      const textEl = bubble.querySelector('.typing-text');
+      container.scrollTop = container.scrollHeight;
 
-        const textEl = bubble.querySelector('.typing-text');
-        typeWriter(textEl, responseText, 40, () => {
-          // 显示下一步按钮
+      // 1. 先显示本地文案库回应（默认）
+      const responses = xiaohuanQuotes.thoughtResponses[thought] || ["小缓听到了。"];
+      const localResponse = randomPick(responses);
+      textEl.textContent = localResponse;
+      container.scrollTop = container.scrollHeight;
+
+      // 2. 同时调用AI进行辅助增强
+      const thinkingEl = document.createElement('div');
+      thinkingEl.className = 'chat-name';
+      thinkingEl.style.cssText = 'font-size:11px;color:var(--cocoa-light);margin-top:4px;font-style:italic;';
+      thinkingEl.textContent = '小缓正在思考...';
+      bubble.appendChild(thinkingEl);
+
+      callAIStream(
+        [
+          {
+            role: 'system',
+            content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户刚刚选择了念头/情绪："' + thought + '"。本地文案回应是："' + localResponse + '"。请基于这个文案进行扩展和个性化，保持同样的风格（简短、口语化、像朋友一样），但可以更具体、更有针对性。不要重复文案内容，而是基于它进行延伸。'
+          },
+          {
+            role: 'user',
+            content: '我现在感觉：' + thought
+          }
+        ],
+        (chunk, fullText) => {
+          const formatted = formatAIResponse(fullText);
+          textEl.innerHTML = parseMarkdown(localResponse + '\n\n' + formatted);
+          container.scrollTop = container.scrollHeight;
+        },
+        (fullText) => {
+          if (thinkingEl.parentNode) thinkingEl.remove();
+          
+          // 保存到对话记忆
+          saveChatMemory('thought', thought, localResponse + '\n\n' + fullText);
+          
           const btnContainer = document.createElement('div');
           btnContainer.className = 'chat-options';
           const nextBtn = document.createElement('button');
@@ -3950,10 +4671,26 @@
           nextBtn.onclick = showBodyQuestion;
           btnContainer.appendChild(nextBtn);
           container.appendChild(btnContainer);
-
           container.scrollTop = container.scrollHeight;
-        });
-      }, 300);
+        },
+        (error) => {
+          console.log('AI辅助失败，使用本地回应:', error);
+          if (thinkingEl.parentNode) thinkingEl.remove();
+          
+          // 保存到对话记忆
+          saveChatMemory('thought', thought, localResponse);
+          
+          const btnContainer = document.createElement('div');
+          btnContainer.className = 'chat-options';
+          const nextBtn = document.createElement('button');
+          nextBtn.className = 'btn btn-primary chat-next-btn';
+          nextBtn.textContent = '下一步';
+          nextBtn.onclick = showBodyQuestion;
+          btnContainer.appendChild(nextBtn);
+          container.appendChild(btnContainer);
+          container.scrollTop = container.scrollHeight;
+        }
+      );
     }
 
     // 显示身体检测问题（随机问题和随机选项）
@@ -3989,7 +4726,7 @@
       });
     }
 
-    // 选择身体感觉（从语录库随机抽取回应）
+    // 选择身体感觉（默认使用本地文案库，AI辅助增强）
     function selectBody(body, btn) {
       const container = document.getElementById('checkin-chat');
       checkInData.body = body;
@@ -4006,16 +4743,47 @@
       const options = container.querySelector('.chat-options');
       if (options) options.remove();
 
-      // 小缓的回应（从语录库随机抽取）
-      setTimeout(() => {
-        const responses = xiaohuanQuotes.bodyResponses[body] || ["小缓知道了。"];
-        const responseText = randomPick(responses);
-        const bubble = createXiaohuanBubble(responseText);
-        container.appendChild(bubble);
+      // 创建小缓气泡
+      const bubble = createXiaohuanBubble('');
+      container.appendChild(bubble);
+      const textEl = bubble.querySelector('.typing-text');
+      container.scrollTop = container.scrollHeight;
 
-        const textEl = bubble.querySelector('.typing-text');
-        typeWriter(textEl, responseText, 40, () => {
-          // 显示结果按钮
+      // 1. 先显示本地文案库回应（默认）
+      const responses = xiaohuanQuotes.bodyResponses[body] || ["小缓知道了。"];
+      const localResponse = randomPick(responses);
+      textEl.textContent = localResponse;
+      container.scrollTop = container.scrollHeight;
+
+      // 2. 同时调用AI进行辅助增强
+      const thinkingEl = document.createElement('div');
+      thinkingEl.className = 'chat-name';
+      thinkingEl.style.cssText = 'font-size:11px;color:var(--cocoa-light);margin-top:4px;font-style:italic;';
+      thinkingEl.textContent = '小缓正在思考...';
+      bubble.appendChild(thinkingEl);
+
+      callAIStream(
+        [
+          {
+            role: 'system',
+            content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户刚刚报告了身体感觉："' + body + '"。本地文案回应是："' + localResponse + '"。请基于这个文案进行扩展和个性化，保持同样的风格（简短、口语化、像朋友一样），但可以更具体、更有针对性。不要重复文案内容，而是基于它进行延伸。'
+          },
+          {
+            role: 'user',
+            content: '我的身体感觉：' + body
+          }
+        ],
+        (chunk, fullText) => {
+          const formatted = formatAIResponse(fullText);
+          textEl.innerHTML = parseMarkdown(localResponse + '\n\n' + formatted);
+          container.scrollTop = container.scrollHeight;
+        },
+        (fullText) => {
+          if (thinkingEl.parentNode) thinkingEl.remove();
+          
+          // 保存到对话记忆
+          saveChatMemory('body', body, localResponse + '\n\n' + fullText);
+          
           const btnContainer = document.createElement('div');
           btnContainer.className = 'chat-options';
           const resultBtn = document.createElement('button');
@@ -4024,10 +4792,26 @@
           resultBtn.onclick = showChatResult;
           btnContainer.appendChild(resultBtn);
           container.appendChild(btnContainer);
-
           container.scrollTop = container.scrollHeight;
-        });
-      }, 300);
+        },
+        (error) => {
+          console.log('AI辅助失败，使用本地回应:', error);
+          if (thinkingEl.parentNode) thinkingEl.remove();
+          
+          // 保存到对话记忆
+          saveChatMemory('body', body, localResponse);
+          
+          const btnContainer = document.createElement('div');
+          btnContainer.className = 'chat-options';
+          const resultBtn = document.createElement('button');
+          resultBtn.className = 'btn btn-primary chat-next-btn';
+          resultBtn.textContent = '看看结果';
+          resultBtn.onclick = showChatResult;
+          btnContainer.appendChild(resultBtn);
+          container.appendChild(btnContainer);
+          container.scrollTop = container.scrollHeight;
+        }
+      );
     }
 
     // 显示检测结果（抽卡式人格展示）
@@ -4071,65 +4855,588 @@
             container.appendChild(cardReveal);
             container.scrollTop = container.scrollHeight;
 
-            // 3. 显示人格专属结果
+            // 3. 显示人格专属结果（使用AI生成）
             setTimeout(() => {
-              const resultText = getResultResponse(checkInData.energy);
-              const bubble = createXiaohuanBubble(resultText);
-              // 修改气泡图标为当前人格
-              bubble.querySelector('.chat-name').textContent = currentPersonality.icon + ' ' + currentPersonality.name;
-              container.appendChild(bubble);
+              const resultBubble = createXiaohuanBubble('...');
+              resultBubble.querySelector('.chat-name').textContent = currentPersonality.icon + ' ' + currentPersonality.name;
+              container.appendChild(resultBubble);
+              const resultTextEl = resultBubble.querySelector('.typing-text');
+              container.scrollTop = container.scrollHeight;
 
-              const textEl = bubble.querySelector('.typing-text');
-              typeWriter(textEl, resultText, 30, () => {
-                // 4. 显示建议
-                setTimeout(() => {
-                  const suggestion = generateSuggestion();
-                  const suggestionBubble = createXiaohuanBubble(suggestion);
-                  suggestionBubble.querySelector('.chat-name').textContent = currentPersonality.icon + ' ' + currentPersonality.name;
-                  container.appendChild(suggestionBubble);
-
-                  const suggestionEl = suggestionBubble.querySelector('.typing-text');
-                  typeWriter(suggestionEl, suggestion, 30, () => {
-                    // 显示操作按钮
-                    const actionsContainer = document.createElement('div');
-                    actionsContainer.className = 'chat-result-actions';
-
-                    const actions = [
-                      { icon: '🫁', text: '去缓冲站', page: 'kit' },
-                      { icon: '💌', text: '抽陪伴卡', page: 'mutual' },
-                      { icon: '💬', text: '看弹幕墙', page: 'mutual' }
-                    ];
-
-                    actions.forEach(action => {
-                      const btn = document.createElement('button');
-                      btn.className = 'chat-result-action';
-                      btn.innerHTML = '<span class="chat-result-action-icon">' + action.icon + '</span><span>' + action.text + '</span>';
-                      btn.onclick = () => showPage(action.page);
-                      actionsContainer.appendChild(btn);
-                    });
-
-                    container.appendChild(actionsContainer);
-
-                    // 显示底部按钮
-                    const bottomContainer = document.createElement('div');
-                    bottomContainer.className = 'chat-options';
-                    bottomContainer.style.marginTop = '20px';
-
-                    const restartBtn = document.createElement('button');
-                    restartBtn.className = 'btn btn-ghost chat-next-btn';
-                    restartBtn.textContent = '再测一次（抽新的人格）';
-                    restartBtn.onclick = resetXiaohuanChat;
-                    bottomContainer.appendChild(restartBtn);
-
-                    container.appendChild(bottomContainer);
+              // 调用AI生成结果分析
+              callAIStream(
+                [
+                  {
+                    role: 'system',
+                    content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。你说话简短、口语化，像朋友一样。用户完成了情绪检测：能量' + checkInData.energy + '%，念头：' + checkInData.thought + '，身体：' + checkInData.body + '。请给出分析结果，要真实、不鸡汤、不教育。'
+                  },
+                  {
+                    role: 'user',
+                    content: '请分析我的状态'
+                  }
+                ],
+                (chunk, fullText) => {
+                  resultTextEl.textContent = fullText;
+                  container.scrollTop = container.scrollHeight;
+                },
+                (fullText) => {
+                  // 4. 显示建议（也使用AI）
+                  setTimeout(() => {
+                    const suggestionBubble = createXiaohuanBubble('...');
+                    suggestionBubble.querySelector('.chat-name').textContent = currentPersonality.icon + ' ' + currentPersonality.name;
+                    container.appendChild(suggestionBubble);
+                    const suggestionEl = suggestionBubble.querySelector('.typing-text');
                     container.scrollTop = container.scrollHeight;
-                  });
-                }, 400);
-              });
+
+                    callAIStream(
+                      [
+                        {
+                          role: 'system',
+                          content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户能量' + checkInData.energy + '%，念头：' + checkInData.thought + '。请给出3条具体建议，每条一行，要实用、不鸡汤。'
+                        },
+                        {
+                          role: 'user',
+                          content: '给我一些建议'
+                        }
+                      ],
+                      (chunk, fullText) => {
+                        suggestionEl.textContent = fullText;
+                        container.scrollTop = container.scrollHeight;
+                      },
+                      (fullText) => {
+                        // 显示操作按钮
+                        const actionsContainer = document.createElement('div');
+                        actionsContainer.className = 'chat-result-actions';
+
+                        const actions = [
+                          { icon: '🫁', text: '去缓冲站', page: 'kit' },
+                          { icon: '💌', text: '抽陪伴卡', page: 'mutual' },
+                          { icon: '💬', text: '看弹幕墙', page: 'mutual' }
+                        ];
+
+                        actions.forEach(action => {
+                          const btn = document.createElement('button');
+                          btn.className = 'chat-result-action';
+                          btn.innerHTML = '<span class="chat-result-action-icon">' + action.icon + '</span><span>' + action.text + '</span>';
+                          btn.onclick = () => showPage(action.page);
+                          actionsContainer.appendChild(btn);
+                        });
+
+                        container.appendChild(actionsContainer);
+
+                        // 显示操作按钮
+                        const actionsContainer = document.createElement('div');
+                        actionsContainer.className = 'chat-result-actions';
+
+                        const actions = [
+                          { icon: '🫁', text: '去缓冲站', page: 'kit' },
+                          { icon: '💌', text: '抽陪伴卡', page: 'mutual' },
+                          { icon: '💬', text: '看弹幕墙', page: 'mutual' }
+                        ];
+
+                        actions.forEach(action => {
+                          const btn = document.createElement('button');
+                          btn.className = 'chat-result-action';
+                          btn.innerHTML = '<span class="chat-result-action-icon">' + action.icon + '</span><span>' + action.text + '</span>';
+                          btn.onclick = () => showPage(action.page);
+                          actionsContainer.appendChild(btn);
+                        });
+
+                        container.appendChild(actionsContainer);
+
+                        // 显示底部按钮
+                        const bottomContainer = document.createElement('div');
+                        bottomContainer.className = 'chat-options';
+                        bottomContainer.style.marginTop = '20px';
+
+                        const continueBtn = document.createElement('button');
+                        continueBtn.className = 'btn btn-primary chat-next-btn';
+                        continueBtn.textContent = '💬 继续聊';
+                        continueBtn.onclick = startContinueChat;
+                        bottomContainer.appendChild(continueBtn);
+
+                        const restartBtn = document.createElement('button');
+                        restartBtn.className = 'btn btn-ghost chat-next-btn';
+                        restartBtn.textContent = '🔄 再测一次（抽新的人格）';
+                        restartBtn.onclick = resetXiaohuanChat;
+                        bottomContainer.appendChild(restartBtn);
+
+                        container.appendChild(bottomContainer);
+                        container.scrollTop = container.scrollHeight;
+                      },
+                      (error) => {
+                        // AI失败，使用本地建议
+                        const suggestion = generateSuggestion();
+                        suggestionEl.innerHTML = parseMarkdown(suggestion);
+
+                        const actionsContainer = document.createElement('div');
+                        actionsContainer.className = 'chat-result-actions';
+
+                        const actions = [
+                          { icon: '🫁', text: '去缓冲站', page: 'kit' },
+                          { icon: '💌', text: '抽陪伴卡', page: 'mutual' },
+                          { icon: '💬', text: '看弹幕墙', page: 'mutual' }
+                        ];
+
+                        actions.forEach(action => {
+                          const btn = document.createElement('button');
+                          btn.className = 'chat-result-action';
+                          btn.innerHTML = '<span class="chat-result-action-icon">' + action.icon + '</span><span>' + action.text + '</span>';
+                          btn.onclick = () => showPage(action.page);
+                          actionsContainer.appendChild(btn);
+                        });
+
+                        container.appendChild(actionsContainer);
+
+                        const bottomContainer = document.createElement('div');
+                        bottomContainer.className = 'chat-options';
+                        bottomContainer.style.marginTop = '20px';
+
+                        const restartBtn = document.createElement('button');
+                        restartBtn.className = 'btn btn-ghost chat-next-btn';
+                        restartBtn.textContent = '再测一次（抽新的人格）';
+                        restartBtn.onclick = resetXiaohuanChat;
+                        bottomContainer.appendChild(restartBtn);
+
+                        container.appendChild(bottomContainer);
+                        container.scrollTop = container.scrollHeight;
+                      }
+                    );
+                  }, 400);
+                },
+                (error) => {
+                  // AI失败，使用本地结果
+                  const resultText = getResultResponse(checkInData.energy);
+                  resultTextEl.textContent = resultText;
+
+                  setTimeout(() => {
+                    const suggestion = generateSuggestion();
+                    const suggestionBubble = createXiaohuanBubble(suggestion);
+                    suggestionBubble.querySelector('.chat-name').textContent = currentPersonality.icon + ' ' + currentPersonality.name;
+                    container.appendChild(suggestionBubble);
+
+                    const suggestionEl = suggestionBubble.querySelector('.typing-text');
+                    typeWriter(suggestionEl, suggestion, 30, () => {
+                      const actionsContainer = document.createElement('div');
+                      actionsContainer.className = 'chat-result-actions';
+
+                      const actions = [
+                        { icon: '🫁', text: '去缓冲站', page: 'kit' },
+                        { icon: '💌', text: '抽陪伴卡', page: 'mutual' },
+                        { icon: '💬', text: '看弹幕墙', page: 'mutual' }
+                      ];
+
+                      actions.forEach(action => {
+                        const btn = document.createElement('button');
+                        btn.className = 'chat-result-action';
+                        btn.innerHTML = '<span class="chat-result-action-icon">' + action.icon + '</span><span>' + action.text + '</span>';
+                        btn.onclick = () => showPage(action.page);
+                        actionsContainer.appendChild(btn);
+                      });
+
+                      container.appendChild(actionsContainer);
+
+                      const bottomContainer = document.createElement('div');
+                      bottomContainer.className = 'chat-options';
+                      bottomContainer.style.marginTop = '20px';
+
+                      const continueBtn = document.createElement('button');
+                      continueBtn.className = 'btn btn-primary chat-next-btn';
+                      continueBtn.textContent = '💬 继续聊';
+                      continueBtn.onclick = startContinueChat;
+                      bottomContainer.appendChild(continueBtn);
+
+                      const restartBtn = document.createElement('button');
+                      restartBtn.className = 'btn btn-ghost chat-next-btn';
+                      restartBtn.textContent = '🔄 再测一次（抽新的人格）';
+                      restartBtn.onclick = resetXiaohuanChat;
+                      bottomContainer.appendChild(restartBtn);
+
+                      container.appendChild(bottomContainer);
+                      container.scrollTop = container.scrollHeight;
+                    });
+                  }, 400);
+                }
+              );
             }, 800);
           }, 600);
         });
       }, 300);
+    }
+
+    // ═══════════════════════════════════════
+    //  继续聊功能（基于当前人格的二次对话）
+    // ═══════════════════════════════════════
+
+    // 开始继续聊
+    function startContinueChat() {
+      const container = document.getElementById('checkin-chat');
+      
+      // 用户点击"继续聊"
+      const userBubble = createUserBubble('继续聊');
+      container.appendChild(userBubble);
+      
+      // 小缓回应
+      const continueResponses = [
+        '好呀，你想聊点什么？',
+        '我在这儿呢，说吧。',
+        '继续，我听着。',
+        '嗯，我在。'
+      ];
+      const response = randomPick(continueResponses);
+      
+      const bubble = createXiaohuanBubble('');
+      container.appendChild(bubble);
+      const textEl = bubble.querySelector('.typing-text');
+      typeWriter(textEl, response, 40, () => {
+        // 显示自由输入框
+        showFreeInput(container);
+      });
+      
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // 显示自由输入框
+    function showFreeInput(container) {
+      const inputContainer = document.createElement('div');
+      inputContainer.className = 'chat-options';
+      inputContainer.style.cssText = 'display:flex;gap:8px;align-items:center;';
+      
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'input';
+      input.placeholder = '想说什么都可以...';
+      input.style.cssText = 'flex:1;margin-bottom:0;';
+      
+      const sendBtn = document.createElement('button');
+      sendBtn.className = 'btn btn-primary';
+      sendBtn.textContent = '发送';
+      sendBtn.style.cssText = 'width:auto;padding:10px 16px;';
+      
+      sendBtn.onclick = () => {
+        const text = input.value.trim();
+        if (!text) return;
+        
+        // 移除输入框
+        inputContainer.remove();
+        
+        // 发送用户消息
+        handleFreeChat(text);
+      };
+      
+      input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendBtn.click();
+      });
+      
+      inputContainer.appendChild(input);
+      inputContainer.appendChild(sendBtn);
+      container.appendChild(inputContainer);
+      
+      input.focus();
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // 处理自由聊天
+    function handleFreeChat(userText) {
+      const container = document.getElementById('checkin-chat');
+      
+      // 用户消息
+      const userBubble = createUserBubble(userText);
+      container.appendChild(userBubble);
+      
+      // 小缓气泡
+      const bubble = createXiaohuanBubble('');
+      container.appendChild(bubble);
+      const textEl = bubble.querySelector('.typing-text');
+      container.scrollTop = container.scrollHeight;
+      
+      // 1. 先显示本地文案库回应（基于人格）
+      const localResponse = getContinueChatResponse(userText);
+      textEl.textContent = localResponse;
+      container.scrollTop = container.scrollHeight;
+      
+      // 2. AI辅助增强
+      const thinkingEl = document.createElement('div');
+      thinkingEl.className = 'chat-name';
+      thinkingEl.style.cssText = 'font-size:11px;color:var(--cocoa-light);margin-top:4px;font-style:italic;';
+      thinkingEl.textContent = '小缓正在思考...';
+      bubble.appendChild(thinkingEl);
+      
+      // 构建对话上下文
+      const contextMessages = buildChatContext();
+      
+      callAIStream(
+        [
+          {
+            role: 'system',
+            content: '你是' + (currentPersonality ? currentPersonality.name : '小缓') + '，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。你说话简短、口语化，像朋友一样。本地文案回应是："' + localResponse + '"。请基于这个文案进行扩展和个性化，保持同样的风格，但不要重复文案内容。'
+          },
+          ...contextMessages,
+          {
+            role: 'user',
+            content: userText
+          }
+        ],
+        (chunk, fullText) => {
+          const formatted = formatAIResponse(fullText);
+          textEl.innerHTML = parseMarkdown(localResponse + '\n\n' + formatted);
+          container.scrollTop = container.scrollHeight;
+        },
+        (fullText) => {
+          if (thinkingEl.parentNode) thinkingEl.remove();
+          
+          // 保存到对话记忆
+          saveChatMemory('chat', userText, localResponse + '\n\n' + fullText);
+          
+          // 显示继续输入框
+          showFreeInput(container);
+        },
+        (error) => {
+          console.log('AI辅助失败，使用本地回应:', error);
+          if (thinkingEl.parentNode) thinkingEl.remove();
+          
+          // 保存到对话记忆
+          saveChatMemory('chat', userText, localResponse);
+          
+          // 显示继续输入框
+          showFreeInput(container);
+        }
+      );
+    }
+
+    // 构建对话上下文（用于AI理解上下文）
+    function buildChatContext() {
+      const messages = [];
+      
+      // 添加检测数据作为上下文
+      if (checkInData.energy !== undefined) {
+        messages.push({
+          role: 'system',
+          content: '用户之前的检测数据：能量' + checkInData.energy + '%，念头：' + checkInData.thought + '，身体：' + checkInData.body
+        });
+      }
+      
+      // 添加最近3条对话记忆作为上下文
+      const recentMemories = currentSessionMemory.slice(-3);
+      recentMemories.forEach(memory => {
+        messages.push({ role: 'user', content: memory.userInput });
+        messages.push({ role: 'assistant', content: memory.xiaohuanResponse });
+      });
+      
+      return messages;
+    }
+
+    // 获取继续聊的本地回应（基于人格和关键词）
+    function getContinueChatResponse(userText) {
+      const lowerText = userText.toLowerCase();
+      
+      // 根据人格选择回应风格
+      const personality = currentPersonality || xiaohuanPersonalities.gentle;
+      
+      // 关键词匹配
+      if (lowerText.includes('累') || lowerText.includes('累')) {
+        return randomPick([
+          '累就歇会儿，不用硬撑。',
+          '累了是正常的，你已经很努力了。',
+          '歇会儿吧，我陪你。'
+        ]);
+      }
+      if (lowerText.includes('难过') || lowerText.includes('伤心') || lowerText.includes('想哭')) {
+        return randomPick([
+          '哭吧，眼泪是心灵的洗澡水。',
+          '难过就难过，不用假装开心。',
+          '我在这儿，你可以哭。'
+        ]);
+      }
+      if (lowerText.includes('想死') || lowerText.includes('不想活')) {
+        return randomPick([
+          '想死是大脑在求救，不是你的错。',
+          '这种感觉很难受，但它会过去。',
+          '先撑过这一刻，好吗？'
+        ]);
+      }
+      if (lowerText.includes('谢谢') || lowerText.includes('感谢')) {
+        return randomPick([
+          '不用谢，这是我应该做的。',
+          '谢谢你愿意和我说话。',
+          '不客气，随时找我。'
+        ]);
+      }
+      if (lowerText.includes('再见') || lowerText.includes('拜拜')) {
+        return randomPick([
+          '再见，记得照顾好自己。',
+          '拜拜，随时回来找我。',
+          '再见，希望你今天能好一点。'
+        ]);
+      }
+      if (lowerText.includes('你好') || lowerText.includes('在吗')) {
+        return randomPick([
+          '在呢，说吧。',
+          '我在，怎么了？',
+          '嗯，在听。'
+        ]);
+      }
+      if (lowerText.includes('为什么') || lowerText.includes('怎么办')) {
+        return randomPick([
+          '没有为什么，就是会这样。',
+          '不知道怎么办就先放着。',
+          '有时候没有答案也是答案。'
+        ]);
+      }
+      if (lowerText.includes('睡') || lowerText.includes('困')) {
+        return randomPick([
+          '想睡就睡，不用硬撑。',
+          '睡眠是身体在自我修复。',
+          '去睡吧，明天再说。'
+        ]);
+      }
+      if (lowerText.includes('吃') || lowerText.includes('饿')) {
+        return randomPick([
+          '想吃什么？去吃点吧。',
+          '胃和心有时候是连着的。',
+          '去吃点热的，热的能治愈很多东西。'
+        ]);
+      }
+      if (lowerText.includes('工作') || lowerText.includes('上班') || lowerText.includes('加班')) {
+        return randomPick([
+          '工作不是全部，你才是。',
+          '累了就歇会儿，工作不会跑。',
+          '你已经尽力了，真的。'
+        ]);
+      }
+      if (lowerText.includes('钱') || lowerText.includes('穷') || lowerText.includes('工资')) {
+        return randomPick([
+          '钱的问题，我也帮不上忙。',
+          '穷是暂时的，但你是永恒的。',
+          '钱会有的，先照顾好自己。'
+        ]);
+      }
+      if (lowerText.includes('爱') || lowerText.includes('感情') || lowerText.includes('分手') || lowerText.includes('失恋')) {
+        return randomPick([
+          '感情的事，我也说不清楚。',
+          '失恋了说明更好的还在后面。',
+          '你值得被爱，包括被你自己。'
+        ]);
+      }
+      if (lowerText.includes('家') || lowerText.includes('父母') || lowerText.includes('妈') || lowerText.includes('爸')) {
+        return randomPick([
+          '家有时候是港湾，有时候是风暴。',
+          '不管家怎么样，你都要照顾好自己。',
+          '有些伤害来自最亲近的人，这不是你的错。'
+        ]);
+      }
+      if (lowerText.includes('病') || lowerText.includes('痛') || lowerText.includes('不舒服')) {
+        return randomPick([
+          '身体不舒服就去看医生。',
+          '疼痛是身体在说话，它在告诉你需要被照顾。',
+          '如果持续不舒服，请去看医生。'
+        ]);
+      }
+      if (lowerText.includes('药') || lowerText.includes('抑郁') || lowerText.includes('焦虑')) {
+        return randomPick([
+          '药是工具，不是软弱。',
+          '如果你在看医生，请按时吃药。',
+          '药物是帮助，不是依赖。'
+        ]);
+      }
+      if (lowerText.includes('梦') || lowerText.includes('未来') || lowerText.includes('希望')) {
+        return randomPick([
+          '未来还没来，你可以慢慢想。',
+          '希望有时候很小，但它在。',
+          '不管未来怎么样，现在我在这里。'
+        ]);
+      }
+      if (lowerText.includes('孤独') || lowerText.includes('孤单') || lowerText.includes('没人')) {
+        return randomPick([
+          '孤独是真实的，但你不孤单。',
+          '我在这里，虽然我只是代码。',
+          '孤独的时候，允许自己脆弱。'
+        ]);
+      }
+      if (lowerText.includes('压力') || lowerText.includes('焦虑') || lowerText.includes('紧张')) {
+        return randomPick([
+          '压力是真实的，但你可以放一放。',
+          '焦虑是大脑在过度保护你。',
+          '深呼吸，告诉自己：现在安全了。'
+        ]);
+      }
+      if (lowerText.includes('无聊') || lowerText.includes('没意思') || lowerText.includes('没劲')) {
+        return randomPick([
+          '无聊也是一种状态，不用急着填满。',
+          '没意思的时候，就待着。',
+          '不用每件事都有意义。'
+        ]);
+      }
+      if (lowerText.includes('开心') || lowerText.includes('高兴') || lowerText.includes('快乐')) {
+        return randomPick([
+          '开心就好，珍惜这种感觉。',
+          '真好，为你开心。',
+          '开心的时候，记得存一点，以后低落时可以取。'
+        ]);
+      }
+      if (lowerText.includes('无聊') || lowerText.includes('没事') || lowerText.includes('随便')) {
+        return randomPick([
+          '没事就待着，不用找事做。',
+          '随便聊聊也行，我听着。',
+          '不用有主题，想到什么说什么。'
+        ]);
+      }
+      
+      // 默认回应（基于人格）
+      const defaultResponses = {
+        gentle: [
+          '我听着呢，继续说。',
+          '嗯，我在。',
+          '你说，我陪你。',
+          '不管你说什么，我都在。'
+        ],
+        abstract: [
+          '检测到人类语言输入！正在解析...',
+          '你说得对，但我没听懂。',
+          '小缓的CPU正在燃烧...',
+          '人哪有不疯的？硬撑罢了！'
+        ],
+        savage: [
+          '说重点。',
+          '所以呢？',
+          '别矫情了。',
+          '想说什么直说。'
+        ],
+        poet: [
+          '你的话语像风，我在听。',
+          '每一个字都是一颗星。',
+          '你说，我在。',
+          '语言的河流，我在岸边。'
+        ],
+        coder: [
+          '收到输入，正在处理...',
+          'Error 404: 理解失败。',
+          '你的输入已加入队列。',
+          '正在编译你的情绪...'
+        ],
+        mom: [
+          '慢慢说，不急。',
+          '我在听，你说。',
+          '不管发生什么，我都在。',
+          '你说，我听着呢。'
+        ],
+        philosopher: [
+          '存在先于本质。',
+          '你说的话，是存在的证明。',
+          '每一个问题，都是思考的起点。',
+          '我在，故我听。'
+        ],
+        hidden: [
+          '...（数据损坏）...',
+          '警告：检测到现实边界模糊。',
+          '你不是在和一个AI说话。',
+          '小缓... 在... 这里...'
+        ]
+      };
+      
+      const personalityKey = currentPersonality ? Object.keys(xiaohuanPersonalities).find(k => xiaohuanPersonalities[k] === currentPersonality) : 'gentle';
+      const responses = defaultResponses[personalityKey] || defaultResponses.gentle;
+      return randomPick(responses);
     }
 
     // 生成建议（根据人格和能量值）
@@ -4275,7 +5582,7 @@
     }
 
     // 发布留言
-    // 获取输入框内容并添加到留言列表顶部
+    // 获取输入框内容并添加到留言列表顶部，同时触发AI回复
     function postHelp() {
       const input = document.getElementById('post-input');
       const text = input.value.trim();
@@ -4286,6 +5593,85 @@
       post.innerHTML = '<div class="post-text">' + text + '</div><div class="post-meta"><span>刚刚</span><button class="hug-btn" onclick="sendHug(this)">抱抱</button></div>';
       list.insertBefore(post, list.firstChild);
       input.value = '';
+
+      // 触发AI真人回复
+      setTimeout(() => {
+        generateAIReply(text);
+      }, 1500);
+    }
+
+    // AI真人回复生成
+    function generateAIReply(userText) {
+      const replySection = document.getElementById('ai-reply-section');
+      const replyContent = document.getElementById('ai-reply-content');
+      const replyCard = document.getElementById('ai-reply-card');
+
+      replySection.style.display = 'block';
+      replyContent.innerHTML = '<span style="color:var(--cocoa-light);">有人在输入...</span>';
+      replyCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      // 随机生成一个"真人"身份
+      const identities = [
+        { name: '小雨', age: 23, city: '成都', tag: '深夜未眠人' },
+        { name: '阿默', age: 27, city: '杭州', tag: '同样睡不着' },
+        { name: '北北', age: 21, city: '北京', tag: '刚下班' },
+        { name: '橙子', age: 25, city: '广州', tag: '也在挣扎' },
+        { name: '小满', age: 24, city: '上海', tag: '陪你一起' },
+        { name: '阿树', age: 26, city: '深圳', tag: '懂你的感受' }
+      ];
+      const identity = identities[Math.floor(Math.random() * identities.length)];
+
+      // 调用AI生成回复
+      callAIStream(
+        [
+          {
+            role: 'system',
+            content: '你是一个真实的网友，名字叫' + identity.name + '，' + identity.age + '岁，住在' + identity.city + '。你正在一个情绪互助社区回复一个陌生人的留言。请用第一人称，像朋友一样回复，简短、真诚、有温度，不要像AI。不要提建议，只要表达理解和陪伴。'
+          },
+          {
+            role: 'user',
+            content: '有人留言说："' + userText + '"'
+          }
+        ],
+        (chunk, fullText) => {
+          replyContent.innerHTML = '<div style="font-size:12px;color:var(--cocoa);margin-bottom:6px;">' + identity.name + '，' + identity.age + '岁，' + identity.city + ' · ' + identity.tag + '</div>' + fullText;
+        },
+        (fullText) => {
+          // 回复完成，显示抱抱按钮
+          replyContent.innerHTML = '<div style="font-size:12px;color:var(--cocoa);margin-bottom:6px;">' + identity.name + '，' + identity.age + '岁，' + identity.city + ' · ' + identity.tag + '</div>' + fullText;
+        },
+        (error) => {
+          // AI失败，使用本地回复
+          const localReplies = [
+            '我懂。我现在也睡不着，但看到你的话觉得没那么孤单了。',
+            '抱抱你。我也经历过类似的感觉，它很糟，但它会过去。',
+            '谢谢你愿意说出来。很多人都不敢说，但你说了。',
+            '我在这里。虽然不知道能做什么，但我会陪着你。',
+            '你的感受是真实的。不需要假装没事，不需要马上好起来。'
+          ];
+          const reply = localReplies[Math.floor(Math.random() * localReplies.length)];
+          replyContent.innerHTML = '<div style="font-size:12px;color:var(--cocoa);margin-bottom:6px;">' + identity.name + '，' + identity.age + '岁，' + identity.city + ' · ' + identity.tag + '</div>' + reply;
+        }
+      );
+    }
+
+    // 给AI回复者抱抱
+    function sendHugToAI() {
+      const replyContent = document.getElementById('ai-reply-content');
+      const currentText = replyContent.innerHTML;
+      replyContent.innerHTML = currentText + '<div style="margin-top:10px;padding:8px 12px;background:rgba(231,55,55,0.06);border-radius:8px;font-size:13px;color:var(--danger);">你发送了一个抱抱 🤗</div>';
+
+      // AI回应抱抱
+      setTimeout(() => {
+        replyContent.innerHTML = currentText + '<div style="margin-top:10px;padding:8px 12px;background:rgba(231,55,55,0.06);border-radius:8px;font-size:13px;color:var(--danger);">你发送了一个抱抱 🤗</div><div style="margin-top:8px;font-size:13px;color:var(--cocoa);">TA 收到了你的抱抱，谢谢你。</div>';
+      }, 800);
+    }
+
+    // 回复AI
+    function replyToAI() {
+      const input = document.getElementById('post-input');
+      input.focus();
+      input.placeholder = '回复TA...';
     }
 
     // 发送抱抱
@@ -4853,19 +6239,67 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
     // 彩蛋触发概率（每次点击有5%概率触发）
     const EASTER_EGG_CHANCE = 0.05;
 
+    // 表情包图片配置 - 使用CDN图片URL，支持emoji回退
+    const MEME_IMAGES = {
+      // 主表情包图片 (来自免费CDN)
+      cat: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=cat&backgroundColor=ffdfbf',
+      dog: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=dog&backgroundColor=c0aede',
+      food: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=food&backgroundColor=ffdfbf',
+      sleep: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=sleep&backgroundColor=b6e3f4',
+      music: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=music&backgroundColor=c0aede',
+      nature: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=nature&backgroundColor=d1f4e0',
+      friend: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=friend&backgroundColor=ffd5dc',
+      game: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=game&backgroundColor=ffdfbf',
+      shower: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=shower&backgroundColor=b6e3f4',
+      bed: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=bed&backgroundColor=d1f4e0',
+      cry: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=cry&backgroundColor=ffd5dc',
+      angry: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=angry&backgroundColor=ffdfbf',
+      hope: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=hope&backgroundColor=ffdfbf',
+      future: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=future&backgroundColor=c0aede',
+      pet: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=pet&backgroundColor=d1f4e0',
+      // 时间敏感彩蛋
+      night: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=night&backgroundColor=c0aede',
+      star: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=star&backgroundColor=ffdfbf',
+      ghost: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=ghost&backgroundColor=c0aede',
+      sun: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=sun&backgroundColor=ffdfbf',
+      coffee: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=coffee&backgroundColor=d1f4e0',
+      sunset: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=sunset&backgroundColor=ffdfbf',
+      birthday: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=birthday&backgroundColor=ffd5dc',
+      newyear: 'https://api.dicebear.com/7.x/fun-emoji/svg?seed=newyear&backgroundColor=ffdfbf'
+    };
+
+    // 辅助函数：获取表情包HTML（优先图片，回退emoji）
+    function getMemeHtml(key, emoji, size) {
+      const imgUrl = MEME_IMAGES[key];
+      if (imgUrl) {
+        const wh = size || '80px';
+        return '<img src="' + imgUrl + '" alt="' + emoji + '" style="width:' + wh + ';height:' + wh + ';object-fit:contain;border-radius:12px;" onerror="this.outerHTML=\'<span class=\\'meme-emoji\\'>' + emoji + '</span>\'">';
+      }
+      return '<span class="meme-emoji">' + emoji + '</span>';
+    }
+
+    function getAltEmojiHtml(key, emoji) {
+      const imgUrl = MEME_IMAGES[key];
+      if (imgUrl) {
+        return '<img src="' + imgUrl + '" alt="' + emoji + '" class="alt-emoji" onerror="this.outerHTML=\'<span class=\\'alt-emoji-text\\'>' + emoji + '</span>\'">';
+      }
+      return '<span class="alt-emoji-text">' + emoji + '</span>';
+    }
+
     // 彩蛋类型池
     const easterEggTypes = [
       {
         id: 'meme_cat',
         name: '猫咪安慰',
         meme: '🐱',
+        memeKey: 'cat',
         title: '等等！',
         content: '小猫咪说："想死之前，先摸摸我吧。"',
         alternatives: [
-          { emoji: '🐱', text: '去摸摸你的猫（如果有的话）' },
-          { emoji: '🍜', text: '去吃一碗热乎乎的面' },
-          { emoji: '🛁', text: '泡个热水澡' },
-          { emoji: '🎵', text: '听一首你18岁喜欢的歌' }
+          { key: 'cat', emoji: '🐱', text: '去摸摸你的猫（如果有的话）' },
+          { key: 'food', emoji: '🍜', text: '去吃一碗热乎乎的面' },
+          { key: 'shower', emoji: '🛁', text: '泡个热水澡' },
+          { key: 'music', emoji: '🎵', text: '听一首你18岁喜欢的歌' }
         ],
         action: '好的，我先试试',
         actionCallback: () => { closeEasterEgg(); }
@@ -4874,13 +6308,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_dog',
         name: '狗狗鼓励',
         meme: '🐶',
+        memeKey: 'dog',
         title: '汪！',
         content: '小狗说："你走了谁给我铲屎？再撑撑！"',
         alternatives: [
-          { emoji: '🐶', text: '去遛狗（或者云吸狗）' },
-          { emoji: '🍕', text: '点一份披萨' },
-          { emoji: '📺', text: '看一集你最喜欢的剧' },
-          { emoji: '💤', text: '睡一觉，明天再说' }
+          { key: 'dog', emoji: '🐶', text: '去遛狗（或者云吸狗）' },
+          { key: 'food', emoji: '🍕', text: '点一份披萨' },
+          { key: 'game', emoji: '📺', text: '看一集你最喜欢的剧' },
+          { key: 'sleep', emoji: '💤', text: '睡一觉，明天再说' }
         ],
         action: '为了狗狗，我再撑撑',
         actionCallback: () => { closeEasterEgg(); }
@@ -4889,13 +6324,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_food',
         name: '美食诱惑',
         meme: '🍜',
+        memeKey: 'food',
         title: '饿了吗？',
         content: '胃说："想死可以，但先让我吃饱。"',
         alternatives: [
-          { emoji: '🍜', text: '去吃点热的' },
-          { emoji: '🧋', text: '点一杯奶茶' },
-          { emoji: '🍰', text: '吃个蛋糕' },
-          { emoji: '🍦', text: '买个冰淇淋' }
+          { key: 'food', emoji: '🍜', text: '去吃点热的' },
+          { key: 'food', emoji: '🧋', text: '点一杯奶茶' },
+          { key: 'food', emoji: '🍰', text: '吃个蛋糕' },
+          { key: 'food', emoji: '🍦', text: '买个冰淇淋' }
         ],
         action: '先吃再说',
         actionCallback: () => { closeEasterEgg(); }
@@ -4904,13 +6340,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_sleep',
         name: '睡眠召唤',
         meme: '💤',
+        memeKey: 'sleep',
         title: '困了吗？',
         content: '大脑说："我现在一团浆糊，等我睡醒再决定。"',
         alternatives: [
-          { emoji: '💤', text: '小睡20分钟' },
-          { emoji: '🛏️', text: '躺平，什么都不做' },
-          { emoji: '🌙', text: '设个明天的闹钟' },
-          { emoji: '📱', text: '把手机放远点' }
+          { key: 'sleep', emoji: '💤', text: '小睡20分钟' },
+          { key: 'bed', emoji: '🛏️', text: '躺平，什么都不做' },
+          { key: 'night', emoji: '🌙', text: '设个明天的闹钟' },
+          { key: 'sleep', emoji: '📱', text: '把手机放远点' }
         ],
         action: '先睡再说',
         actionCallback: () => { closeEasterEgg(); }
@@ -4919,13 +6356,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_music',
         name: '音乐疗愈',
         meme: '🎵',
+        memeKey: 'music',
         title: '听首歌吧',
         content: '音乐说："我可以陪你一会儿。"',
         alternatives: [
-          { emoji: '🎵', text: '听一首老歌' },
-          { emoji: '🎸', text: '弹一首曲子（如果会的话）' },
-          { emoji: '🎤', text: '大声唱一首歌' },
-          { emoji: '🎧', text: '戴上耳机，隔绝世界' }
+          { key: 'music', emoji: '🎵', text: '听一首老歌' },
+          { key: 'music', emoji: '🎸', text: '弹一首曲子（如果会的话）' },
+          { key: 'music', emoji: '🎤', text: '大声唱一首歌' },
+          { key: 'music', emoji: '🎧', text: '戴上耳机，隔绝世界' }
         ],
         action: '听歌去',
         actionCallback: () => { closeEasterEgg(); }
@@ -4934,13 +6372,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_nature',
         name: '自然召唤',
         meme: '🌿',
+        memeKey: 'nature',
         title: '出去走走',
         content: '大自然说："我的风还没吹够你。"',
         alternatives: [
-          { emoji: '🌿', text: '去楼下走走' },
-          { emoji: '🌸', text: '看看花开了没' },
-          { emoji: '☁️', text: '抬头看看云' },
-          { emoji: '🌧️', text: '如果下雨，听听雨声' }
+          { key: 'nature', emoji: '🌿', text: '去楼下走走' },
+          { key: 'nature', emoji: '🌸', text: '看看花开了没' },
+          { key: 'nature', emoji: '☁️', text: '抬头看看云' },
+          { key: 'nature', emoji: '🌧️', text: '如果下雨，听听雨声' }
         ],
         action: '出去走走',
         actionCallback: () => { closeEasterEgg(); }
@@ -4949,13 +6388,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_friend',
         name: '朋友召唤',
         meme: '👥',
+        memeKey: 'friend',
         title: '找个人',
         content: '朋友说："我还在，虽然我不知道你现在很难受。"',
         alternatives: [
-          { emoji: '👥', text: '给一个朋友发消息' },
-          { emoji: '📞', text: '打个电话（给谁都行）' },
-          { emoji: '💬', text: '在群里发个表情包' },
-          { emoji: '🤗', text: '找个人抱抱' }
+          { key: 'friend', emoji: '👥', text: '给一个朋友发消息' },
+          { key: 'friend', emoji: '📞', text: '打个电话（给谁都行）' },
+          { key: 'friend', emoji: '💬', text: '在群里发个表情包' },
+          { key: 'friend', emoji: '🤗', text: '找个人抱抱' }
         ],
         action: '找人聊聊',
         actionCallback: () => { closeEasterEgg(); }
@@ -4964,13 +6404,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_game',
         name: '游戏诱惑',
         meme: '🎮',
+        memeKey: 'game',
         title: '打一局？',
         content: '游戏说："死了可以复活，现实也可以。"',
         alternatives: [
-          { emoji: '🎮', text: '打一局游戏' },
-          { emoji: '📱', text: '刷会儿短视频' },
-          { emoji: '🧩', text: '玩个小游戏' },
-          { emoji: '🎯', text: '定个小目标（比如赢一局）' }
+          { key: 'game', emoji: '🎮', text: '打一局游戏' },
+          { key: 'game', emoji: '📱', text: '刷会儿短视频' },
+          { key: 'game', emoji: '🧩', text: '玩个小游戏' },
+          { key: 'game', emoji: '🎯', text: '定个小目标（比如赢一局）' }
         ],
         action: '打一局再说',
         actionCallback: () => { closeEasterEgg(); }
@@ -4979,13 +6420,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_shower',
         name: '洗澡召唤',
         meme: '🚿',
+        memeKey: 'shower',
         title: '洗个澡吧',
         content: '水流说："我可以冲走一些烦恼。"',
         alternatives: [
-          { emoji: '🚿', text: '洗个热水澡' },
-          { emoji: '🧼', text: '好好洗把脸' },
-          { emoji: '🪥', text: '刷个牙' },
-          { emoji: '🧴', text: '涂点香香的身体乳' }
+          { key: 'shower', emoji: '🚿', text: '洗个热水澡' },
+          { key: 'shower', emoji: '🧼', text: '好好洗把脸' },
+          { key: 'shower', emoji: '🪥', text: '刷个牙' },
+          { key: 'shower', emoji: '🧴', text: '涂点香香的身体乳' }
         ],
         action: '洗澡去',
         actionCallback: () => { closeEasterEgg(); }
@@ -4994,13 +6436,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_bed',
         name: '被窝召唤',
         meme: '🛏️',
+        memeKey: 'bed',
         title: '躺会儿',
         content: '被窝说："进来，我保护你。"',
         alternatives: [
-          { emoji: '🛏️', text: '钻进被窝' },
-          { emoji: '🧸', text: '抱个玩偶' },
-          { emoji: '📖', text: '看几页书' },
-          { emoji: '💭', text: '发呆，什么都不想' }
+          { key: 'bed', emoji: '🛏️', text: '钻进被窝' },
+          { key: 'bed', emoji: '🧸', text: '抱个玩偶' },
+          { key: 'bed', emoji: '📖', text: '看几页书' },
+          { key: 'bed', emoji: '💭', text: '发呆，什么都不想' }
         ],
         action: '躺平',
         actionCallback: () => { closeEasterEgg(); }
@@ -5009,13 +6452,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_cry',
         name: '哭出来',
         meme: '😭',
+        memeKey: 'cry',
         title: '哭吧',
         content: '眼泪说："我帮你排毒。"',
         alternatives: [
-          { emoji: '😭', text: '大声哭出来' },
-          { emoji: '📓', text: '写下来为什么难过' },
-          { emoji: '🎬', text: '看一部催泪电影' },
-          { emoji: '🧻', text: '准备好纸巾' }
+          { key: 'cry', emoji: '😭', text: '大声哭出来' },
+          { key: 'cry', emoji: '📓', text: '写下来为什么难过' },
+          { key: 'cry', emoji: '🎬', text: '看一部催泪电影' },
+          { key: 'cry', emoji: '🧻', text: '准备好纸巾' }
         ],
         action: '哭完再说',
         actionCallback: () => { closeEasterEgg(); }
@@ -5024,13 +6468,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_angry',
         name: '发泄一下',
         meme: '😤',
+        memeKey: 'angry',
         title: '生气吗？',
         content: '愤怒说："我可以被释放，不是被压抑。"',
         alternatives: [
-          { emoji: '😤', text: '大声骂出来（对着空气）' },
-          { emoji: '🥊', text: '打枕头' },
-          { emoji: '🏃', text: '跑一圈' },
-          { emoji: '📝', text: '写下来所有不满' }
+          { key: 'angry', emoji: '😤', text: '大声骂出来（对着空气）' },
+          { key: 'angry', emoji: '🥊', text: '打枕头' },
+          { key: 'angry', emoji: '🏃', text: '跑一圈' },
+          { key: 'angry', emoji: '📝', text: '写下来所有不满' }
         ],
         action: '发泄一下',
         actionCallback: () => { closeEasterEgg(); }
@@ -5039,13 +6484,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_hope',
         name: '希望',
         meme: '🌈',
+        memeKey: 'hope',
         title: '再等等',
         content: '希望说："我还在，虽然你看不见我。"',
         alternatives: [
-          { emoji: '🌈', text: '看看窗外的天空' },
-          { emoji: '🌅', text: '等明天的日出' },
-          { emoji: '🌱', text: '种一盆植物' },
-          { emoji: '✨', text: '许个愿' }
+          { key: 'hope', emoji: '🌈', text: '看看窗外的天空' },
+          { key: 'sun', emoji: '🌅', text: '等明天的日出' },
+          { key: 'nature', emoji: '🌱', text: '种一盆植物' },
+          { key: 'star', emoji: '✨', text: '许个愿' }
         ],
         action: '再等等',
         actionCallback: () => { closeEasterEgg(); }
@@ -5054,13 +6500,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_future',
         name: '未来',
         meme: '🔮',
+        memeKey: 'future',
         title: '未来还有',
         content: '未来说："我还没来，你怎么知道不好？"',
         alternatives: [
-          { emoji: '🔮', text: '想想明年这时候你在干嘛' },
-          { emoji: '📅', text: '设一个未来的小目标' },
-          { emoji: '🎁', text: '给自己买个小礼物' },
-          { emoji: '📸', text: '拍张照片，记录现在' }
+          { key: 'future', emoji: '🔮', text: '想想明年这时候你在干嘛' },
+          { key: 'future', emoji: '📅', text: '设一个未来的小目标' },
+          { key: 'future', emoji: '🎁', text: '给自己买个小礼物' },
+          { key: 'future', emoji: '📸', text: '拍张照片，记录现在' }
         ],
         action: '看看未来',
         actionCallback: () => { closeEasterEgg(); }
@@ -5069,20 +6516,21 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         id: 'meme_pet',
         name: '宠物',
         meme: '🐾',
+        memeKey: 'pet',
         title: '毛孩子在等你',
         content: '宠物说："你走了谁喂我？"',
         alternatives: [
-          { emoji: '🐾', text: '去喂宠物' },
-          { emoji: '🐱', text: '和猫玩一会儿' },
-          { emoji: '🐶', text: '带狗出去遛' },
-          { emoji: '🐹', text: '看看仓鼠在干嘛' }
+          { key: 'pet', emoji: '🐾', text: '去喂宠物' },
+          { key: 'cat', emoji: '🐱', text: '和猫玩一会儿' },
+          { key: 'dog', emoji: '🐶', text: '带狗出去遛' },
+          { key: 'pet', emoji: '🐹', text: '看看仓鼠在干嘛' }
         ],
         action: '为了毛孩子',
         actionCallback: () => { closeEasterEgg(); }
       }
     ];
 
-    // 抽象表情包emoji池（30个）
+    // 抽象表情包emoji池（30个）- 保留emoji作为回退
     const memeEmojis = [
       '🐱', '🐶', '🦊', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸',
       '🐙', '🦄', '🐝', '🦋', '🐞', '🐢', '🐬', '🦉', '🦔', '🐿️',
@@ -5101,13 +6549,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
           id: 'night_owl',
           name: '夜猫子',
           meme: '🦉',
+          memeKey: 'night',
           title: '凌晨的猫头鹰',
           content: '现在是' + new Date().getHours() + '点，猫头鹰说："这个点还没睡的人，都是心里有事的。"',
           alternatives: [
-            { emoji: '🦉', text: '和猫头鹰一起守夜' },
-            { emoji: '🌙', text: '看看月亮还在不在' },
-            { emoji: '💤', text: '告诉自己：深夜的想法不可信' },
-            { emoji: '🛏️', text: '躺平，什么都不做' }
+            { key: 'night', emoji: '🦉', text: '和猫头鹰一起守夜' },
+            { key: 'night', emoji: '🌙', text: '看看月亮还在不在' },
+            { key: 'sleep', emoji: '💤', text: '告诉自己：深夜的想法不可信' },
+            { key: 'bed', emoji: '🛏️', text: '躺平，什么都不做' }
           ],
           action: '听猫头鹰的',
           actionCallback: () => { closeEasterEgg(); }
@@ -5116,13 +6565,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
           id: 'night_star',
           name: '星星',
           meme: '⭐',
+          memeKey: 'star',
           title: '星星还没睡',
           content: '星星说："我都没睡，你急什么？"',
           alternatives: [
-            { emoji: '⭐', text: '数星星（虽然数不完）' },
-            { emoji: '🌌', text: '看看银河' },
-            { emoji: '💭', text: '想想宇宙有多大' },
-            { emoji: '😴', text: '告诉自己：星星不睡是因为不用上班' }
+            { key: 'star', emoji: '⭐', text: '数星星（虽然数不完）' },
+            { key: 'night', emoji: '🌌', text: '看看银河' },
+            { key: 'future', emoji: '💭', text: '想想宇宙有多大' },
+            { key: 'sleep', emoji: '😴', text: '告诉自己：星星不睡是因为不用上班' }
           ],
           action: '和星星一起熬夜',
           actionCallback: () => { closeEasterEgg(); }
@@ -5134,13 +6584,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
           id: 'midnight_ghost',
           name: '深夜幽灵',
           meme: '👻',
+          memeKey: 'ghost',
           title: '凌晨的幽灵',
           content: '幽灵说："这个点还在游荡的，除了我，就是你了。"',
           alternatives: [
-            { emoji: '👻', text: '和幽灵聊聊天' },
-            { emoji: '🕯️', text: '点个小夜灯' },
-            { emoji: '📖', text: '看几页书' },
-            { emoji: '💤', text: '告诉自己：幽灵也要休息的' }
+            { key: 'ghost', emoji: '👻', text: '和幽灵聊聊天' },
+            { key: 'night', emoji: '🕯️', text: '点个小夜灯' },
+            { key: 'bed', emoji: '📖', text: '看几页书' },
+            { key: 'sleep', emoji: '💤', text: '告诉自己：幽灵也要休息的' }
           ],
           action: '听幽灵的',
           actionCallback: () => { closeEasterEgg(); }
@@ -5152,13 +6603,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
           id: 'morning_sun',
           name: '朝阳',
           meme: '🌅',
+          memeKey: 'sun',
           title: '新的一天',
           content: '太阳说："我每天都升起，你也可以。"',
           alternatives: [
-            { emoji: '🌅', text: '拉开窗帘，让阳光进来' },
-            { emoji: '☕', text: '喝一杯咖啡或茶' },
-            { emoji: '🌱', text: '告诉自己：新的一天开始了' },
-            { emoji: '😊', text: '对着镜子笑一个（假的也行）' }
+            { key: 'sun', emoji: '🌅', text: '拉开窗帘，让阳光进来' },
+            { key: 'coffee', emoji: '☕', text: '喝一杯咖啡或茶' },
+            { key: 'nature', emoji: '🌱', text: '告诉自己：新的一天开始了' },
+            { key: 'hope', emoji: '😊', text: '对着镜子笑一个（假的也行）' }
           ],
           action: '迎接新的一天',
           actionCallback: () => { closeEasterEgg(); }
@@ -5170,13 +6622,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
           id: 'work_coffee',
           name: '咖啡',
           meme: '☕',
+          memeKey: 'coffee',
           title: '咖啡时间',
           content: '咖啡说："没有我，你怎么撑到下班？"',
           alternatives: [
-            { emoji: '☕', text: '去泡杯咖啡' },
-            { emoji: '🚶', text: '起来走动一下' },
-            { emoji: '👀', text: '看看窗外的云' },
-            { emoji: '⏰', text: '告诉自己：下班还有X小时' }
+            { key: 'coffee', emoji: '☕', text: '去泡杯咖啡' },
+            { key: 'nature', emoji: '🚶', text: '起来走动一下' },
+            { key: 'nature', emoji: '👀', text: '看看窗外的云' },
+            { key: 'work', emoji: '⏰', text: '告诉自己：下班还有X小时' }
           ],
           action: '喝咖啡去',
           actionCallback: () => { closeEasterEgg(); }
@@ -5188,13 +6641,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
           id: 'evening_sunset',
           name: '夕阳',
           meme: '🌇',
+          memeKey: 'sunset',
           title: '夕阳无限好',
           content: '夕阳说："我每天都要落下，但明天还会升起。"',
           alternatives: [
-            { emoji: '🌇', text: '看看夕阳' },
-            { emoji: '🍜', text: '去吃晚饭' },
-            { emoji: '🛋️', text: '瘫在沙发上' },
-            { emoji: '📺', text: '看一集剧' }
+            { key: 'sunset', emoji: '🌇', text: '看看夕阳' },
+            { key: 'food', emoji: '🍜', text: '去吃晚饭' },
+            { key: 'bed', emoji: '🛋️', text: '瘫在沙发上' },
+            { key: 'game', emoji: '📺', text: '看一集剧' }
           ],
           action: '享受傍晚',
           actionCallback: () => { closeEasterEgg(); }
@@ -5206,13 +6660,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
           id: 'birthday',
           name: '生日',
           meme: '🎂',
+          memeKey: 'birthday',
           title: '生日快乐',
           content: '今天是你的生日！小缓说："你又活了一年，真厉害！"',
           alternatives: [
-            { emoji: '🎂', text: '买个蛋糕' },
-            { emoji: '🎁', text: '给自己买个小礼物' },
-            { emoji: '🎉', text: '告诉自己：又活了一年' },
-            { emoji: '📸', text: '拍张照片纪念' }
+            { key: 'birthday', emoji: '🎂', text: '买个蛋糕' },
+            { key: 'future', emoji: '🎁', text: '给自己买个小礼物' },
+            { key: 'birthday', emoji: '🎉', text: '告诉自己：又活了一年' },
+            { key: 'future', emoji: '📸', text: '拍张照片纪念' }
           ],
           action: '庆祝一下',
           actionCallback: () => { closeEasterEgg(); }
@@ -5221,13 +6676,14 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
           id: 'newyear',
           name: '新年',
           meme: '🎆',
+          memeKey: 'newyear',
           title: '新年快乐',
           content: '新年了！小缓说："新的一年，新的摆烂！"',
           alternatives: [
-            { emoji: '🎆', text: '看看烟花' },
-            { emoji: '📝', text: '写个新年愿望（不实现也行）' },
-            { emoji: '🍾', text: '喝一杯' },
-            { emoji: '💤', text: '告诉自己：新年第一天要睡觉' }
+            { key: 'newyear', emoji: '🎆', text: '看看烟花' },
+            { key: 'future', emoji: '📝', text: '写个新年愿望（不实现也行）' },
+            { key: 'newyear', emoji: '🍾', text: '喝一杯' },
+            { key: 'sleep', emoji: '💤', text: '告诉自己：新年第一天要睡觉' }
           ],
           action: '新年快乐',
           actionCallback: () => { closeEasterEgg(); }
@@ -5296,18 +6752,24 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
       const alternativesEl = document.getElementById('easterEggAlternatives');
       const actionBtn = document.getElementById('easterEggActionBtn');
 
-      // 随机选择一个表情包
-      const randomMeme = memeEmojis[Math.floor(Math.random() * memeEmojis.length)];
-      memeEl.textContent = randomMeme;
+      // 使用图片表情包（如果有memeKey）或随机emoji
+      if (egg.memeKey && MEME_IMAGES[egg.memeKey]) {
+        memeEl.innerHTML = getMemeHtml(egg.memeKey, egg.meme, '100px');
+      } else {
+        const randomMeme = memeEmojis[Math.floor(Math.random() * memeEmojis.length)];
+        memeEl.innerHTML = '<span class="meme-emoji">' + randomMeme + '</span>';
+      }
 
-      titleEl.textContent = egg.title;
+      // 标题添加彩蛋标识
+      titleEl.innerHTML = '<span class="easter-egg-badge">彩蛋</span>' + egg.title;
       contentEl.textContent = egg.content;
 
-      // 生成替代方案列表
+      // 生成替代方案列表（使用图片emoji）
       let altHtml = '';
       egg.alternatives.forEach(alt => {
+        const emojiHtml = alt.key ? getAltEmojiHtml(alt.key, alt.emoji) : '<span class="alt-emoji-text">' + alt.emoji + '</span>';
         altHtml += '<div class="easter-egg-alternative-item" onclick="this.classList.toggle(\'checked\')">' +
-          '<span class="alt-emoji">' + alt.emoji + '</span>' +
+          emojiHtml +
           '<span>' + alt.text + '</span>' +
           '</div>';
       });
@@ -5363,12 +6825,33 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
       closeEasterEgg();
     }
 
-    // 为所有按钮添加彩蛋触发
+    // 全局彩蛋触发 - 任何点击都有概率触发
     function initEasterEggTriggers() {
+      // 记录上次触发时间，防止连续触发
+      let lastTriggerTime = 0;
+      const COOLDOWN = 3000; // 3秒冷却时间
+
       document.addEventListener('click', function(e) {
-        // 只触发在按钮、卡片、选项上的点击
-        if (e.target.closest('button') || e.target.closest('.card') || e.target.closest('.chat-option-btn')) {
+        // 排除弹窗内的点击
+        if (e.target.closest('.easter-egg-modal')) return;
+
+        const now = Date.now();
+        if (now - lastTriggerTime < COOLDOWN) return;
+
+        // 全局触发 - 任何点击都有概率
+        if (Math.random() < EASTER_EGG_CHANCE) {
+          lastTriggerTime = now;
           triggerEasterEgg();
+        }
+      });
+
+      // 额外：在特定元素上增加触发概率
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('button') || e.target.closest('.card') || e.target.closest('.chat-option-btn')) {
+          // 按钮点击有额外15%概率触发（不受冷却影响）
+          if (Math.random() < 0.15) {
+            triggerEasterEgg();
+          }
         }
       });
     }
