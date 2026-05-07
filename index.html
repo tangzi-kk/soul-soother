@@ -2360,7 +2360,7 @@
     let dragStartY = 0;
     let hasDragged = false;
     let pressStartTime = 0;
-    const LONG_PRESS_THRESHOLD = 300; // 长按阈值：300ms
+    const LONG_PRESS_THRESHOLD = 1200; // 长按阈值：1200ms
 
     function gravityMousePressed(p) {
       if (p.mouseX > 0 && p.mouseX < p.width && p.mouseY > 0 && p.mouseY < p.height) {
@@ -2405,7 +2405,7 @@
         // 没有拖动且不是长按，执行点击逻辑
         handleWordClick(p, dragStartX, dragStartY);
       }
-      // 长按（超过300ms）不执行点击，避免和拖动冲突
+      // 长按（超过1200ms）不执行点击，避免和拖动冲突
     }
 
     function initGravityWords(p) {
