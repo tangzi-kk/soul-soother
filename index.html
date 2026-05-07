@@ -4924,26 +4924,6 @@
 
                         container.appendChild(actionsContainer);
 
-                        // 显示操作按钮
-                        const actionsContainer = document.createElement('div');
-                        actionsContainer.className = 'chat-result-actions';
-
-                        const actions = [
-                          { icon: '🫁', text: '去缓冲站', page: 'kit' },
-                          { icon: '💌', text: '抽陪伴卡', page: 'mutual' },
-                          { icon: '💬', text: '看弹幕墙', page: 'mutual' }
-                        ];
-
-                        actions.forEach(action => {
-                          const btn = document.createElement('button');
-                          btn.className = 'chat-result-action';
-                          btn.innerHTML = '<span class="chat-result-action-icon">' + action.icon + '</span><span>' + action.text + '</span>';
-                          btn.onclick = () => showPage(action.page);
-                          actionsContainer.appendChild(btn);
-                        });
-
-                        container.appendChild(actionsContainer);
-
                         // 显示底部按钮
                         const bottomContainer = document.createElement('div');
                         bottomContainer.className = 'chat-options';
