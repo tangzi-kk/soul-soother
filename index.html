@@ -386,26 +386,26 @@
     }
 
     /* 彩蛋表情包区域 */
-    .easter-egg-meme {
+    .easter-egg-icon {
       text-align: center;
       margin: 16px 0;
-      animation: memeBounce 0.6s ease infinite alternate;
+      animation: iconBounce 0.6s ease infinite alternate;
       line-height: 1;
     }
 
-    .easter-egg-meme img {
+    .easter-egg-icon img {
       width: 120px;
       height: 120px;
       object-fit: contain;
       border-radius: 16px;
     }
 
-    .easter-egg-meme .meme-emoji {
+    .easter-egg-icon .icon-emoji {
       font-size: 80px;
       display: block;
     }
 
-    @keyframes memeBounce {
+    @keyframes iconBounce {
       from { transform: scale(0.9) rotate(-5deg); }
       to { transform: scale(1.1) rotate(5deg); }
     }
@@ -6572,7 +6572,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
   <div class="easter-egg-overlay" id="easterEggOverlay" onclick="closeEasterEgg(event)">
     <div class="easter-egg-modal" id="easterEggModal">
       <button class="easter-egg-close" onclick="closeEasterEgg()">×</button>
-      <div class="easter-egg-meme" id="easterEggMeme">🐱</div>
+      <div class="easter-egg-icon" id="easterEggIcon">🐱</div>
       <div class="easter-egg-title" id="easterEggTitle">等等！</div>
       <div class="easter-egg-content" id="easterEggContent"></div>
       <div class="easter-egg-alternatives" id="easterEggAlternatives"></div>
@@ -6627,13 +6627,13 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
     };
 
     // 辅助函数：获取表情包HTML（优先图片，回退emoji）
-    function getMemeHtml(key, emoji, size) {
+    function getIconHtml(key, emoji, size) {
       const imgUrl = MEME_IMAGES[key];
       if (imgUrl) {
         const wh = size || '80px';
-        return '<img src="' + imgUrl + '" alt="' + emoji + '" style="width:' + wh + ';height:' + wh + ';object-fit:contain;border-radius:12px;" onerror="this.outerHTML=\'<span class=\\'meme-emoji\\'>' + emoji + '</span>\'">';
+        return '<img src="' + imgUrl + '" alt="' + emoji + '" style="width:' + wh + ';height:' + wh + ';object-fit:contain;border-radius:12px;" onerror="this.outerHTML=\'<span class=\\'icon-emoji\\'>' + emoji + '</span>\'">';
       }
-      return '<span class="meme-emoji">' + emoji + '</span>';
+      return '<span class="icon-emoji">' + emoji + '</span>';
     }
 
     function getAltEmojiHtml(key, emoji) {
@@ -6647,7 +6647,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
     // 彩蛋类型池
     const easterEggTypes = [
       {
-        id: 'meme_cat',
+        id: 'egg_cat',
         name: '猫咪安慰',
         icon: '🐱',
         iconKey: 'cat',
@@ -6663,7 +6663,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_dog',
+        id: 'egg_dog',
         name: '狗狗鼓励',
         icon: '🐶',
         iconKey: 'dog',
@@ -6679,7 +6679,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_food',
+        id: 'egg_food',
         name: '美食诱惑',
         icon: '🍜',
         iconKey: 'food',
@@ -6695,7 +6695,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_sleep',
+        id: 'egg_sleep',
         name: '睡眠召唤',
         icon: '💤',
         iconKey: 'sleep',
@@ -6711,7 +6711,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_music',
+        id: 'egg_music',
         name: '音乐疗愈',
         icon: '🎵',
         iconKey: 'music',
@@ -6727,7 +6727,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_nature',
+        id: 'egg_nature',
         name: '自然召唤',
         icon: '🌿',
         iconKey: 'nature',
@@ -6743,7 +6743,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_friend',
+        id: 'egg_friend',
         name: '朋友召唤',
         icon: '👥',
         iconKey: 'friend',
@@ -6759,7 +6759,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_game',
+        id: 'egg_game',
         name: '游戏诱惑',
         icon: '🎮',
         iconKey: 'game',
@@ -6775,7 +6775,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_shower',
+        id: 'egg_shower',
         name: '洗澡召唤',
         icon: '🚿',
         iconKey: 'shower',
@@ -6791,7 +6791,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_bed',
+        id: 'egg_bed',
         name: '被窝召唤',
         icon: '🛏️',
         iconKey: 'bed',
@@ -6807,7 +6807,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_cry',
+        id: 'egg_cry',
         name: '哭出来',
         icon: '😭',
         iconKey: 'cry',
@@ -6823,7 +6823,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_angry',
+        id: 'egg_angry',
         name: '发泄一下',
         icon: '😤',
         iconKey: 'angry',
@@ -6839,7 +6839,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_hope',
+        id: 'egg_hope',
         name: '希望',
         icon: '🌈',
         iconKey: 'hope',
@@ -6855,7 +6855,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_future',
+        id: 'egg_future',
         name: '未来',
         icon: '🔮',
         iconKey: 'future',
@@ -6871,7 +6871,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         actionCallback: () => { closeEasterEgg(); }
       },
       {
-        id: 'meme_pet',
+        id: 'egg_pet',
         name: '宠物',
         icon: '🐾',
         iconKey: 'pet',
@@ -6889,7 +6889,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
     ];
 
     // 抽象表情包emoji池（30个）- 保留emoji作为回退
-    const memeEmojis = [
+    const iconEmojis = [
       '🐱', '🐶', '🦊', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸',
       '🐙', '🦄', '🐝', '🦋', '🐞', '🐢', '🐬', '🦉', '🦔', '🐿️',
       '🌵', '🌻', '🍄', '🌈', '⭐', '🌙', '☁️', '🔥', '💫', '🎈'
@@ -7104,7 +7104,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
     function showEasterEgg(egg) {
       const overlay = document.getElementById('easterEggOverlay');
       const modal = document.getElementById('easterEggModal');
-      const memeEl = document.getElementById('easterEggMeme');
+      const iconEl = document.getElementById('easterEggIcon');
       const titleEl = document.getElementById('easterEggTitle');
       const contentEl = document.getElementById('easterEggContent');
       const alternativesEl = document.getElementById('easterEggAlternatives');
@@ -7112,10 +7112,10 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
 
       // 使用图片表情包（如果有iconKey）或随机emoji
       if (egg.iconKey && MEME_IMAGES[egg.iconKey]) {
-        memeEl.innerHTML = getMemeHtml(egg.iconKey, egg.icon, '100px');
+        iconEl.innerHTML = getIconHtml(egg.iconKey, egg.icon, '100px');
       } else {
-        const randomMeme = memeEmojis[Math.floor(Math.random() * memeEmojis.length)];
-        memeEl.innerHTML = '<span class="meme-emoji">' + randomMeme + '</span>';
+        const randomIcon = iconEmojis[Math.floor(Math.random() * iconEmojis.length)];
+        iconEl.innerHTML = '<span class="icon-emoji">' + randomIcon + '</span>';
       }
 
       // 标题添加彩蛋标识
