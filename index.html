@@ -3095,6 +3095,7 @@
       let clickX = 0;
       let clickY = 0;
       let isMouseDragging = false;
+      let clickWordIndex = -1;
 
       p.setup = function() {
         const canvas = p.createCanvas(393, p.windowHeight);
@@ -3113,20 +3114,37 @@
         clickX = p.mouseX;
         clickY = p.mouseY;
         isMouseDragging = false;
+        clickWordIndex = -1;
 
         // 检查是否按住了某个词
-        for (let word of gravityWords) {
+        for (let i = 0; i < gravityWords.length; i++) {
+          const word = gravityWords[i];
           const d = p.dist(p.mouseX, p.mouseY, word.x, word.y);
           const threshold = word.fontSize * word.scale * 1.5;
           if (d < threshold) {
-            word.isDragging = true;
+            clickWordIndex = i; // 记录点击的词索引，但不设置拖拽
             return;
           }
         }
       };
 
       p.mouseDragged = function() {
-        // 检查是否拖拽了某个词
+        // 检查是否有点击到词，且拖拽距离超过阈值才算拖拽
+        if (clickWordIndex >= 0) {
+          const word = gravityWords[clickWordIndex];
+          const d = p.dist(p.mouseX, p.mouseY, clickX, clickY);
+          if (d > 10) { // 拖拽距离阈值10px
+            word.isDragging = true;
+            word.x = p.mouseX;
+            word.y = p.mouseY;
+            word.vx = 0;
+            word.vy = 0;
+            isMouseDragging = true;
+            return p.mouseX;
+          }
+        }
+
+        // 检查是否有词正在拖拽
         for (let word of gravityWords) {
           if (word.isDragging) {
             word.x = p.mouseX;
@@ -3134,14 +3152,15 @@
             word.vx = 0;
             word.vy = 0;
             isMouseDragging = true;
-            return p.mouseX; // 阻止默认行为
+            return p.mouseX;
           }
         }
       };
 
       p.mouseReleased = function() {
-        // 检查是否是拖拽
         let wasDragging = false;
+
+        // 检查是否正在拖拽
         for (let word of gravityWords) {
           if (word.isDragging) {
             word.isDragging = false;
@@ -3149,10 +3168,19 @@
           }
         }
 
-        // 如果没有拖拽，执行点击逻辑
-        if (!isMouseDragging && !wasDragging) {
+        // 如果没有拖拽，且点击到了词，执行点击逻辑
+        if (!isMouseDragging && !wasDragging && clickWordIndex >= 0) {
+          const word = gravityWords[clickWordIndex];
+          if (word) {
+            handleWordClick(null, word.x, word.y);
+          }
+        }
+        // 如果点击了空白区域，也执行点击逻辑（随机激活积极词汇）
+        else if (!isMouseDragging && !wasDragging && clickWordIndex < 0 && clickX >= 0) {
           handleWordClick(null, clickX, clickY);
         }
+
+        clickWordIndex = -1;
       };
 
       p.windowResized = function() {
