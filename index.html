@@ -120,12 +120,14 @@
       border: none;
       cursor: pointer;
       color: var(--cocoa-light);
-      transition: color 0.2s;
+      opacity: 0.3;
+      transition: opacity 0.3s, color 0.2s;
       pointer-events: auto;
     }
 
     .settings-btn:active {
       color: var(--ink);
+      opacity: 0.6;
     }
 
     /* 底部 Tab 栏 */
@@ -1813,6 +1815,9 @@
       document.getElementById('app').scrollTop = 0;
       currentPageIndex = pages.indexOf(pageName);
 
+      // 播放滑动音效
+      playClickSound('soft');
+
       // 进入检测页面时，重置小缓对话
       if (pageName === 'checkin') {
         resetXiaohuanChat();
@@ -2135,9 +2140,11 @@
         document.getElementById('ai-apikey').value = config.apiKey || '';
         document.getElementById('ai-baseurl').value = config.baseUrl || '';
       }
-      
+
       // 加载音效设置
       loadSoundSettings();
+      // 加载长按特效设置
+      loadLongPressSettings();
     }
 
     // ═══════════════════════════════════════
@@ -2193,7 +2200,7 @@
         const settings = JSON.parse(saved);
         soundEnabled = settings.enabled !== false;
         soundVolume = settings.volume !== undefined ? settings.volume : 0.5;
-        
+
         // 更新UI
         const volumeInput = document.getElementById('sound-volume');
         if (volumeInput) {
@@ -2202,6 +2209,55 @@
         }
         updateSoundButtons();
       }
+    }
+
+    // ═══════════════════════════════════════
+    //  长按特效设置
+    // ═══════════════════════════════════════
+
+    let longPressEnabled = false; // 默认关闭
+
+    // 设置长按特效开关
+    function setLongPressEnabled(enabled) {
+      longPressEnabled = enabled;
+      updateLongPressButtons();
+      saveLongPressSettings();
+    }
+
+    // 获取长按特效状态
+    function isLongPressEnabled() {
+      return longPressEnabled;
+    }
+
+    // 更新长按特效按钮状态
+    function updateLongPressButtons() {
+      const onBtn = document.getElementById('longpress-on-btn');
+      const offBtn = document.getElementById('longpress-off-btn');
+      if (onBtn && offBtn) {
+        if (longPressEnabled) {
+          onBtn.className = 'btn btn-primary';
+          offBtn.className = 'btn btn-ghost';
+        } else {
+          onBtn.className = 'btn btn-ghost';
+          offBtn.className = 'btn btn-primary';
+        }
+      }
+    }
+
+    // 保存长按特效设置
+    function saveLongPressSettings() {
+      localStorage.setItem('soulsoother_longpress_enabled', JSON.stringify(longPressEnabled));
+    }
+
+    // 加载长按特效设置
+    function loadLongPressSettings() {
+      const saved = localStorage.getItem('soulsoother_longpress_enabled');
+      if (saved !== null) {
+        longPressEnabled = JSON.parse(saved);
+      } else {
+        longPressEnabled = false; // 默认关闭
+      }
+      updateLongPressButtons();
     }
 
     // 修改播放音效函数，添加开关和音量控制
@@ -2308,7 +2364,7 @@
       <!-- 音效设置 -->
       <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
         <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px;">🔊 音效设置</div>
-        
+
         <div style="margin-bottom:12px;">
           <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">音效开关</label>
           <div style="display:flex;gap:8px;">
@@ -2316,10 +2372,24 @@
             <button class="btn btn-ghost" id="sound-off-btn" style="flex:1;" onclick="setSoundEnabled(false)">关闭</button>
           </div>
         </div>
-        
+
         <div style="margin-bottom:12px;">
           <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">音量 <span id="volume-value">50%</span></label>
           <input type="range" id="sound-volume" min="0" max="100" value="50" style="width:100%;" oninput="updateVolumeDisplay(this.value)">
+        </div>
+      </div>
+
+      <!-- 背景文字特效设置 -->
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px;">✨ 背景文字特效</div>
+
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">长按拖拽特效</label>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary" id="longpress-on-btn" style="flex:1;" onclick="setLongPressEnabled(true)">开启</button>
+            <button class="btn btn-ghost" id="longpress-off-btn" style="flex:1;" onclick="setLongPressEnabled(false)">关闭</button>
+          </div>
+          <div style="font-size:11px;color:var(--cocoa-light);margin-top:4px;">开启后，长按背景文字1.2秒可拖拽词汇</div>
         </div>
       </div>
 
@@ -2633,11 +2703,11 @@
         particles.push({
           x: x,
           y: y,
-          vx: p.random(-3, 3),
-          vy: p.random(-3, 3),
+          vx: (Math.random() - 0.5) * 6,
+          vy: (Math.random() - 0.5) * 6,
           life: 1,
-          decay: p.random(0.02, 0.05),
-          size: p.random(2, 6),
+          decay: 0.02 + Math.random() * 0.03,
+          size: 2 + Math.random() * 4,
           color: color
         });
       }
@@ -2690,9 +2760,13 @@
 
     function handleWordClick(p, mx, my) {
       let clicked = false;
+      const containerWidth = 393;
+      const containerHeight = window.innerHeight;
 
       for (let word of gravityWords) {
-        const d = p.dist(mx, my, word.x, word.y);
+        const dx = mx - word.x;
+        const dy = my - word.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
         const threshold = word.fontSize * word.scale * 1.5;
 
         if (d < threshold) {
@@ -2700,8 +2774,8 @@
           if (word.isPositive) {
             // 点击积极词汇：被吸引放大，变色，粒子特效
             word.isAttracted = true;
-            word.targetX = p.width / 2;
-            word.targetY = p.height / 2;
+            word.targetX = containerWidth / 2;
+            word.targetY = containerHeight / 2;
             word.targetScale = GRAVITY_CONFIG.attraction.targetScale;
             activeWord = word;
 
@@ -2710,7 +2784,7 @@
             updateComboDisplay();
 
             // 粒子特效
-            createParticles(p, word.x, word.y, word.color, 8 + comboCount * 2);
+            createParticles(null, word.x, word.y, word.color, 8 + comboCount * 2);
           } else {
             // 点击丧词汇：淡出，被积极词汇替代，粒子特效
             word.isFading = true;
@@ -2718,7 +2792,7 @@
             updateComboDisplay();
 
             // 灰色粒子
-            createParticles(p, word.x, word.y, '#a09588', 5);
+            createParticles(null, word.x, word.y, '#a09588', 5);
           }
           break;
         }
@@ -2737,7 +2811,7 @@
 
           comboCount++;
           updateComboDisplay();
-          createParticles(p, mx, my, word.color, 6);
+          createParticles(null, mx, my, word.color, 6);
         }
       }
     }
@@ -2793,12 +2867,14 @@
         // 只有点击到词汇时才阻止默认行为
         if (hitWord) {
           e.preventDefault();
+          e.stopPropagation();
         }
       }, { passive: false });
 
       canvas.addEventListener('touchmove', function(e) {
         if (draggedWord && draggedWord.isDragging) {
           e.preventDefault();
+          e.stopPropagation();
           const touch = e.touches[0];
           const rect = canvas.getBoundingClientRect();
           draggedWord.x = (touch.clientX - rect.left) - dragOffsetX;
@@ -2812,8 +2888,10 @@
       canvas.addEventListener('touchend', function(e) {
         if (draggedWord) {
           e.preventDefault();
+          e.stopPropagation();
           const pressDuration = Date.now() - pressStartTime;
-          const isLongPress = pressDuration >= LONG_PRESS_THRESHOLD;
+          // 长按特效需要在设置中开启
+          const isLongPress = isLongPressEnabled() && pressDuration >= LONG_PRESS_THRESHOLD;
 
           draggedWord.isDragging = false;
           draggedWord = null;
@@ -2830,31 +2908,56 @@
     initGravityTouchEvents();
 
     // ═══════════════════════════════════════
-    //  左右滑动切换页面
+    //  左右滑动切换页面（边缘触发 + 事件隔离）
     // ═══════════════════════════════════════
 
     // 触摸滑动状态
-    let touchStartX = 0;   // 触摸开始X坐标
-    let touchStartY = 0;   // 触摸开始Y坐标
-    let touchEndX = 0;     // 触摸结束X坐标
-    let isSwiping = false; // 是否正在滑动
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchEndX = 0;
+    let isSwiping = false;
+
+    // 边缘滑动配置：只在屏幕左右15%区域触发页面切换
+    const SWIPE_EDGE_RATIO = 0.15;  // 边缘比例
+    const SWIPE_THRESHOLD = 60;     // 滑动阈值
 
     const app = document.getElementById('app');
+    const mobileWrapper = document.getElementById('mobile-wrapper');
 
-    // 触摸开始：记录起始坐标
+    // 获取移动端容器宽度（用于计算边缘区域）
+    function getContainerWidth() {
+      return Math.min(window.innerWidth, 393);
+    }
+
+    // 检查触摸点是否在边缘区域
+    function isEdgeSwipe(screenX) {
+      const containerWidth = getContainerWidth();
+      const containerLeft = (window.innerWidth - containerWidth) / 2;
+      const relativeX = screenX - containerLeft;
+      const edgeWidth = containerWidth * SWIPE_EDGE_RATIO;
+      return relativeX < edgeWidth || relativeX > (containerWidth - edgeWidth);
+    }
+
+    // 触摸开始：只在边缘区域记录滑动
     app.addEventListener('touchstart', function(e) {
-      touchStartX = e.changedTouches[0].screenX;
-      touchStartY = e.changedTouches[0].screenY;
+      const touch = e.changedTouches[0];
+      // 只在屏幕边缘才启用滑动切换
+      if (!isEdgeSwipe(touch.screenX)) {
+        isSwiping = false;
+        return;
+      }
+      touchStartX = touch.screenX;
+      touchStartY = touch.screenY;
       isSwiping = true;
     }, { passive: true });
 
     // 触摸移动：检测垂直滑动，如果是垂直滚动则取消滑动切换
     app.addEventListener('touchmove', function(e) {
       if (!isSwiping) return;
-      const currentX = e.changedTouches[0].screenX;
-      const currentY = e.changedTouches[0].screenY;
-      const diffX = Math.abs(currentX - touchStartX);
-      const diffY = Math.abs(currentY - touchStartY);
+      const touch = e.changedTouches[0];
+      const diffX = Math.abs(touch.screenX - touchStartX);
+      const diffY = Math.abs(touch.screenY - touchStartY);
+      // 垂直滑动优先，取消页面切换
       if (diffY > diffX && diffY > 10) {
         isSwiping = false;
       }
@@ -2865,8 +2968,7 @@
       if (!isSwiping) return;
       touchEndX = e.changedTouches[0].screenX;
       const diffX = touchEndX - touchStartX;
-      const threshold = 60;
-      if (Math.abs(diffX) > threshold) {
+      if (Math.abs(diffX) > SWIPE_THRESHOLD) {
         if (diffX < 0 && currentPageIndex < pages.length - 1) {
           showPage(pages[currentPageIndex + 1]);
         } else if (diffX > 0 && currentPageIndex > 0) {
@@ -2875,6 +2977,51 @@
       }
       isSwiping = false;
     }, { passive: true });
+
+    // ═══════════════════════════════════════
+    //  事件隔离：阻止UI元素事件冒泡到app
+    // ═══════════════════════════════════════
+
+    // 阻止按钮、输入框、滑块等UI元素的事件冒泡
+    function stopPropagationForInteractiveElements() {
+      const selectors = [
+        '.btn',
+        'input[type="range"]',
+        'input[type="text"]',
+        'textarea',
+        '.chat-slider-track',
+        '.chat-options',
+        '.bottom-tab-bar',
+        '.settings-btn',
+        '.easter-egg-modal',
+        '.easter-egg-overlay'
+      ];
+
+      selectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+          // 阻止触摸事件冒泡到app层
+          el.addEventListener('touchstart', function(e) {
+            e.stopPropagation();
+          }, { passive: true });
+          el.addEventListener('touchmove', function(e) {
+            e.stopPropagation();
+          }, { passive: true });
+          el.addEventListener('touchend', function(e) {
+            e.stopPropagation();
+          }, { passive: true });
+        });
+      });
+    }
+
+    // 页面加载完成后初始化事件隔离
+    document.addEventListener('DOMContentLoaded', stopPropagationForInteractiveElements);
+    // 动态内容更新后也重新绑定
+    const originalShowPage = showPage;
+    showPage = function(pageName) {
+      originalShowPage(pageName);
+      // 延迟执行，等待DOM更新
+      setTimeout(stopPropagationForInteractiveElements, 100);
+    };
 
     // ═══════════════════════════════════════
     //  对话记忆系统（存储在localStorage）
