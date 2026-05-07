@@ -63,7 +63,7 @@
       transform: translateX(-50%);
       width: 393px;
       height: 100%;
-      z-index: 0;
+      z-index: 1;
       pointer-events: all;
     }
 
@@ -72,13 +72,18 @@
        ═══════════════════════════════════════ */
     #app {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       width: 100%;
       height: 100%;
       overflow-y: auto;
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       padding-bottom: calc(var(--tab-height) + var(--safe-bottom));
+      pointer-events: none; /* 允许事件穿透到背景层 */
+    }
+
+    #app > * {
+      pointer-events: auto; /* 内容元素正常接收事件 */
     }
 
     /* 顶部标题栏 */
@@ -846,7 +851,7 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.03);
       will-change: transform;
       /* 动画由JS动态控制，避免CSS动画冲突 */
-      left: 100%;
+      left: 0;
     }
 
     .danmu-item.animating {
@@ -1673,27 +1678,30 @@
           </div>
           <div class="card">
             <div style="font-size:13px;color:var(--cocoa);margin-bottom:12px;">脑子飘太远的时候，用身体把意识拉回来：</div>
-            <div class="grounding-list">
-              <div class="grounding-item" onclick="this.classList.toggle('checked')">
+            <div class="grounding-list" id="grounding-list">
+              <div class="grounding-item" onclick="toggleGrounding(this)">
                 <div class="grounding-icon">
                   <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M14 2v4M14 22v4M2 14h4M22 14h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                 </div>
                 <div>看到 <strong>3</strong> 样东西（比如：墙、灯、手）</div>
               </div>
-              <div class="grounding-item" onclick="this.classList.toggle('checked')">
+              <div class="grounding-item" onclick="toggleGrounding(this)">
                 <div class="grounding-icon">
                   <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><path d="M6 14c0-4 3-8 8-8s8 4 8 8-3 8-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14 14v6M10 18l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </div>
                 <div>听到 <strong>2</strong> 种声音（比如：空调、车流）</div>
               </div>
-              <div class="grounding-item" onclick="this.classList.toggle('checked')">
+              <div class="grounding-item" onclick="toggleGrounding(this)">
                 <div class="grounding-icon">
                   <svg width="20" height="20" viewBox="0 0 28 28" fill="none"><rect x="8" y="4" width="12" height="20" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M12 8h4M12 12h4M12 16h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
                 </div>
                 <div>摸到 <strong>1</strong> 个东西（比如：衣服、桌面）</div>
               </div>
             </div>
-            <div style="margin-top:12px;padding:10px;background:rgba(115,138,229,0.06);border-radius:8px;font-size:12px;color:var(--cocoa);">
+            <div id="grounding-feedback" style="margin-top:12px;padding:10px;background:rgba(115,138,229,0.06);border-radius:8px;font-size:12px;color:var(--cocoa);display:none;">
+              <strong style="color:var(--ink);">✨ 做得好！</strong>你已经完成了3-2-1 grounding练习，感觉有没有好一点？
+            </div>
+            <div id="grounding-hint" style="margin-top:12px;padding:10px;background:rgba(115,138,229,0.06);border-radius:8px;font-size:12px;color:var(--cocoa);">
               <strong style="color:var(--ink);">为什么有用：</strong>当情绪淹没你时，大脑会"飘走"。把注意力拉回具体的感官体验，能让神经系统知道"此刻我是安全的"。
             </div>
           </div>
@@ -2908,11 +2916,18 @@
 
     // 启动 p5.js 背景
     new p5(function(p) {
-      p.setup = function() { gravitySetup(p); };
+      p.setup = function() {
+        gravitySetup(p);
+        // 禁用p5.js默认触摸事件，完全使用自定义触摸事件
+        // 防止p5.js自动将touch事件转换为mouse事件造成冲突
+        const canvas = p.canvas;
+        canvas.style.touchAction = 'none';
+      };
       p.draw = function() { gravityDraw(p); };
-      p.mousePressed = function() { gravityMousePressed(p); };
-      p.mouseDragged = function() { gravityMouseDragged(p); };
-      p.mouseReleased = function() { gravityMouseReleased(p); };
+      // 不在p5.js中绑定鼠标事件，完全使用自定义触摸事件
+      // p.mousePressed = function() { gravityMousePressed(p); };
+      // p.mouseDragged = function() { gravityMouseDragged(p); };
+      // p.mouseReleased = function() { gravityMouseReleased(p); };
       p.windowResized = function() { gravityWindowResized(p); };
     });
 
@@ -2933,11 +2948,23 @@
       let touchDragOffsetX = 0;
       let touchDragOffsetY = 0;
 
+      // 获取Canvas相对视口的精确坐标（考虑居中偏移）
+      function getCanvasCoords(touch) {
+        const rect = canvas.getBoundingClientRect();
+        // 考虑CSS缩放和偏移
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        return {
+          x: (touch.clientX - rect.left) * scaleX,
+          y: (touch.clientY - rect.top) * scaleY
+        };
+      }
+
       canvas.addEventListener('touchstart', function(e) {
         const touch = e.touches[0];
-        const rect = canvas.getBoundingClientRect();
-        const mx = touch.clientX - rect.left;
-        const my = touch.clientY - rect.top;
+        const coords = getCanvasCoords(touch);
+        const mx = coords.x;
+        const my = coords.y;
 
         touchStartMX = mx;
         touchStartMY = my;
@@ -2970,9 +2997,9 @@
           e.preventDefault();
           e.stopPropagation();
           const touch = e.touches[0];
-          const rect = canvas.getBoundingClientRect();
-          const newX = (touch.clientX - rect.left) - touchDragOffsetX;
-          const newY = (touch.clientY - rect.top) - touchDragOffsetY;
+          const coords = getCanvasCoords(touch);
+          const newX = coords.x - touchDragOffsetX;
+          const newY = coords.y - touchDragOffsetY;
 
           // 只有移动超过5px才算拖拽
           if (Math.abs(newX - touchDraggedWord.x) > 5 || Math.abs(newY - touchDraggedWord.y) > 5) {
@@ -6323,7 +6350,7 @@
         el: el,
         x: startX,
         width: textWidth,
-        speed: (393 + textWidth) / 300, // 约5秒穿过容器
+        speed: (393 + textWidth) / 600, // 约10秒穿过容器
         track: track
       };
     }
@@ -6691,6 +6718,32 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
       item.classList.toggle('checked');
     }
 
+    // 抓回现实（grounding）勾选
+    function toggleGrounding(item) {
+      item.classList.toggle('checked');
+
+      // 检查是否全部完成
+      const list = document.getElementById('grounding-list');
+      const items = list.querySelectorAll('.grounding-item');
+      const checkedCount = list.querySelectorAll('.grounding-item.checked').length;
+      const feedback = document.getElementById('grounding-feedback');
+      const hint = document.getElementById('grounding-hint');
+
+      if (checkedCount === items.length) {
+        // 全部完成，显示反馈
+        feedback.style.display = 'block';
+        hint.style.display = 'none';
+        playClickSound('soft');
+
+        // 3秒后重置
+        setTimeout(() => {
+          items.forEach(i => i.classList.remove('checked'));
+          feedback.style.display = 'none';
+          hint.style.display = 'block';
+        }, 5000);
+      }
+    }
+
     // ═══════════════════════════════════════
     //  延迟清单动态内容库（90+条）
     // ═══════════════════════════════════════
@@ -6943,7 +6996,11 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
 
     // 抽象生成器：根据用户输入生成抽象文案
     function generateFengwen() {
-      const input = document.getElementById('fengwen-input').value.trim() || '生活';
+      const input = document.getElementById('fengwen-input').value.trim();
+      if (!input) {
+        alert('请输入你的烦恼，比如：加班、失恋、没钱...');
+        return;
+      }
       const template = abstractTemplates[Math.floor(Math.random() * abstractTemplates.length)];
       const output = document.getElementById('fengwen-output');
       output.textContent = template(input);
@@ -7651,6 +7708,16 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         if (e.target.closest('button') || e.target.closest('.card') || e.target.closest('.chat-option-btn')) {
           // 按钮点击有额外15%概率触发（不受冷却影响）
           if (Math.random() < 0.15) {
+            triggerEasterEgg();
+          }
+        }
+      });
+
+      // 缓一缓模块特定彩蛋触发
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('.grounding-item') || e.target.closest('.delay-item') || e.target.closest('.attachment-card')) {
+          // 缓一缓模块交互有25%概率触发彩蛋
+          if (Math.random() < 0.25) {
             triggerEasterEgg();
           }
         }
