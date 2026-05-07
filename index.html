@@ -3115,26 +3115,29 @@
     });
 
     // 直接绑定触摸事件到canvas（避免和p5.js冲突）
+    let touchEventBound = false;
+
     function initGravityTouchEvents() {
-      const canvas = document.querySelector('#gravity-canvas canvas');
-      if (!canvas) {
+      const container = document.getElementById('gravity-canvas');
+      if (!container) {
         setTimeout(initGravityTouchEvents, 100);
         return;
       }
 
-      // 触摸状态跟踪
-      let touchStartMX = 0;
-      let touchStartMY = 0;
-      let touchDragged = false;
-      let touchPressStart = 0;
-      let touchDraggedWord = null;
-      let touchDragOffsetX = 0;
-      let touchDragOffsetY = 0;
+      // 触摸状态跟踪（使用window变量确保全局可访问）
+      window.touchStartMX = 0;
+      window.touchStartMY = 0;
+      window.touchDragged = false;
+      window.touchPressStart = 0;
+      window.touchDraggedWord = null;
+      window.touchDragOffsetX = 0;
+      window.touchDragOffsetY = 0;
 
       // 获取Canvas相对视口的精确坐标（考虑居中偏移）
       function getCanvasCoords(touch) {
+        const canvas = container.querySelector('canvas');
+        if (!canvas) return { x: 0, y: 0 };
         const rect = canvas.getBoundingClientRect();
-        // 考虑CSS缩放和偏移
         const scaleX = canvas.width / rect.width;
         const scaleY = canvas.height / rect.height;
         return {
@@ -3143,85 +3146,95 @@
         };
       }
 
-      canvas.addEventListener('touchstart', function(e) {
+      function handleTouchStart(e) {
         const touch = e.touches[0];
         const coords = getCanvasCoords(touch);
-        const mx = coords.x;
-        const my = coords.y;
-
-        touchStartMX = mx;
-        touchStartMY = my;
-        touchDragged = false;
-        touchPressStart = Date.now();
-        touchDraggedWord = null;
+        window.touchStartMX = coords.x;
+        window.touchStartMY = coords.y;
+        window.touchDragged = false;
+        window.touchPressStart = Date.now();
+        window.touchDraggedWord = null;
 
         // 检查是否按住了某个词
         for (let word of gravityWords) {
-          const d = Math.sqrt((mx - word.x) ** 2 + (my - word.y) ** 2);
+          const d = Math.sqrt((coords.x - word.x) ** 2 + (coords.y - word.y) ** 2);
           const threshold = word.fontSize * word.scale * 1.5;
           if (d < threshold) {
-            touchDraggedWord = word;
-            touchDragOffsetX = mx - word.x;
-            touchDragOffsetY = my - word.y;
+            window.touchDraggedWord = word;
+            window.touchDragOffsetX = coords.x - word.x;
+            window.touchDragOffsetY = coords.y - word.y;
             word.isDragging = true;
             break;
           }
         }
 
         // 点击到词汇时阻止默认行为
-        if (touchDraggedWord) {
+        if (window.touchDraggedWord) {
           e.preventDefault();
           e.stopPropagation();
         }
-      }, { passive: false });
+      }
 
-      canvas.addEventListener('touchmove', function(e) {
-        if (touchDraggedWord && touchDraggedWord.isDragging) {
+      function handleTouchMove(e) {
+        if (window.touchDraggedWord && window.touchDraggedWord.isDragging) {
           e.preventDefault();
           e.stopPropagation();
           const touch = e.touches[0];
           const coords = getCanvasCoords(touch);
-          const newX = coords.x - touchDragOffsetX;
-          const newY = coords.y - touchDragOffsetY;
+          const newX = coords.x - window.touchDragOffsetX;
+          const newY = coords.y - window.touchDragOffsetY;
 
           // 只有移动超过5px才算拖拽
-          if (Math.abs(newX - touchDraggedWord.x) > 5 || Math.abs(newY - touchDraggedWord.y) > 5) {
-            touchDragged = true;
+          if (Math.abs(newX - window.touchDraggedWord.x) > 5 || Math.abs(newY - window.touchDraggedWord.y) > 5) {
+            window.touchDragged = true;
           }
 
-          touchDraggedWord.x = newX;
-          touchDraggedWord.y = newY;
-          touchDraggedWord.vx = 0;
-          touchDraggedWord.vy = 0;
+          window.touchDraggedWord.x = newX;
+          window.touchDraggedWord.y = newY;
+          window.touchDraggedWord.vx = 0;
+          window.touchDraggedWord.vy = 0;
         }
-      }, { passive: false });
+      }
 
-      canvas.addEventListener('touchend', function(e) {
-        const pressDuration = Date.now() - touchPressStart;
+      function handleTouchEnd(e) {
+        const pressDuration = Date.now() - window.touchPressStart;
 
-        if (touchDraggedWord) {
+        if (window.touchDraggedWord) {
           e.preventDefault();
           e.stopPropagation();
 
           // 长按特效需要在设置中开启
           const isLongPress = isLongPressEnabled() && pressDuration >= LONG_PRESS_THRESHOLD;
 
-          touchDraggedWord.isDragging = false;
-          touchDraggedWord = null;
+          window.touchDraggedWord.isDragging = false;
+          window.touchDraggedWord = null;
 
-          if (!touchDragged && !isLongPress) {
+          if (!window.touchDragged && !isLongPress) {
             // 没有拖动且不是长按，执行点击逻辑
-            handleWordClick(null, touchStartMX, touchStartMY);
+            handleWordClick(null, window.touchStartMX, window.touchStartMY);
           }
         } else {
           // 没有点击到词汇，也执行点击逻辑（随机激活积极词汇）
-          handleWordClick(null, touchStartMX, touchStartMY);
+          handleWordClick(null, window.touchStartMX, window.touchStartMY);
         }
-      }, { passive: false });
+      }
+
+      // 移除旧的事件监听器（如果存在）
+      if (touchEventBound) {
+        container.removeEventListener('touchstart', handleTouchStart);
+        container.removeEventListener('touchmove', handleTouchMove);
+        container.removeEventListener('touchend', handleTouchEnd);
+      }
+
+      // 绑定新的事件监听器
+      container.addEventListener('touchstart', handleTouchStart, { passive: false });
+      container.addEventListener('touchmove', handleTouchMove, { passive: false });
+      container.addEventListener('touchend', handleTouchEnd, { passive: false });
+      touchEventBound = true;
     }
 
-    // 初始化触摸事件
-    initGravityTouchEvents();
+    // 初始化触摸事件（延迟执行，确保DOM已加载）
+    setTimeout(initGravityTouchEvents, 500);
 
     // ═══════════════════════════════════════
     //  左右滑动切换页面（边缘触发 + 事件隔离）
