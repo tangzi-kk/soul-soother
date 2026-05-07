@@ -1,0 +1,18 @@
+- [x] PRD.md 描述的五个功能模块与 index.html 中的五个页面完全对应
+- [x] PRD.md 中的技术方案描述了 SPA + 水平滚动 + p5.js 引力场架构
+- [x] PRD.md 中的设计规范引用了 Cocoa Ink Palette 和 Google Fonts
+- [x] PRD.md 中的安全与伦理章节反映了当前实际的危机检测逻辑和求助资源
+- [x] DESIGN.md 的 Color System 与 css/style.css 中的 CSS 颜色变量完全一致
+- [x] DESIGN.md 的 Typography 与 css/style.css 中的字体栈和字号变量完全一致
+- [x] DESIGN.md 的 Components 与 index.html 中实际使用的组件类名对应
+- [x] DESIGN.md 的 Layout Patterns 描述了 SPA 水平滚动布局
+- [x] README.md 的核心功能列表与 index.html 五个页面对应
+- [x] README.md 的项目结构反映了实际文件布局（index.html SPA + css/style.css + js/*.js）
+- [x] sitemap.md 描述了 SPA 五页水平滚动架构而非多页面架构
+- [x] sitemap.md 的导航结构描述了顶部圆点导航而非底部导航
+- [x] style-guide.md 的色彩系统与 css/style.css 中的 Cocoa Ink Palette 一致
+- [x] style-guide.md 的字体规范反映了 ZCOOL XiaoWei + Noto Serif SC
+- [x] style-guide.md 的间距/圆角/阴影值与 css/style.css 中的 CSS 变量一致
+- [x] content-schema.md 的数据结构描述与 js/data.js 中的实际变量和属性对应
+- [x] content-schema.md 的函数接口描述与 js/data.js 中的实际函数签名对应
+- [x] 所有文档不再将 quiz.html/collection.html/tools.html/about.html 作为主要架构描述
