@@ -110,6 +110,24 @@
       letter-spacing: 0.04em;
     }
 
+    .settings-btn {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      padding-top: var(--safe-top);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--cocoa-light);
+      transition: color 0.2s;
+      pointer-events: auto;
+    }
+
+    .settings-btn:active {
+      color: var(--ink);
+    }
+
     /* 底部 Tab 栏 */
     .bottom-tab-bar {
       position: fixed;
@@ -1379,6 +1397,9 @@
       <!-- 顶部导航 -->
       <nav class="top-nav">
         <div class="logo">Soul Soother</div>
+        <button class="settings-btn" onclick="showAIConfig()" title="设置">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        </button>
       </nav>
 
       <!-- ═══════════════════════════════════════
@@ -1894,6 +1915,11 @@
     }
 
     function showAIConfig() {
+      // 加载已保存的配置
+      const config = getAIConfig();
+      if (config.persona) {
+        document.getElementById('ai-persona').value = config.persona;
+      }
       document.getElementById('ai-config-overlay').classList.add('active');
     }
 
@@ -1924,8 +1950,15 @@
         provider: 'nvidia',
         model: 'minimaxai/minimax-m2.7',
         apiKey: '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',
-        baseUrl: 'https://integrate.api.nvidia.com/v1'
+        baseUrl: 'https://integrate.api.nvidia.com/v1',
+        persona: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。你说话简短、口语化，像朋友一样。'
       };
+    }
+
+    // 获取小缓人设提示词
+    function getXiaohuanPersona() {
+      const config = getAIConfig();
+      return config.persona || '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。你说话简短、口语化，像朋友一样。';
     }
 
     // 调用大模型API（流式）
@@ -2177,15 +2210,16 @@
       }
     };
 
-    // 保存配置时同时保存音效设置
+    // 保存配置时同时保存音效设置和人设
     const originalSaveAIConfig = saveAIConfig;
     saveAIConfig = function() {
       const provider = document.getElementById('ai-provider').value;
       const model = document.getElementById('ai-model').value;
       const apiKey = document.getElementById('ai-apikey').value;
       const baseUrl = document.getElementById('ai-baseurl').value;
+      const persona = document.getElementById('ai-persona').value;
 
-      const config = { provider, model, apiKey, baseUrl };
+      const config = { provider, model, apiKey, baseUrl, persona };
       localStorage.setItem('soulsoother_ai_config', JSON.stringify(config));
       
       // 保存音效设置
@@ -2250,6 +2284,24 @@
         <div style="margin-bottom:12px;">
           <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">音量 <span id="volume-value">50%</span></label>
           <input type="range" id="sound-volume" min="0" max="100" value="50" style="width:100%;" oninput="updateVolumeDisplay(this.value)">
+        </div>
+      </div>
+
+      <!-- 小缓人设配置 -->
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px;">🎭 小缓人设</div>
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">人设提示词（系统提示）</label>
+          <textarea id="ai-persona" placeholder="你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者..." style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:rgba(255,255,255,0.8);min-height:80px;resize:vertical;font-family:inherit;"></textarea>
+        </div>
+      </div>
+
+      <!-- 记忆管理 -->
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+        <div style="font-size:13px;font-weight:600;color:var(--ink);margin-bottom:12px;">💾 对话记忆</div>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-primary" style="flex:1;" onclick="exportChatMemory()">📥 下载记忆</button>
+          <button class="btn btn-ghost" style="flex:1;" onclick="if(confirm('确定清空所有对话记忆？')){clearChatMemory();alert('记忆已清空');}">🗑️ 清空</button>
         </div>
       </div>
 
@@ -2666,11 +2718,73 @@
       p.mousePressed = function() { gravityMousePressed(p); };
       p.mouseDragged = function() { gravityMouseDragged(p); };
       p.mouseReleased = function() { gravityMouseReleased(p); };
-      p.touchStarted = function() { gravityMousePressed(p); };
-      p.touchMoved = function() { gravityMouseDragged(p); return false; };
-      p.touchEnded = function() { gravityMouseReleased(p); return false; };
       p.windowResized = function() { gravityWindowResized(p); };
     });
+
+    // 直接绑定触摸事件到canvas（避免和p5.js冲突）
+    function initGravityTouchEvents() {
+      const canvas = document.querySelector('#gravity-canvas canvas');
+      if (!canvas) {
+        setTimeout(initGravityTouchEvents, 100);
+        return;
+      }
+
+      canvas.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        const mx = touch.clientX - rect.left;
+        const my = touch.clientY - rect.top;
+
+        dragStartX = mx;
+        dragStartY = my;
+        hasDragged = false;
+        pressStartTime = Date.now();
+
+        // 检查是否按住了某个词
+        for (let word of gravityWords) {
+          const d = Math.sqrt((mx - word.x) ** 2 + (my - word.y) ** 2);
+          const threshold = word.fontSize * word.scale * 1.5;
+          if (d < threshold) {
+            draggedWord = word;
+            dragOffsetX = mx - word.x;
+            dragOffsetY = my - word.y;
+            word.isDragging = true;
+            return;
+          }
+        }
+      }, { passive: false });
+
+      canvas.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        if (draggedWord && draggedWord.isDragging) {
+          const touch = e.touches[0];
+          const rect = canvas.getBoundingClientRect();
+          draggedWord.x = (touch.clientX - rect.left) - dragOffsetX;
+          draggedWord.y = (touch.clientY - rect.top) - dragOffsetY;
+          draggedWord.vx = 0;
+          draggedWord.vy = 0;
+          hasDragged = true;
+        }
+      }, { passive: false });
+
+      canvas.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        const pressDuration = Date.now() - pressStartTime;
+        const isLongPress = pressDuration >= LONG_PRESS_THRESHOLD;
+
+        if (draggedWord) {
+          draggedWord.isDragging = false;
+          draggedWord = null;
+        } else if (!hasDragged && !isLongPress) {
+          // 没有拖动且不是长按，执行点击逻辑
+          handleWordClick(null, dragStartX, dragStartY);
+        }
+      }, { passive: false });
+    }
+
+    // 初始化触摸事件
+    initGravityTouchEvents();
 
     // ═══════════════════════════════════════
     //  左右滑动切换页面
@@ -4891,7 +5005,7 @@
         [
           {
             role: 'system',
-            content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户刚刚报告了能量值' + value + '%。本地文案已显示："' + localResponse + '"。请只输出补充内容（1-2句话），不要重复本地文案，保持同样的风格（简短、口语化、像朋友一样）。'
+            content: getXiaohuanPersona() + ' 用户刚刚报告了能量值' + value + '%。本地文案已显示："' + localResponse + '"。请只输出补充内容（1-2句话），不要重复本地文案，保持同样的风格。'
           },
           {
             role: 'user',
@@ -5017,7 +5131,7 @@
         [
           {
             role: 'system',
-            content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户刚刚选择了念头/情绪："' + thought + '"。本地文案已显示："' + localResponse + '"。请只输出补充内容（1-2句话），不要重复本地文案，保持同样的风格（简短、口语化、像朋友一样）。'
+            content: getXiaohuanPersona() + ' 用户刚刚选择了念头/情绪："' + thought + '"。本地文案已显示："' + localResponse + '"。请只输出补充内容（1-2句话），不要重复本地文案，保持同样的风格。'
           },
           {
             role: 'user',
@@ -5139,7 +5253,7 @@
         [
           {
             role: 'system',
-            content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户刚刚报告了身体感觉："' + body + '"。本地文案已显示："' + localResponse + '"。请只输出补充内容（1-2句话），不要重复本地文案，保持同样的风格（简短、口语化、像朋友一样）。'
+            content: getXiaohuanPersona() + ' 用户刚刚报告了身体感觉："' + body + '"。本地文案已显示："' + localResponse + '"。请只输出补充内容（1-2句话），不要重复本地文案，保持同样的风格。'
           },
           {
             role: 'user',
@@ -5240,16 +5354,16 @@
               // 调用AI生成结果分析
               const localResultText = getResultResponse(checkInData.energy);
               callAIStream(
-                [
-                  {
-                    role: 'system',
-                    content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。你说话简短、口语化，像朋友一样。用户完成了情绪检测：能量' + checkInData.energy + '%，念头：' + checkInData.thought + '，身体：' + checkInData.body + '。请给出分析结果，要真实、不鸡汤、不教育。'
-                  },
-                  {
-                    role: 'user',
-                    content: '请分析我的状态'
-                  }
-                ],
+                      [
+                        {
+                          role: 'system',
+                          content: getXiaohuanPersona() + ' 用户完成了情绪检测：能量' + checkInData.energy + '%，念头：' + checkInData.thought + '，身体：' + checkInData.body + '。请给出分析结果，要真实、不鸡汤、不教育。'
+                        },
+                        {
+                          role: 'user',
+                          content: '请分析我的状态'
+                        }
+                      ],
                 (chunk, fullText) => {
                   resultTextEl.textContent = fullText;
                   container.scrollTop = container.scrollHeight;
@@ -5268,7 +5382,7 @@
                       [
                         {
                           role: 'system',
-                          content: '你是小缓，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。用户能量' + checkInData.energy + '%，念头：' + checkInData.thought + '。请给出3条具体建议，每条一行，要实用、不鸡汤。'
+                          content: getXiaohuanPersona() + ' 用户能量' + checkInData.energy + '%，念头：' + checkInData.thought + '。请给出3条具体建议，每条一行，要实用、不鸡汤。'
                         },
                         {
                           role: 'user',
@@ -5526,7 +5640,7 @@
         [
           {
             role: 'system',
-            content: '你是' + (currentPersonality ? currentPersonality.name : '小缓') + '，一个温柔、幽默、有点丧但很有同理心的AI陪伴者。你说话简短、口语化，像朋友一样。本地文案已显示："' + localResponse + '"。请只输出补充内容（1-2句话），不要重复本地文案，保持同样的风格。'
+            content: getXiaohuanPersona() + ' 本地文案已显示："' + localResponse + '"。请只输出补充内容（1-2句话），不要重复本地文案，保持同样的风格。'
           },
           ...contextMessages,
           {
