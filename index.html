@@ -64,7 +64,6 @@
       width: 393px;
       height: 100%;
       z-index: 1;
-      pointer-events: all;
     }
 
     /* ═══════════════════════════════════════
@@ -79,11 +78,12 @@
       overflow-x: hidden;
       -webkit-overflow-scrolling: touch;
       padding-bottom: calc(var(--tab-height) + var(--safe-bottom));
-      pointer-events: none; /* 允许事件穿透到背景层 */
+      /* 允许事件穿透到背景canvas */
+      pointer-events: none;
     }
 
     #app > * {
-      pointer-events: auto; /* 内容元素正常接收事件 */
+      pointer-events: auto;
     }
 
     /* 顶部标题栏 */
@@ -93,7 +93,7 @@
       left: 50%;
       transform: translateX(-50%);
       width: 393px;
-      z-index: 100;
+      z-index: 1001;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -101,7 +101,7 @@
       padding-top: calc(12px + var(--safe-top));
       background: linear-gradient(to bottom, rgba(249, 248, 244, 0.95) 0%, rgba(249, 248, 244, 0.8) 70%, transparent 100%);
       backdrop-filter: blur(12px);
-      pointer-events: none;
+      pointer-events: auto;
     }
 
     .top-nav > * {
@@ -2690,13 +2690,6 @@
     let dragOffsetX = 0;
     let dragOffsetY = 0;
 
-    function gravitySetup(p) {
-      const canvas = p.createCanvas(393, p.windowHeight);
-      canvas.parent('gravity-canvas');
-      p.textFont('Noto Serif SC');
-      initGravityWords(p);
-    }
-
     function gravityDraw(p) {
       p.clear();
       gravityFrame++;
@@ -3099,142 +3092,74 @@
 
     // 启动 p5.js 背景
     new p5(function(p) {
+      let clickX = 0;
+      let clickY = 0;
+      let isMouseDragging = false;
+
       p.setup = function() {
-        gravitySetup(p);
-        // 禁用p5.js默认触摸事件，完全使用自定义触摸事件
-        // 防止p5.js自动将touch事件转换为mouse事件造成冲突
-        const canvas = p.canvas;
-        canvas.style.touchAction = 'none';
+        const canvas = p.createCanvas(393, p.windowHeight);
+        canvas.parent('gravity-canvas');
+        canvas.style('z-index', '1000');
+        p.textFont('Noto Serif SC');
+        initGravityWords(p);
       };
-      p.draw = function() { gravityDraw(p); };
-      // 不在p5.js中绑定鼠标事件，完全使用自定义触摸事件
-      // p.mousePressed = function() { gravityMousePressed(p); };
-      // p.mouseDragged = function() { gravityMouseDragged(p); };
-      // p.mouseReleased = function() { gravityMouseReleased(p); };
-      p.windowResized = function() { gravityWindowResized(p); };
-    });
 
-    // 直接绑定触摸事件到canvas（避免和p5.js冲突）
-    let touchEventBound = false;
+      p.draw = function() {
+        gravityDraw(p);
+      };
 
-    function initGravityTouchEvents() {
-      const container = document.getElementById('gravity-canvas');
-      if (!container) {
-        setTimeout(initGravityTouchEvents, 100);
-        return;
-      }
-
-      // 触摸状态跟踪（使用window变量确保全局可访问）
-      window.touchStartMX = 0;
-      window.touchStartMY = 0;
-      window.touchDragged = false;
-      window.touchPressStart = 0;
-      window.touchDraggedWord = null;
-      window.touchDragOffsetX = 0;
-      window.touchDragOffsetY = 0;
-
-      // 获取Canvas相对视口的精确坐标（考虑居中偏移）
-      function getCanvasCoords(touch) {
-        const canvas = container.querySelector('canvas');
-        if (!canvas) return { x: 0, y: 0 };
-        const rect = canvas.getBoundingClientRect();
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-        return {
-          x: (touch.clientX - rect.left) * scaleX,
-          y: (touch.clientY - rect.top) * scaleY
-        };
-      }
-
-      function handleTouchStart(e) {
-        const touch = e.touches[0];
-        const coords = getCanvasCoords(touch);
-        window.touchStartMX = coords.x;
-        window.touchStartMY = coords.y;
-        window.touchDragged = false;
-        window.touchPressStart = Date.now();
-        window.touchDraggedWord = null;
+      p.mousePressed = function() {
+        if (p.mouseX < 0 || p.mouseX > p.width || p.mouseY < 0 || p.mouseY > p.height) return;
+        clickX = p.mouseX;
+        clickY = p.mouseY;
+        isMouseDragging = false;
 
         // 检查是否按住了某个词
         for (let word of gravityWords) {
-          const d = Math.sqrt((coords.x - word.x) ** 2 + (coords.y - word.y) ** 2);
+          const d = p.dist(p.mouseX, p.mouseY, word.x, word.y);
           const threshold = word.fontSize * word.scale * 1.5;
           if (d < threshold) {
-            window.touchDraggedWord = word;
-            window.touchDragOffsetX = coords.x - word.x;
-            window.touchDragOffsetY = coords.y - word.y;
             word.isDragging = true;
-            break;
+            return;
+          }
+        }
+      };
+
+      p.mouseDragged = function() {
+        // 检查是否拖拽了某个词
+        for (let word of gravityWords) {
+          if (word.isDragging) {
+            word.x = p.mouseX;
+            word.y = p.mouseY;
+            word.vx = 0;
+            word.vy = 0;
+            isMouseDragging = true;
+            return p.mouseX; // 阻止默认行为
+          }
+        }
+      };
+
+      p.mouseReleased = function() {
+        // 检查是否是拖拽
+        let wasDragging = false;
+        for (let word of gravityWords) {
+          if (word.isDragging) {
+            word.isDragging = false;
+            wasDragging = true;
           }
         }
 
-        // 点击到词汇时阻止默认行为
-        if (window.touchDraggedWord) {
-          e.preventDefault();
-          e.stopPropagation();
+        // 如果没有拖拽，执行点击逻辑
+        if (!isMouseDragging && !wasDragging) {
+          handleWordClick(null, clickX, clickY);
         }
-      }
+      };
 
-      function handleTouchMove(e) {
-        if (window.touchDraggedWord && window.touchDraggedWord.isDragging) {
-          e.preventDefault();
-          e.stopPropagation();
-          const touch = e.touches[0];
-          const coords = getCanvasCoords(touch);
-          const newX = coords.x - window.touchDragOffsetX;
-          const newY = coords.y - window.touchDragOffsetY;
-
-          // 只有移动超过5px才算拖拽
-          if (Math.abs(newX - window.touchDraggedWord.x) > 5 || Math.abs(newY - window.touchDraggedWord.y) > 5) {
-            window.touchDragged = true;
-          }
-
-          window.touchDraggedWord.x = newX;
-          window.touchDraggedWord.y = newY;
-          window.touchDraggedWord.vx = 0;
-          window.touchDraggedWord.vy = 0;
-        }
-      }
-
-      function handleTouchEnd(e) {
-        const pressDuration = Date.now() - window.touchPressStart;
-
-        if (window.touchDraggedWord) {
-          e.preventDefault();
-          e.stopPropagation();
-
-          // 长按特效需要在设置中开启
-          const isLongPress = isLongPressEnabled() && pressDuration >= LONG_PRESS_THRESHOLD;
-
-          window.touchDraggedWord.isDragging = false;
-          window.touchDraggedWord = null;
-
-          if (!window.touchDragged && !isLongPress) {
-            // 没有拖动且不是长按，执行点击逻辑
-            handleWordClick(null, window.touchStartMX, window.touchStartMY);
-          }
-        } else {
-          // 没有点击到词汇，也执行点击逻辑（随机激活积极词汇）
-          handleWordClick(null, window.touchStartMX, window.touchStartMY);
-        }
-      }
-
-      // 移除旧的事件监听器（如果存在）
-      if (touchEventBound) {
-        container.removeEventListener('touchstart', handleTouchStart);
-        container.removeEventListener('touchmove', handleTouchMove);
-        container.removeEventListener('touchend', handleTouchEnd);
-      }
-
-      // 绑定新的事件监听器
-      container.addEventListener('touchstart', handleTouchStart, { passive: false });
-      container.addEventListener('touchmove', handleTouchMove, { passive: false });
-      container.addEventListener('touchend', handleTouchEnd, { passive: false });
-      touchEventBound = true;
-    }
-
-    // 初始化触摸事件（延迟执行，确保DOM已加载）
-    setTimeout(initGravityTouchEvents, 500);
+      p.windowResized = function() {
+        p.resizeCanvas(393, p.windowHeight);
+        initGravityWords(p);
+      };
+    });
 
     // ═══════════════════════════════════════
     //  左右滑动切换页面（边缘触发 + 事件隔离）
