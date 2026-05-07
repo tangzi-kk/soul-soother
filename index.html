@@ -1819,12 +1819,16 @@
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + pageName).classList.add('active');
       document.querySelectorAll('.tab-item').forEach(l => l.classList.remove('active'));
+      const newIndex = pages.indexOf(pageName);
+      const oldIndex = currentPageIndex;
+
       document.querySelectorAll('.tab-item[data-page="' + pageName + '"]').forEach(l => l.classList.add('active'));
       document.getElementById('app').scrollTop = 0;
-      currentPageIndex = pages.indexOf(pageName);
+      currentPageIndex = newIndex;
 
       // 播放滑动音效
-      playClickSound('soft');
+      const direction = newIndex > oldIndex ? 'left' : 'right';
+      playSwipeSound(direction);
 
       // 进入检测页面时，重置小缓对话
       if (pageName === 'checkin') {
@@ -1886,6 +1890,63 @@
 
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + p.duration);
+      } catch (e) {
+        // 静默失败
+      }
+    }
+
+    // 播放彩蛋音效（欢快的多音高音效）
+    function playEasterEggSound() {
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        // 播放一串欢快的音高
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.1);
+          osc.frequency.exponentialRampToValueAtTime(freq * 0.9, now + i * 0.1 + 0.3);
+
+          gain.gain.setValueAtTime(0.12, now + i * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.3);
+
+          osc.start(now + i * 0.1);
+          osc.stop(now + i * 0.1 + 0.3);
+        });
+      } catch (e) {
+        // 静默失败
+      }
+    }
+
+    // 播放滑动音效
+    function playSwipeSound(direction) {
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.type = 'sine';
+        const startFreq = direction === 'left' ? 600 : 400;
+        const endFreq = direction === 'left' ? 400 : 600;
+
+        osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(endFreq, ctx.currentTime + 0.15);
+
+        gain.gain.setValueAtTime(0.05, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.15);
       } catch (e) {
         // 静默失败
       }
@@ -2161,11 +2222,40 @@
 
     let soundEnabled = true;
     let soundVolume = 0.5;
+    let soundTypes = {
+      click: true,
+      swipe: true,
+      easter: true
+    };
 
     // 设置音效开关
     function setSoundEnabled(enabled) {
       soundEnabled = enabled;
       updateSoundButtons();
+    }
+
+    // 设置音效类型开关
+    function setSoundTypeEnabled(type, enabled) {
+      soundTypes[type] = enabled;
+      updateSoundTypeButtons();
+      saveSoundSettings();
+    }
+
+    // 更新音效类型按钮状态
+    function updateSoundTypeButtons() {
+      ['click', 'swipe', 'easter'].forEach(type => {
+        const onBtn = document.getElementById(type + '-sound-on-btn');
+        const offBtn = document.getElementById(type + '-sound-off-btn');
+        if (onBtn && offBtn) {
+          if (soundTypes[type]) {
+            onBtn.className = 'btn btn-primary';
+            offBtn.className = 'btn btn-ghost';
+          } else {
+            onBtn.className = 'btn btn-ghost';
+            offBtn.className = 'btn btn-primary';
+          }
+        }
+      });
     }
 
     // 更新音效按钮状态
@@ -2196,7 +2286,8 @@
     function saveSoundSettings() {
       const settings = {
         enabled: soundEnabled,
-        volume: soundVolume
+        volume: soundVolume,
+        types: soundTypes
       };
       localStorage.setItem('soulsoother_sound_settings', JSON.stringify(settings));
     }
@@ -2208,6 +2299,7 @@
         const settings = JSON.parse(saved);
         soundEnabled = settings.enabled !== false;
         soundVolume = settings.volume !== undefined ? settings.volume : 0.5;
+        soundTypes = settings.types || { click: true, swipe: true, easter: true };
 
         // 更新UI
         const volumeInput = document.getElementById('sound-volume');
@@ -2216,6 +2308,7 @@
           updateVolumeDisplay(Math.round(soundVolume * 100));
         }
         updateSoundButtons();
+        updateSoundTypeButtons();
       }
     }
 
@@ -2271,7 +2364,7 @@
     // 修改播放音效函数，添加开关和音量控制
     const originalPlayClickSound = playClickSound;
     playClickSound = function(type) {
-      if (!soundEnabled) return;
+      if (!soundEnabled || !soundTypes.click) return;
       
       try {
         const ctx = getAudioContext();
@@ -2305,6 +2398,72 @@
 
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + p.duration);
+      } catch (e) {
+        // 静默失败
+      }
+    };
+
+    // 滑动音效：添加开关和音量控制
+    const originalPlaySwipeSound = playSwipeSound;
+    playSwipeSound = function(direction) {
+      if (!soundEnabled || !soundTypes.swipe) return;
+
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.type = 'sine';
+        const startFreq = direction === 'left' ? 600 : 400;
+        const endFreq = direction === 'left' ? 400 : 600;
+
+        osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(endFreq, ctx.currentTime + 0.15);
+
+        // 应用音量设置
+        const finalVol = 0.05 * soundVolume;
+        gain.gain.setValueAtTime(finalVol, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.15);
+      } catch (e) {
+        // 静默失败
+      }
+    };
+
+    // 彩蛋音效：添加开关和音量控制
+    const originalPlayEasterEggSound = playEasterEggSound;
+    playEasterEggSound = function() {
+      if (!soundEnabled || !soundTypes.easter) return;
+
+      try {
+        const ctx = getAudioContext();
+        const now = ctx.currentTime;
+
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.1);
+          osc.frequency.exponentialRampToValueAtTime(freq * 0.9, now + i * 0.1 + 0.3);
+
+          // 应用音量设置
+          const finalVol = 0.12 * soundVolume;
+          gain.gain.setValueAtTime(finalVol, now + i * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.1 + 0.3);
+
+          osc.start(now + i * 0.1);
+          osc.stop(now + i * 0.1 + 0.3);
+        });
       } catch (e) {
         // 静默失败
       }
@@ -2384,6 +2543,30 @@
         <div style="margin-bottom:12px;">
           <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">音量 <span id="volume-value">50%</span></label>
           <input type="range" id="sound-volume" min="0" max="100" value="50" style="width:100%;" oninput="updateVolumeDisplay(this.value)">
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">点击音效</label>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary" id="click-sound-on-btn" style="flex:1;" onclick="setSoundTypeEnabled('click', true)">开启</button>
+            <button class="btn btn-ghost" id="click-sound-off-btn" style="flex:1;" onclick="setSoundTypeEnabled('click', false)">关闭</button>
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">滑动音效</label>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary" id="swipe-sound-on-btn" style="flex:1;" onclick="setSoundTypeEnabled('swipe', true)">开启</button>
+            <button class="btn btn-ghost" id="swipe-sound-off-btn" style="flex:1;" onclick="setSoundTypeEnabled('swipe', false)">关闭</button>
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label style="font-size:12px;color:var(--cocoa);display:block;margin-bottom:4px;">彩蛋音效</label>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary" id="easter-sound-on-btn" style="flex:1;" onclick="setSoundTypeEnabled('easter', true)">开启</button>
+            <button class="btn btn-ghost" id="easter-sound-off-btn" style="flex:1;" onclick="setSoundTypeEnabled('easter', false)">关闭</button>
+          </div>
         </div>
       </div>
 
@@ -7577,20 +7760,9 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
 
     // 彩蛋触发函数（增强版）
     function triggerEasterEgg() {
-      // 基础概率5%
-      let chance = EASTER_EGG_CHANCE;
-
-      // 深夜时段增加触发概率
-      const hour = new Date().getHours();
-      if (hour >= 22 || hour < 6) {
-        chance = 0.15; // 深夜15%概率
-      }
-
-      if (Math.random() > chance) return;
-
       // 优先检查时间敏感彩蛋
       const timeEgg = getTimeSensitiveEgg();
-      if (timeEgg && Math.random() < 0.3) {
+      if (timeEgg && Math.random() < 0.4) {
         showEasterEgg(timeEgg);
         return;
       }
@@ -7648,6 +7820,9 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
       // 触发震动效果
       modal.classList.add('easter-egg-shake');
       setTimeout(() => modal.classList.remove('easter-egg-shake'), 500);
+
+      // 播放彩蛋音效
+      playEasterEggSound();
     }
 
     // 关闭彩蛋
@@ -7687,7 +7862,7 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
     function initEasterEggTriggers() {
       // 记录上次触发时间，防止连续触发
       let lastTriggerTime = 0;
-      const COOLDOWN = 3000; // 3秒冷却时间
+      const COOLDOWN = 5000; // 5秒冷却时间
 
       document.addEventListener('click', function(e) {
         // 排除弹窗内的点击
@@ -7696,8 +7871,8 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         const now = Date.now();
         if (now - lastTriggerTime < COOLDOWN) return;
 
-        // 全局触发 - 任何点击都有概率
-        if (Math.random() < EASTER_EGG_CHANCE) {
+        // 全局触发 - 任何点击都有概率（提高到10%）
+        if (Math.random() < 0.10) {
           lastTriggerTime = now;
           triggerEasterEgg();
         }
@@ -7706,8 +7881,8 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
       // 额外：在特定元素上增加触发概率
       document.addEventListener('click', function(e) {
         if (e.target.closest('button') || e.target.closest('.card') || e.target.closest('.chat-option-btn')) {
-          // 按钮点击有额外15%概率触发（不受冷却影响）
-          if (Math.random() < 0.15) {
+          // 按钮点击有额外20%概率触发（不受冷却影响）
+          if (Math.random() < 0.20) {
             triggerEasterEgg();
           }
         }
@@ -7716,8 +7891,8 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
       // 缓一缓模块特定彩蛋触发
       document.addEventListener('click', function(e) {
         if (e.target.closest('.grounding-item') || e.target.closest('.delay-item') || e.target.closest('.attachment-card')) {
-          // 缓一缓模块交互有25%概率触发彩蛋
-          if (Math.random() < 0.25) {
+          // 缓一缓模块交互有30%概率触发彩蛋
+          if (Math.random() < 0.30) {
             triggerEasterEgg();
           }
         }
