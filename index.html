@@ -254,6 +254,36 @@
       opacity: 1;
     }
 
+    .swipe-hint {
+      position: fixed;
+      bottom: calc(var(--tab-height) + var(--safe-bottom) + 20px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--cocoa-light);
+      opacity: 0.7;
+      animation: swipeHintPulse 2s ease infinite;
+      pointer-events: none;
+    }
+
+    @keyframes swipeHintPulse {
+      0%, 100% { opacity: 0.4; transform: translateX(-50%) translateX(0); }
+      50% { opacity: 0.8; transform: translateX(-50%) translateX(-8px); }
+    }
+
+    .swipe-hint svg {
+      animation: swipeArrow 1.5s ease infinite;
+    }
+
+    @keyframes swipeArrow {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(-6px); }
+    }
+
     /* 紧急入口 —— 增强视觉层级 */
     .emergency-banner {
       background: linear-gradient(135deg, #fef2f2 0%, #fff5f5 100%);
@@ -1411,6 +1441,12 @@
           <div class="home-hint-text">点击彩色词汇，抓住一点光</div>
           <div class="home-hint-sub">点击灰色词汇，让黑暗退散</div>
           <div class="home-hint-combo" id="home-combo"></div>
+        </div>
+
+        <!-- 左滑提示 -->
+        <div class="swipe-hint" id="swipeHint">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><polyline points="12 19 5 12 12 5"></polyline></svg>
+          <span>左滑探索更多</span>
         </div>
 
         <!-- 紧急入口 —— 始终可见，底部对齐 -->
@@ -2730,34 +2766,39 @@
       }
 
       canvas.addEventListener('touchstart', function(e) {
-        e.preventDefault();
         const touch = e.touches[0];
         const rect = canvas.getBoundingClientRect();
         const mx = touch.clientX - rect.left;
         const my = touch.clientY - rect.top;
 
-        dragStartX = mx;
-        dragStartY = my;
-        hasDragged = false;
-        pressStartTime = Date.now();
-
         // 检查是否按住了某个词
+        let hitWord = false;
         for (let word of gravityWords) {
           const d = Math.sqrt((mx - word.x) ** 2 + (my - word.y) ** 2);
           const threshold = word.fontSize * word.scale * 1.5;
           if (d < threshold) {
+            hitWord = true;
+            dragStartX = mx;
+            dragStartY = my;
+            hasDragged = false;
+            pressStartTime = Date.now();
             draggedWord = word;
             dragOffsetX = mx - word.x;
             dragOffsetY = my - word.y;
             word.isDragging = true;
-            return;
+            break;
           }
+        }
+
+        // 只有点击到词汇时才阻止默认行为
+        if (hitWord) {
+          e.preventDefault();
         }
       }, { passive: false });
 
       canvas.addEventListener('touchmove', function(e) {
-        e.preventDefault();
         if (draggedWord && draggedWord.isDragging) {
+          e.preventDefault();
           const touch = e.touches[0];
           const rect = canvas.getBoundingClientRect();
           draggedWord.x = (touch.clientX - rect.left) - dragOffsetX;
@@ -2769,16 +2810,18 @@
       }, { passive: false });
 
       canvas.addEventListener('touchend', function(e) {
-        e.preventDefault();
-        const pressDuration = Date.now() - pressStartTime;
-        const isLongPress = pressDuration >= LONG_PRESS_THRESHOLD;
-
         if (draggedWord) {
+          e.preventDefault();
+          const pressDuration = Date.now() - pressStartTime;
+          const isLongPress = pressDuration >= LONG_PRESS_THRESHOLD;
+
           draggedWord.isDragging = false;
           draggedWord = null;
-        } else if (!hasDragged && !isLongPress) {
-          // 没有拖动且不是长按，执行点击逻辑
-          handleWordClick(null, dragStartX, dragStartY);
+
+          if (!hasDragged && !isLongPress) {
+            // 没有拖动且不是长按，执行点击逻辑
+            handleWordClick(null, dragStartX, dragStartY);
+          }
         }
       }, { passive: false });
     }
@@ -6012,7 +6055,7 @@
         el.style.top = (4 + track * trackHeight) + 'px';
 
         // 初始位置：在容器右侧外
-        const startX = containerWidth + Math.random() * 200;
+        const startX = containerWidth;
         el.style.transform = 'translateX(' + startX + 'px)';
 
         container.appendChild(el);
@@ -6022,9 +6065,14 @@
           el: el,
           x: startX,
           width: textWidth,
-          speed: 0.5 + Math.random() * 0.8, // 随机速度（调慢）
+          speed: (containerWidth + textWidth) / 120, // 2秒穿过容器 (60fps * 2s)
           track: track
         });
+
+        // 2秒后移除弹幕
+        setTimeout(() => {
+          if (el.parentNode) el.remove();
+        }, 2000);
       });
 
       // 启动动画循环
@@ -6036,21 +6084,24 @@
     function animateDanmu() {
       const containerWidth = 393;
 
+      // 清理已移除的元素
+      danmuItems = danmuItems.filter(item => item.el.parentNode);
+
       danmuItems.forEach(item => {
         // 向左移动
         item.x -= item.speed;
 
-        // 如果完全移出左侧，重置到右侧
-        if (item.x < -item.width - 50) {
-          item.x = containerWidth + 50 + Math.random() * 300;
-          // 随机改变速度
-          item.speed = 0.5 + Math.random() * 0.8; // 调慢速度
+        // 如果完全移出左侧，标记移除
+        if (item.x < -item.width) {
+          if (item.el.parentNode) item.el.remove();
         }
 
         item.el.style.transform = 'translateX(' + item.x + 'px)';
       });
 
-      danmuAnimationId = requestAnimationFrame(animateDanmu);
+      if (danmuItems.length > 0) {
+        danmuAnimationId = requestAnimationFrame(animateDanmu);
+      }
     }
 
     // 发布留言
