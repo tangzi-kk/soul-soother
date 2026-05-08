@@ -1182,6 +1182,424 @@
       animation: fadeIn 0.4s ease forwards;
     }
 
+    /* ═══════════════════════════════════════
+       职场支持工具（面向心智障碍群体）
+       ═══════════════════════════════════════ */
+
+    .work-support-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, rgba(115, 138, 229, 0.12) 0%, rgba(115, 138, 229, 0.06) 100%);
+      border-radius: 14px;
+      margin-bottom: 14px;
+      border: 1px solid rgba(115, 138, 229, 0.15);
+    }
+
+    .work-support-icon {
+      font-size: 28px;
+    }
+
+    .work-support-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+
+    .work-support-desc {
+      font-size: 12px;
+      color: var(--cocoa);
+    }
+
+    .task-breakdown-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .task-breakdown-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .task-breakdown-item:active {
+      background: rgba(255, 255, 255, 0.9);
+      transform: scale(0.98);
+    }
+
+    .task-breakdown-item.completed {
+      background: rgba(99, 166, 72, 0.1);
+      border-color: rgba(99, 166, 72, 0.25);
+      opacity: 0.7;
+    }
+
+    .task-step-number {
+      width: 24px;
+      height: 24px;
+      background: var(--accent);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .comm-category-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .comm-category-tab {
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(128, 112, 95, 0.12);
+      border-radius: 20px;
+      font-size: 12px;
+      color: var(--cocoa);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .comm-category-tab.active {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    .comm-phrase-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .comm-phrase-item {
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .comm-phrase-item:active {
+      background: rgba(255, 255, 255, 0.9);
+      transform: scale(0.98);
+    }
+
+    .comm-phrase-item.copied {
+      background: rgba(99, 166, 72, 0.15);
+    }
+
+    .comm-phrase-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .rhythm-cards {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .rhythm-card {
+      padding: 16px 12px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .rhythm-card:active {
+      transform: scale(0.96);
+    }
+
+    .rhythm-card.selected {
+      background: rgba(115, 138, 229, 0.12);
+      border-color: rgba(115, 138, 229, 0.35);
+    }
+
+    .rhythm-card.active {
+      background: rgba(99, 166, 72, 0.12);
+      border-color: rgba(99, 166, 72, 0.3);
+    }
+
+    .rhythm-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .rhythm-time {
+      font-size: 12px;
+      color: var(--cocoa);
+      margin-bottom: 6px;
+    }
+
+    .rhythm-desc {
+      font-size: 11px;
+      color: var(--cocoa-light);
+    }
+
+    .feeling-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .feeling-signal {
+      padding: 16px 8px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .feeling-signal:active {
+      transform: scale(0.95);
+    }
+
+    .feeling-signal.selected {
+      transform: scale(1.05);
+    }
+
+    .feeling-emoji {
+      font-size: 32px;
+      margin-bottom: 6px;
+    }
+
+    .feeling-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .feeling-hint {
+      font-size: 11px;
+      color: var(--cocoa);
+      line-height: 1.4;
+    }
+
+    .emergency-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .emergency-card {
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .emergency-card:active {
+      transform: scale(0.98);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .emergency-card.selected {
+      background: rgba(231, 55, 55, 0.1);
+      border-color: rgba(231, 55, 55, 0.3);
+    }
+
+    .emergency-icon {
+      font-size: 36px;
+      flex-shrink: 0;
+    }
+
+    .emergency-info {
+      flex: 1;
+    }
+
+    .emergency-label {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .emergency-desc {
+      font-size: 12px;
+      color: var(--cocoa);
+      line-height: 1.4;
+    }
+
+    .work-tip-card {
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(115, 138, 229, 0.15) 0%, rgba(115, 138, 229, 0.05) 100%);
+      border-radius: 14px;
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .work-tip-text {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--ink);
+    }
+
+    .pomodoro-timer {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .pomodoro-circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: rgba(115, 138, 229, 0.1);
+      border: 3px solid rgba(115, 138, 229, 0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      transition: all 0.3s ease;
+    }
+
+    .pomodoro-circle.working {
+      background: rgba(231, 55, 55, 0.1);
+      border-color: rgba(231, 55, 55, 0.3);
+    }
+
+    .pomodoro-circle.breaking {
+      background: rgba(99, 166, 72, 0.1);
+      border-color: rgba(99, 166, 72, 0.3);
+    }
+
+    .pomodoro-time {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--ink);
+      font-family: 'ZCOOL XiaoWei', serif;
+    }
+
+    .pomodoro-status {
+      font-size: 12px;
+      color: var(--cocoa);
+      margin-top: 4px;
+    }
+
+    .pomodoro-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .pomodoro-btn {
+      padding: 12px 24px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .pomodoro-btn.start {
+      background: var(--accent);
+      color: white;
+    }
+
+    .pomodoro-btn.pause {
+      background: var(--cocoa-light);
+      color: white;
+    }
+
+    .pomodoro-btn.reset {
+      background: transparent;
+      color: var(--cocoa);
+      border: 1px solid var(--border);
+    }
+
+    /* ═══════════════════════════════════════
+       公益招聘模块样式
+       ═══════════════════════════════════════ */
+    .job-section-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .job-section-icon { font-size: 20px; }
+    .job-section-title { font-size: 14px; font-weight: 600; color: var(--ink); }
+    
+    /* 工作类型选择 - 2x5网格 */
+    .job-type-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+    .job-type-card { padding: 14px 12px; background: rgba(255, 255, 255, 0.7); border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.2s ease; border: 2px solid transparent; }
+    .job-type-card:active { transform: scale(0.96); }
+    .job-type-card.selected { background: rgba(99, 166, 72, 0.12); border-color: rgba(99, 166, 72, 0.3); }
+    .job-type-icon { font-size: 28px; margin-bottom: 6px; }
+    .job-type-name { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+    .job-type-desc { font-size: 11px; color: var(--cocoa); line-height: 1.4; }
+    
+    /* 职位卡片 */
+    .job-list { display: flex; flex-direction: column; gap: 10px; }
+    .job-card { padding: 16px; background: rgba(255, 255, 255, 0.7); border-radius: 14px; cursor: pointer; transition: all 0.2s ease; }
+    .job-card:active { transform: scale(0.98); background: rgba(255, 255, 255, 0.9); }
+    .job-title { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+    .job-meta { display: flex; gap: 12px; font-size: 12px; color: var(--cocoa); margin-bottom: 10px; }
+    .job-meta span { display: flex; align-items: center; gap: 4px; }
+    .job-desc { font-size: 13px; color: var(--ink); line-height: 1.6; margin-bottom: 10px; }
+    .job-req { font-size: 12px; color: var(--cocoa); margin-bottom: 10px; padding: 10px; background: rgba(115, 138, 229, 0.08); border-radius: 8px; }
+    .job-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .job-tag { padding: 4px 10px; background: rgba(99, 166, 72, 0.12); border-radius: 12px; font-size: 11px; color: #63a648; }
+    .job-source { margin-top: 10px; font-size: 11px; color: var(--cocoa-light); }
+    .empty-tip { text-align: center; padding: 20px; color: var(--cocoa); font-size: 13px; }
+    
+    /* 职位详情弹窗 */
+    .job-modal-overlay { position: fixed; inset: 0; background: rgba(71, 36, 37, 0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
+    .job-modal-overlay.show { opacity: 1; visibility: visible; }
+    .job-modal { background: var(--canvas); border-radius: 20px; width: 100%; max-width: 400px; max-height: 80vh; overflow-y: auto; transform: scale(0.9); transition: transform 0.3s ease; }
+    .job-modal-overlay.show .job-modal { transform: scale(1); }
+    .job-modal-header { padding: 20px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--canvas); }
+    .job-modal-title { font-size: 18px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+    .job-modal-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(128, 112, 95, 0.1); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .job-modal-body { padding: 20px; }
+    .job-modal-section { margin-bottom: 16px; }
+    .job-modal-section .label { font-size: 12px; font-weight: 600; color: var(--cocoa); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .job-modal-section > div { font-size: 14px; color: var(--ink); line-height: 1.6; }
+    .job-modal-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .job-modal-tag { padding: 6px 12px; background: rgba(99, 166, 72, 0.12); border-radius: 14px; font-size: 12px; color: #63a648; }
+    .job-modal-action { padding: 14px 20px; background: var(--accent); color: white; border: none; border-radius: 12px; font-size: 15px; font-weight: 500; width: 100%; cursor: pointer; margin-top: 8px; }
+    
+    /* 招聘信息来源 */
+    .job-sources { display: flex; flex-direction: column; gap: 8px; }
+    .job-source-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; background: rgba(255, 255, 255, 0.7); border-radius: 12px; cursor: pointer; transition: all 0.2s ease; }
+    .job-source-item:active { background: rgba(255, 255, 255, 0.9); }
+    .job-source-icon { font-size: 24px; }
+    .job-source-name { flex: 1; font-size: 14px; color: var(--ink); }
+    .job-source-arrow { color: var(--cocoa-light); }
+
     /* 滑动提示 */
     .swipe-hint {
       text-align: center;
@@ -1650,6 +2068,12 @@
               </span>
               <span class="quick-action-text">玩个小游戏</span>
             </button>
+            <button class="quick-action-btn" onclick="showPlaySection('work')">
+              <span class="quick-action-icon">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="8" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 8V6a2 2 0 012-2h8a2 2 0 012 2v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 14h2M14 14h2M10 18h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              </span>
+              <span class="quick-action-text">职场支持</span>
+            </button>
           </div>
         </div>
 
@@ -1774,6 +2198,274 @@
               <!-- 动态生成 -->
             </div>
             <button class="btn btn-ghost" style="margin-top: 14px;" onclick="randomGame()">换一批推荐</button>
+          </div>
+        </div>
+
+        <!-- 职场缓一缓区域（重构：面向情绪困扰人群的职场场景） -->
+        <div class="play-section" id="play-work">
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 28 28" fill="none" style="vertical-align:middle;margin-right:6px;"><path d="M14 4v20M4 14h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.3"/><circle cx="14" cy="14" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+            职场缓一缓
+          </div>
+
+          <!-- 小缓引导语 -->
+          <div class="work-xiaohuan-guide" id="work-xiaohuan-guide">
+            <div class="work-xiaohuan-avatar">🌿</div>
+            <div class="work-xiaohuan-bubble">
+              <div class="work-xiaohuan-text" id="work-xiaohuan-text">工作让人想死？先别急着死，来这里发泄一下。</div>
+            </div>
+          </div>
+
+          <!-- 四个核心区域入口 -->
+          <div class="work-zone-grid">
+            <div class="work-zone-card" onclick="showWorkZone('vent')">
+              <div class="work-zone-emoji">🌊</div>
+              <div class="work-zone-name">情绪释放</div>
+              <div class="work-zone-desc">把情绪倒出来</div>
+            </div>
+            <div class="work-zone-card" onclick="showWorkZone('stories')">
+              <div class="work-zone-emoji">🤝</div>
+              <div class="work-zone-name">同伴故事</div>
+              <div class="work-zone-desc">原来不止我一个</div>
+            </div>
+            <div class="work-zone-card" onclick="showWorkZone('meaning')">
+              <div class="work-zone-emoji">🎯</div>
+              <div class="work-zone-name">意义微光</div>
+              <div class="work-zone-desc">找到一点值得</div>
+            </div>
+            <div class="work-zone-card work-zone-danger" onclick="showWorkZone('survival')">
+              <div class="work-zone-emoji">🆘</div>
+              <div class="work-zone-name">紧急靠岸</div>
+              <div class="work-zone-desc">撑过下一分钟</div>
+            </div>
+          </div>
+
+          <!-- 区域一：情绪释放区 -->
+          <div class="work-subsection" id="work-zone-vent" style="display:none;">
+            <div class="work-subsection-header">
+              <button class="work-back-btn" onclick="backToWorkMain()">← 返回</button>
+              <span class="work-subsection-title">🌊 情绪释放</span>
+            </div>
+
+            <!-- 发疯文学生成器 -->
+            <div class="card">
+              <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;">🗑️ 职场发疯文学</div>
+              <div style="font-size:12px;color:var(--cocoa);margin-bottom:12px;">输入你的烦恼，让小缓帮你发疯：</div>
+              <input type="text" class="input" id="work-vent-input" placeholder="例如：加班、老板、KPI、裁员...">
+              <button class="btn btn-primary" onclick="generateWorkVent()">生成发疯文案</button>
+              <div class="generator-output" id="work-vent-output"></div>
+            </div>
+
+            <!-- 虚拟宣泄工具 -->
+            <div class="card">
+              <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:12px;">💥 虚拟宣泄</div>
+              <div class="vent-tools-grid">
+                <div class="vent-tool-card" onclick="startBubbleWrap()">
+                  <div class="vent-tool-emoji">🫧</div>
+                  <div class="vent-tool-name">捏泡泡</div>
+                  <div class="vent-tool-desc">捏爆烦恼</div>
+                </div>
+                <div class="vent-tool-card" onclick="startTearPaper()">
+                  <div class="vent-tool-emoji">📄</div>
+                  <div class="vent-tool-name">撕纸</div>
+                  <div class="vent-tool-desc">撕碎压力</div>
+                </div>
+                <div class="vent-tool-card" onclick="startScreamCounter()">
+                  <div class="vent-tool-emoji">😤</div>
+                  <div class="vent-tool-name">尖叫计数</div>
+                  <div class="vent-tool-desc">释放一下</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 身体释放 -->
+            <div class="card">
+              <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:12px;">🧘 身体释放</div>
+              <div style="font-size:12px;color:var(--cocoa);margin-bottom:12px;">3分钟办公室拉伸，让身体先松一松：</div>
+              <div class="stretch-list" id="stretch-list">
+                <div class="stretch-item">
+                  <div class="stretch-num">1</div>
+                  <div class="stretch-content">
+                    <div class="stretch-name">颈部放松</div>
+                    <div class="stretch-desc">缓慢转动头部，左右各5次</div>
+                  </div>
+                </div>
+                <div class="stretch-item">
+                  <div class="stretch-num">2</div>
+                  <div class="stretch-content">
+                    <div class="stretch-name">肩膀绕环</div>
+                    <div class="stretch-desc">双肩向后绕环10次</div>
+                  </div>
+                </div>
+                <div class="stretch-item">
+                  <div class="stretch-num">3</div>
+                  <div class="stretch-content">
+                    <div class="stretch-name">手腕活动</div>
+                    <div class="stretch-desc">转动手腕，顺时针逆时针各5次</div>
+                  </div>
+                </div>
+                <div class="stretch-item">
+                  <div class="stretch-num">4</div>
+                  <div class="stretch-content">
+                    <div class="stretch-name">深呼吸</div>
+                    <div class="stretch-desc">吸气4秒，屏息4秒，呼气6秒，重复3次</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 区域二：同伴故事区 -->
+          <div class="work-subsection" id="work-zone-stories" style="display:none;">
+            <div class="work-subsection-header">
+              <button class="work-back-btn" onclick="backToWorkMain()">← 返回</button>
+              <span class="work-subsection-title">🤝 同伴故事</span>
+            </div>
+
+            <!-- 故事墙 -->
+            <div class="card" style="padding:0;overflow:hidden;">
+              <div class="story-swipe-container" id="story-swipe-container">
+                <div class="story-card active" id="story-card">
+                  <div class="story-text" id="story-text">加载中...</div>
+                  <div class="story-meta">
+                    <span class="story-tag" id="story-tag">职场</span>
+                    <span class="story-likes" id="story-likes">💙 0 人也一样</span>
+                  </div>
+                </div>
+              </div>
+              <div class="story-actions">
+                <button class="story-btn story-btn-skip" onclick="nextStory()">⏭ 下一条</button>
+                <button class="story-btn story-btn-like" onclick="likeStory()">💙 我也一样</button>
+              </div>
+            </div>
+
+            <!-- 留一句 -->
+            <div class="card">
+              <div style="font-size:13px;color:var(--cocoa);margin-bottom:10px;">你也想说一句？（匿名）</div>
+              <input type="text" class="input" id="story-input" placeholder="我在这里，因为..." maxlength="100">
+              <button class="btn btn-ghost" onclick="postStory()">留一句</button>
+            </div>
+
+            <!-- 替我说卡片 -->
+            <div class="card">
+              <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;">🗣️ 替我说</div>
+              <div style="font-size:12px;color:var(--cocoa);margin-bottom:12px;">当我说不出口时，让小缓替我说：</div>
+              <div class="speakfor-tabs" id="speakfor-tabs">
+                <span class="speakfor-tab active" onclick="filterSpeakFor('self')">对自己</span>
+                <span class="speakfor-tab" onclick="filterSpeakFor('boss')">对老板</span>
+                <span class="speakfor-tab" onclick="filterSpeakFor('colleague')">对同事</span>
+                <span class="speakfor-tab" onclick="filterSpeakFor('family')">对家人</span>
+              </div>
+              <div class="speakfor-list" id="speakfor-list"></div>
+            </div>
+          </div>
+
+          <!-- 区域三：意义微光区 -->
+          <div class="work-subsection" id="work-zone-meaning" style="display:none;">
+            <div class="work-subsection-header">
+              <button class="work-back-btn" onclick="backToWorkMain()">← 返回</button>
+              <span class="work-subsection-title">🎯 意义微光</span>
+            </div>
+
+            <!-- 今天的一个瞬间 -->
+            <div class="card">
+              <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;">✨ 今天的一个瞬间</div>
+              <div class="moment-question" id="moment-question">今天有没有一个瞬间，哪怕只有一秒，让你觉得「还好」？</div>
+              <div class="moment-options" id="moment-options">
+                <button class="moment-btn" onclick="showMomentHas()">有</button>
+                <button class="moment-btn" onclick="showMomentMaybe()">好像有</button>
+                <button class="moment-btn" onclick="showMomentNone()">完全没有</button>
+              </div>
+              <div class="moment-result" id="moment-result" style="display:none;"></div>
+            </div>
+
+            <!-- 小确幸收集瓶 -->
+            <div class="card">
+              <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;">🫙 小确幸收集瓶</div>
+              <div class="fortune-bottle" id="fortune-bottle">
+                <div class="bottle-visual" id="bottle-visual">🫙</div>
+                <div class="bottle-count" id="bottle-count">收集了 0 颗小星星</div>
+              </div>
+              <div class="fortune-input-row">
+                <input type="text" class="input" id="fortune-input" placeholder="今天的小确幸：例如地铁有座..." maxlength="50">
+                <button class="btn btn-primary" onclick="addFortune()">放入</button>
+              </div>
+              <div class="fortune-list" id="fortune-list"></div>
+            </div>
+
+            <!-- 我为什么还在这里 -->
+            <div class="card">
+              <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;">🕯️ 我为什么还在这里</div>
+              <div class="stay-question">我不知道你为什么还在这里，但你知道。<br>哪怕是一个很小的理由。</div>
+              <div class="stay-options" id="stay-options">
+                <button class="stay-btn" onclick="selectStayReason('早餐')">因为明天的早餐想吃那家包子</button>
+                <button class="stay-btn" onclick="selectStayReason('剧集')">因为那部剧还没看完</button>
+                <button class="stay-btn" onclick="selectStayReason('有人需要')">因为有人还需要我</button>
+                <button class="stay-btn" onclick="selectStayReason('约定')">因为我答应过自己再试一次</button>
+                <button class="stay-btn" onclick="selectStayReason('不知道')">我真的不知道</button>
+              </div>
+              <div class="stay-result" id="stay-result" style="display:none;"></div>
+            </div>
+          </div>
+
+          <!-- 区域四：紧急靠岸区 -->
+          <div class="work-subsection" id="work-zone-survival" style="display:none;">
+            <div class="work-subsection-header">
+              <button class="work-back-btn" onclick="backToWorkMain()">← 返回</button>
+              <span class="work-subsection-title">🆘 紧急靠岸</span>
+            </div>
+
+            <!-- 撑过下一分钟 -->
+            <div class="card" style="background:rgba(231,55,55,0.04);border:1px solid rgba(231,55,55,0.1);">
+              <div style="font-size:15px;font-weight:600;color:var(--danger);margin-bottom:12px;text-align:center;">撑过下一分钟</div>
+              <div class="survival-step active" id="survival-step-1">
+                <div class="survival-num">1</div>
+                <div class="survival-content">
+                  <div class="survival-title">深呼吸</div>
+                  <div class="survival-desc">吸气... 呼气... 跟着这个节奏</div>
+                  <div class="breath-guide" id="survival-breath">●</div>
+                </div>
+              </div>
+              <div class="survival-step" id="survival-step-2">
+                <div class="survival-num">2</div>
+                <div class="survival-content">
+                  <div class="survival-title">喝一口水</div>
+                  <div class="survival-desc">真的去喝一口，我等你</div>
+                </div>
+              </div>
+              <div class="survival-step" id="survival-step-3">
+                <div class="survival-num">3</div>
+                <div class="survival-content">
+                  <div class="survival-title">看看周围</div>
+                  <div class="survival-desc">说出你看到的5样东西</div>
+                </div>
+              </div>
+              <div class="survival-step" id="survival-step-4">
+                <div class="survival-num">4</div>
+                <div class="survival-content">
+                  <div class="survival-title">这种感觉会过去</div>
+                  <div class="survival-desc">它来过很多次，也都走了</div>
+                </div>
+              </div>
+              <div class="survival-actions" id="survival-actions" style="display:none;margin-top:16px;">
+                <button class="btn btn-primary" onclick="startCompanionship()">🤲 陪我5分钟</button>
+                <button class="btn btn-ghost" onclick="showHelpResources()">📞 需要人陪</button>
+              </div>
+              <button class="btn btn-primary" style="margin-top:16px;width:100%;" id="survival-next-btn" onclick="nextSurvivalStep()">下一步</button>
+            </div>
+
+            <!-- 5分钟陪伴 -->
+            <div class="card" id="companionship-card" style="display:none;">
+              <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:12px;text-align:center;">🤲 小缓陪你5分钟</div>
+              <div class="companionship-timer" id="companionship-timer">05:00</div>
+              <div class="companionship-message" id="companionship-message">我在这里。你不需要做任何事。</div>
+            </div>
+
+            <!-- 求助资源 -->
+            <div class="card" id="help-resources-card" style="display:none;">
+              <div style="font-size:14px;font-weight:600;color:var(--ink);margin-bottom:12px;">📞 有人愿意听你说</div>
+              <div class="help-resource-list" id="help-resource-list"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -7029,6 +7721,445 @@ ${card.actions.map((a, i) => `${i + 1}. ${a}`).join('\n')}
         // 滚动到该区域
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
+      // 如果是职场支持页面，初始化内容
+      if (sectionId === 'work') {
+        initWorkSupport();
+      }
+    }
+
+    // ═══════════════════════════════════════
+    //  职场支持工具功能（面向心智障碍群体）
+    // ═══════════════════════════════════════
+
+    // 任务拆解相关变量
+    let currentTask = null;
+    let completedSteps = new Set();
+
+    // 沟通卡片相关变量
+    let currentCommCategory = 'all';
+
+    // 番茄钟相关变量
+    let pomodoroInterval = null;
+    let pomodoroTimeLeft = 25 * 60;
+    let pomodoroIsRunning = false;
+    let pomodoroIsBreak = false;
+    let selectedRhythm = null;
+
+    // 初始化职场支持内容
+    function initWorkSupport() {
+      renderTaskBreakdown();
+      renderCommunicationCards();
+      renderWorkRhythms();
+      renderFeelingSignals();
+      renderEmergencySignals();
+      refreshWorkTip();
+      initJobSection();
+    }
+
+    // 渲染任务拆解
+    function renderTaskBreakdown() {
+      const container = document.getElementById('task-breakdown-list');
+      if (!container || typeof workSupport === 'undefined') return;
+
+      const tasks = Object.keys(workSupport.taskBreakdown);
+      container.innerHTML = tasks.map(task => {
+        const steps = workSupport.taskBreakdown[task];
+        return '<div class="task-breakdown-item" onclick="expandTask(this, \'' + task + '\')">' +
+          '<div style="flex:1;">' +
+          '<div style="font-weight:600;margin-bottom:4px;">' + task + '</div>' +
+          '<div style="font-size:12px;color:var(--cocoa);">' + steps.length + '步完成</div>' +
+          '</div>' +
+          '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cocoa-light)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>' +
+          '</div>';
+      }).join('');
+    }
+
+    // 展开任务步骤
+    function expandTask(element, task) {
+      const steps = workSupport.taskBreakdown[task];
+
+      // 如果已经展开，收起
+      if (element.classList.contains('expanded')) {
+        element.classList.remove('expanded');
+        element.innerHTML = '<div style="flex:1;"><div style="font-weight:600;margin-bottom:4px;">' + task + '</div><div style="font-size:12px;color:var(--cocoa);">' + steps.length + '步完成</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cocoa-light)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>';
+        return;
+      }
+
+      // 收起其他展开的
+      document.querySelectorAll('.task-breakdown-item.expanded').forEach(el => {
+        const t = el.dataset.task;
+        const s = workSupport.taskBreakdown[t];
+        el.classList.remove('expanded');
+        el.innerHTML = '<div style="flex:1;"><div style="font-weight:600;margin-bottom:4px;">' + t + '</div><div style="font-size:12px;color:var(--cocoa);">' + s.length + '步完成</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cocoa-light)" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>';
+      });
+
+      // 展开当前任务
+      element.classList.add('expanded');
+      element.dataset.task = task;
+      element.innerHTML = '<div style="width:100%;">' +
+        '<div style="font-weight:600;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">' +
+        '<span>' + task + '</span>' +
+        '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cocoa-light)" stroke-width="2" style="transform:rotate(90deg);"><path d="M9 18l6-6-6-6"/></svg>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:8px;">' +
+        steps.map((step, i) => '<div class="task-breakdown-item ' + (completedSteps.has(task + '-' + i) ? 'completed' : '') + '" onclick="completeStep(event, \'' + task + '\', ' + i + ')" style="padding:10px 12px;">' +
+          '<div class="task-step-number">' + (i + 1) + '</div>' +
+          '<div style="flex:1;font-size:13px;">' + step.replace(/^[0-9️⃣]+/, '') + '</div>' +
+          '</div>').join('') +
+        '</div>' +
+        '</div>';
+      playClickSound('soft');
+    }
+
+    // 完成步骤
+    function completeStep(event, task, stepIndex) {
+      event.stopPropagation();
+      const key = task + '-' + stepIndex;
+      completedSteps.add(key);
+
+      const items = document.querySelectorAll('.task-breakdown-item');
+      items.forEach(item => {
+        if (item.classList.contains('completed')) {
+          // 已完成，保持状态
+        } else if (!item.onclick) {
+          item.classList.add('completed');
+        }
+      });
+
+      playClickSound('success');
+      showToast('完成了一步！继续加油！');
+    }
+
+    // 渲染沟通卡片
+    function renderCommunicationCards(category) {
+      const container = document.getElementById('comm-phrase-list');
+      if (!container || typeof workSupport === 'undefined') return;
+
+      let cards = workSupport.communicationCards;
+      if (category && category !== 'all') {
+        cards = cards.filter(c => c.category === category);
+      }
+
+      container.innerHTML = cards.map(card => {
+        const phrases = card.phrases.map(phrase =>
+          '<div class="comm-phrase-item" onclick="copyPhrase(this, \'' + phrase.replace(/'/g, "\\'") + '\')">' +
+          '<span class="comm-phrase-icon">' + card.icon + '</span>' +
+          '<span style="flex:1;">' + phrase + '</span>' +
+          '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cocoa-light)" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>' +
+          '</div>'
+        ).join('');
+        return phrases;
+      }).join('');
+    }
+
+    // 筛选沟通卡片类别
+    function filterCommCards(category) {
+      currentCommCategory = category;
+      document.querySelectorAll('.comm-category-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.textContent === '全部' && category === 'all' || tab.getAttribute('onclick').includes(category));
+      });
+      renderCommunicationCards(category);
+    }
+
+    // 复制句子
+    function copyPhrase(element, phrase) {
+      navigator.clipboard.writeText(phrase).then(() => {
+        element.classList.add('copied');
+        playClickSound('success');
+        showToast('已复制：' + phrase);
+        setTimeout(() => {
+          element.classList.remove('copied');
+        }, 2000);
+      }).catch(() => {
+        showToast(phrase);
+      });
+    }
+
+    // 渲染工作节拍
+    function renderWorkRhythms() {
+      const container = document.getElementById('rhythm-cards');
+      if (!container || typeof workSupport === 'undefined') return;
+
+      container.innerHTML = workSupport.workRhythms.map(rhythm => {
+        return '<div class="rhythm-card" onclick="selectRhythm(this, \'' + rhythm.name + '\', ' + rhythm.workMinutes + ', ' + rhythm.breakMinutes + ')">' +
+          '<div class="rhythm-name">' + rhythm.name + '</div>' +
+          '<div class="rhythm-time">' + rhythm.workMinutes + '分钟 / ' + rhythm.breakMinutes + '分钟</div>' +
+          '<div class="rhythm-desc">' + rhythm.description + '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    // 选择工作节拍
+    function selectRhythm(element, name, workMinutes, breakMinutes) {
+      document.querySelectorAll('.rhythm-card').forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+      selectedRhythm = { name, workMinutes, breakMinutes };
+
+      // 显示计时器
+      const timer = document.getElementById('pomodoro-timer');
+      if (timer) {
+        timer.style.display = 'block';
+      }
+
+      pomodoroTimeLeft = workMinutes * 60;
+      pomodoroIsBreak = false;
+      updatePomodoroDisplay();
+      playClickSound('soft');
+    }
+
+    // 更新番茄钟显示
+    function updatePomodoroDisplay() {
+      const timeDisplay = document.getElementById('pomodoro-time');
+      const statusDisplay = document.getElementById('pomodoro-status');
+      const circle = document.getElementById('pomodoro-circle');
+      const startBtn = document.getElementById('pomodoro-start');
+
+      if (!timeDisplay) return;
+
+      const minutes = Math.floor(pomodoroTimeLeft / 60);
+      const seconds = pomodoroTimeLeft % 60;
+      timeDisplay.textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+
+      if (pomodoroIsBreak) {
+        statusDisplay.textContent = '休息中';
+        circle.className = 'pomodoro-circle breaking';
+      } else {
+        statusDisplay.textContent = '工作中';
+        circle.className = 'pomodoro-circle working';
+      }
+
+      startBtn.textContent = pomodoroIsRunning ? '暂停' : '开始';
+      startBtn.className = pomodoroIsRunning ? 'pomodoro-btn pause' : 'pomodoro-btn start';
+    }
+
+    // 切换番茄钟
+    function togglePomodoro() {
+      if (pomodoroIsRunning) {
+        clearInterval(pomodoroInterval);
+        pomodoroInterval = null;
+        pomodoroIsRunning = false;
+      } else {
+        pomodoroIsRunning = true;
+        pomodoroInterval = setInterval(() => {
+          pomodoroTimeLeft--;
+          updatePomodoroDisplay();
+
+          if (pomodoroTimeLeft <= 0) {
+            clearInterval(pomodoroInterval);
+            pomodoroInterval = null;
+            pomodoroIsRunning = false;
+
+            if (pomodoroIsBreak) {
+              // 休息结束，开始工作
+              pomodoroTimeLeft = selectedRhythm.workMinutes * 60;
+              pomodoroIsBreak = false;
+              playClickSound('success');
+              showToast('休息结束！开始工作吧！');
+            } else {
+              // 工作结束，开始休息
+              pomodoroTimeLeft = selectedRhythm.breakMinutes * 60;
+              pomodoroIsBreak = true;
+              playClickSound('ding');
+              showToast('工作完成！休息一下吧！');
+            }
+            updatePomodoroDisplay();
+          }
+        }, 1000);
+      }
+      updatePomodoroDisplay();
+    }
+
+    // 重置番茄钟
+    function resetPomodoro() {
+      clearInterval(pomodoroInterval);
+      pomodoroInterval = null;
+      pomodoroIsRunning = false;
+      pomodoroIsBreak = false;
+
+      if (selectedRhythm) {
+        pomodoroTimeLeft = selectedRhythm.workMinutes * 60;
+      } else {
+        pomodoroTimeLeft = 25 * 60;
+      }
+
+      updatePomodoroDisplay();
+      playClickSound('soft');
+    }
+
+    // 渲染感觉信号
+    function renderFeelingSignals() {
+      const container = document.getElementById('feeling-grid');
+      if (!container || typeof workSupport === 'undefined') return;
+
+      container.innerHTML = workSupport.feelingSignals.map(signal => {
+        return '<div class="feeling-signal" onclick="selectFeeling(this, \'' + signal.id + '\')">' +
+          '<div class="feeling-emoji">' + signal.emoji + '</div>' +
+          '<div class="feeling-label">' + signal.label + '</div>' +
+          '<div class="feeling-hint">' + signal.hint + '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    // 选择感觉信号
+    function selectFeeling(element, id) {
+      element.classList.toggle('selected');
+
+      const signal = workSupport.feelingSignals.find(s => s.id === id);
+      if (signal) {
+        if (element.classList.contains('selected')) {
+          showToast(signal.emoji + ' ' + signal.label + ' — ' + signal.hint);
+        }
+      }
+      playClickSound('soft');
+    }
+
+    // 渲染紧急暂停信号
+    function renderEmergencySignals() {
+      const container = document.getElementById('emergency-cards');
+      if (!container || typeof workSupport === 'undefined') return;
+
+      container.innerHTML = workSupport.emergencySignals.map(signal => {
+        return '<div class="emergency-card" onclick="showEmergency(this, \'' + signal.label + '\')">' +
+          '<div class="emergency-icon">' + signal.icon + '</div>' +
+          '<div class="emergency-info">' +
+          '<div class="emergency-label">' + signal.label + '</div>' +
+          '<div class="emergency-desc">' + signal.description + '</div>' +
+          '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    // 显示紧急信号
+    function showEmergency(element, label) {
+      element.classList.add('selected');
+      playClickSound('danger');
+      showToast('请把这个给同事看：' + label);
+      setTimeout(() => {
+        element.classList.remove('selected');
+      }, 3000);
+    }
+
+    // 刷新工作提示
+    function refreshWorkTip() {
+      const tipText = document.getElementById('work-tip-text');
+      if (!tipText) return;
+
+      if (typeof getRandomWorkTip === 'function') {
+        tipText.style.opacity = '0';
+        setTimeout(() => {
+          tipText.textContent = getRandomWorkTip();
+          tipText.style.opacity = '1';
+        }, 250);
+      }
+      playClickSound('soft');
+    }
+
+    // ═══════════════════════════════════════
+    //  公益招聘信息功能
+    // ═══════════════════════════════════════
+    let selectedCategories = [];
+    const MAX_DISPLAY_JOBS = 4;
+
+    function initJobSection() {
+      if (typeof workSupport === 'undefined') return;
+      renderJobCategories();
+      renderJobSources();
+      renderJobList();
+    }
+
+    function renderJobCategories() {
+      const container = document.getElementById('job-type-grid');
+      if (!container) return;
+      const categories = workSupport.jobOpportunities.jobCategories;
+      container.innerHTML = categories.map(cat => {
+        const isSelected = selectedCategories.includes(cat.id);
+        return `<div class="job-type-card${isSelected ? ' selected' : ''}" onclick="toggleJobCategory(this, '${cat.id}')">
+          <div class="job-type-icon">${cat.icon}</div>
+          <div class="job-type-name">${cat.name}</div>
+          <div class="job-type-desc">${cat.description}</div>
+        </div>`;
+      }).join('');
+    }
+
+    function toggleJobCategory(element, catId) {
+      const idx = selectedCategories.indexOf(catId);
+      idx === -1 ? selectedCategories.push(catId) : selectedCategories.splice(idx, 1);
+      element.classList.toggle('selected');
+      renderJobList();
+      playClickSound('soft');
+    }
+
+    function renderJobList() {
+      const container = document.getElementById('job-list');
+      if (!container) return;
+      let jobs = workSupport.jobOpportunities.recommendedJobs;
+      if (selectedCategories.length > 0) {
+        jobs = jobs.filter(job => selectedCategories.some(c => job.categories.includes(c)));
+      }
+      if (!jobs.length) {
+        container.innerHTML = '<div class="empty-tip">没有找到符合条件的职位</div>';
+        return;
+      }
+      container.innerHTML = jobs.slice(0, MAX_DISPLAY_JOBS).map(job => {
+        const cats = job.categories.map(c => workSupport.jobOpportunities.jobCategories.find(x => x.id === c)).filter(Boolean);
+        return `<div class="job-card" onclick="showJobDetail(${job.id})">
+          <div class="job-title">${job.title}</div>
+          <div class="job-meta"><span>📍${job.location}</span><span>🏢${job.company}</span></div>
+          <div class="job-desc">${job.description}</div>
+          <div class="job-req"><strong>要求：</strong>${job.requirements}</div>
+          <div class="job-tags">${cats.map(c => `<span class="job-tag">${c.icon} ${c.name}</span>`).join('')}</div>
+          <div class="job-source">来源：${job.source}</div>
+        </div>`;
+      }).join('');
+    }
+
+    function showJobDetail(jobId) {
+      const job = workSupport.jobOpportunities.recommendedJobs.find(j => j.id === jobId);
+      if (!job) return;
+      const cats = job.categories.map(c => workSupport.jobOpportunities.jobCategories.find(x => x.id === c)).filter(Boolean);
+      const modal = document.getElementById('job-modal-overlay');
+      document.getElementById('job-modal-title').textContent = job.title;
+      document.getElementById('job-modal-body').innerHTML = `
+        <div class="job-modal-section"><div class="label">公司</div><div>🏢 ${job.company}</div></div>
+        <div class="job-modal-section"><div class="label">地点</div><div>📍 ${job.location}</div></div>
+        <div class="job-modal-section"><div class="label">工作时间</div><div>⏰ ${job.workTime}</div></div>
+        <div class="job-modal-section"><div class="label">薪资</div><div>💰 ${job.salary}</div></div>
+        <div class="job-modal-section"><div class="label">工作内容</div><div>${job.description}</div></div>
+        <div class="job-modal-section"><div class="label">任职要求</div><div>${job.requirements}</div></div>
+        <div class="job-modal-section"><div class="label">适合人群</div><div class="job-modal-tags">${cats.map(c => `<span class="job-modal-tag">${c.icon} ${c.name}</span>`).join('')}</div></div>
+        <div class="job-modal-section"><div class="label">联系方式</div><div>${job.contact}</div></div>
+        <button class="job-modal-action" onclick="closeJobModal()">我知道了</button>`;
+      modal.classList.add('show');
+      playClickSound('soft');
+    }
+
+    function closeJobModal() {
+      document.getElementById('job-modal-overlay').classList.remove('show');
+      playClickSound('soft');
+    }
+
+    function renderJobSources() {
+      const container = document.getElementById('job-sources');
+      if (!container) return;
+      container.innerHTML = workSupport.jobOpportunities.sources.map(s => 
+        `<div class="job-source-item" onclick="openJobSource('${s.url}')">
+          <span class="job-source-icon">${s.logo}</span>
+          <span class="job-source-name">${s.name}</span>
+          <svg class="job-source-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </div>`
+      ).join('');
+    }
+
+    function openJobSource(url) {
+      url === '#' ? showToast('请联系当地残联获取就业服务') : window.open(url, '_blank');
+      playClickSound('soft');
+    }
+
+    function refreshJobs() {
+      selectedCategories = [];
+      renderJobCategories();
+      renderJobList();
+      playClickSound('soft');
     }
 
     // 随机留恋卡片

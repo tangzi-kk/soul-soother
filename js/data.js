@@ -550,15 +550,157 @@ function getRandomFeed() {
 }
 
 // ========================================
-// 获取精神天气
+// 工作支持工具数据（面向心智障碍群体）
 // ========================================
-function getWeather() {
-  return tools.weather[Math.floor(Math.random() * tools.weather.length)];
-}
+var workSupport = {
+  // 任务拆解：常见工作拆成1-2步
+  taskBreakdown: {
+    "整理桌面": ["1️⃣ 把东西分类：要的 / 不要的", "2️⃣ 要的东西放回原位"],
+    "发邮件": ["1️⃣ 打开邮箱，写收件人", "2️⃣ 写标题和内容，发送"],
+    "接电话": ["1️⃣ 说'你好'", "2️⃣ 听对方说什么，需要时记下来"],
+    "参加会议": ["1️⃣ 找到会议室，坐下来", "2️⃣ 听别人说，需要时点头"],
+    "喝水休息": ["1️⃣ 站起来走到饮水机", "2️⃣ 倒水，喝完回来"],
+    "去洗手间": ["1️⃣ 站起来走到门口", "2️⃣ 找洗手间标志"],
+    "打印文件": ["1️⃣ 把文件发送到打印机", "2️⃣ 去打印机那里拿"],
+    "扫地": ["1️⃣ 拿扫帚和簸箕", "2️⃣ 从里往外扫，倒进垃圾桶"]
+  },
+
+  // 沟通卡片：职场常用句子
+  communicationCards: [
+    { category: "求助", icon: "🆘", phrases: ["我遇到困难了，可以帮我一下吗？", "这个我不会，能教我吗？", "我需要一点时间想想"] },
+    { category: "需要休息", icon: "⏸️", phrases: ["我需要休息一下", "我去倒杯水", "我出去走一走"] },
+    { category: "确认理解", icon: "❓", phrases: ["我理解对了吗？", "可以再说一遍吗？", "请问是这个意思吗？"] },
+    { category: "表达感谢", icon: "🙏", phrases: ["谢谢你！", "帮了大忙了", "很高兴你帮我"] },
+    { category: "开始/结束工作", icon: "👋", phrases: ["我开始工作了", "我准备好了", "我今天先到这里"] }
+  ],
+
+  // 工作节拍：可视化工作/休息节奏
+  workRhythms: [
+    { name: "番茄钟", workMinutes: 25, breakMinutes: 5, description: "工作25分钟，休息5分钟" },
+    { name: "短时专注", workMinutes: 15, breakMinutes: 3, description: "工作15分钟，休息3分钟" },
+    { name: "长时专注", workMinutes: 45, breakMinutes: 10, description: "工作45分钟，休息10分钟" },
+    { name: "轻松节奏", workMinutes: 10, breakMinutes: 2, description: "工作10分钟，休息2分钟" }
+  ],
+
+  // 感觉信号：用图标表达状态
+  feelingSignals: [
+    { id: "good", emoji: "😊", label: "我很好", color: "#63a648", hint: "状态好，可以继续工作" },
+    { id: "tired", emoji: "😓", label: "有点累", color: "#f5a623", hint: "需要小休息，喝点水" },
+    { id: "overwhelmed", emoji: "😰", label: "太多了", color: "#e57c23", hint: "需要把任务减少一点" },
+    { id: "confused", emoji: "🤔", label: "我不懂", color: "#738ae5", hint: "需要有人解释一下" },
+    { id: "anxious", emoji: "😣", label: "很紧张", color: "#d66a6a", hint: "需要深呼吸或暂停" },
+    { id: "need_help", emoji: "🆘", label: "需要帮助", color: "#e73737", hint: "请人来帮忙" }
+  ],
+
+  // 紧急暂停信号
+  emergencySignals: [
+    { icon: "🛑", label: "我要暂停", description: "按这个给同事看，表示需要暂停一下" },
+    { icon: "🏃", label: "我要离开", description: "按这个给同事看，表示需要出去一下" },
+    { icon: "📞", label: "打电话", description: "按这个给同事看，表示需要打电话求助" }
+  ],
+
+  // 工作提示卡
+  workTips: [
+    "做不完没关系，分成几次做就好",
+    "有困难可以问同事，不要自己硬撑",
+    "累了就休息，这不是偷懒",
+    "做错事也没关系，可以改正",
+    "今天的任务做不完，明天继续",
+    "慢一点没关系，稳稳地做就好",
+    "完成一小步就是进步"
+  ],
+
+  // ═══════════════════════════════════════
+  // 公益招聘信息（面向心智障碍群体就业支持）
+  // 分类原则：认知负荷低、社交要求明确、技能要求清晰
+  // ═══════════════════════════════════════
+  jobOpportunities: {
+    sources: [
+      { name: "中国残疾人就业创业网络服务平台", url: "https://www.cdpee.org", logo: "🏛️" },
+      { name: "中国残疾人联合会", url: "http://www.cdpf.org.cn", logo: "♿" },
+      { name: "智联招聘-残疾人招聘专区", url: "https://special.zhaopin.com/cc/disabled/", logo: "💼" },
+      { name: "前程无忧-残疾人招聘", url: "https://www.51job.com/disabled/", logo: "🌐" },
+      { name: "Boss直聘-残疾人招聘", url: "https://www.zhipin.com", logo: "👔" },
+      { name: "各地残联就业服务机构", url: "#", logo: "📍" }
+    ],
+
+    jobCategories: [
+      { id: "quiet", dimension: "环境", name: "安静环境", icon: "🔇", description: "不需要说话，安静独立工作", suitable: "对声音敏感、不擅长社交" },
+      { id: "nature", dimension: "环境", name: "接触自然", icon: "🌿", description: "户外工作，接触花草植物", suitable: "喜欢安静、需要放松" },
+      { id: "routine_space", dimension: "环境", name: "固定场所", icon: "🏠", description: "室内工作，有固定工位", suitable: "喜欢稳定、不喜欢变化" },
+      { id: "independent", dimension: "社交", name: "独立工作", icon: "🧩", description: "一个人完成，不用和很多人说话", suitable: "不擅长社交、容易紧张" },
+      { id: "light_interact", dimension: "社交", name: "轻度互动", icon: "🤝", description: "偶尔说话，不需要主动推销", suitable: "能进行简单交流" },
+      { id: "simple_task", dimension: "技能", name: "简单重复", icon: "🔄", description: "每天做一样的事，不用学新东西", suitable: "学习新事物有困难" },
+      { id: "skill_growth", dimension: "技能", name: "学习成长", icon: "📚", description: "有师傅教，慢慢学新技能", suitable: "愿意学习、有进步意愿" },
+      { id: "creative", dimension: "技能", name: "发挥创意", icon: "🎨", description: "做手工、装饰等发挥创意", suitable: "喜欢动手、有艺术兴趣" },
+      { id: "light_active", dimension: "活动", name: "坐着工作", icon: "🪑", description: "主要坐着，不用走来走去", suitable: "体力有限、不方便走动" },
+      { id: "moving", dimension: "活动", name: "走动工作", icon: "🚶", description: "需要走动，整理巡逻", suitable: "喜欢活动、身体健康" }
+    ],
+
+    dimensionMap: {
+      "环境": ["quiet", "nature", "routine_space"],
+      "社交": ["independent", "light_interact"],
+      "技能": ["simple_task", "skill_growth", "creative"],
+      "活动": ["light_active", "moving"]
+    },
+
+    recommendedJobs: [
+      { id: 1, title: "图书整理员", location: "北京", company: "公共图书馆", categories: ["quiet", "independent", "simple_task", "routine_space", "light_active"], description: "把图书按编号放回书架，整理阅读区", requirements: "认识数字和字母、细心", workTime: "周一到周五 9:00-17:00", salary: "面议", source: "残联推荐" },
+      { id: 2, title: "数据录入员", location: "广州", company: "科技公司", categories: ["quiet", "independent", "simple_task", "routine_space", "light_active"], description: "用电脑录入单据信息，核对数据", requirements: "会打字、会用电脑", workTime: "周一到周五 弹性时间", salary: "3000-4000元/月", source: "公益招聘平台" },
+      { id: 3, title: "植物养护员", location: "成都", company: "园林绿化公司", categories: ["nature", "light_interact", "skill_growth", "moving"], description: "照顾室内植物、浇水施肥、修剪", requirements: "喜欢植物、能户外工作", workTime: "周一到周六 8:00-16:00", salary: "2500-3500元/月", source: "残联推荐" },
+      { id: 4, title: "手工制作员", location: "上海", company: "公益手作坊", categories: ["quiet", "independent", "creative", "light_active"], description: "制作简单手工艺品，串珠折纸包装", requirements: "手部灵活、有耐心", workTime: "弹性工作时间", salary: "计件制", source: "公益组织" },
+      { id: 5, title: "电商客服（居家）", location: "全国", company: "电商平台", categories: ["routine_space", "independent", "light_interact"], description: "在网上回复顾客问题，解答疑问", requirements: "会打字、有耐心、情绪稳定", workTime: "居家办公、时间灵活", salary: "底薪+提成", source: "网络招聘" },
+      { id: 6, title: "保洁员", location: "深圳", company: "物业公司", categories: ["moving", "simple_task", "light_interact"], description: "打扫办公室会议室，保持整洁", requirements: "身体健康、手脚勤快", workTime: "早班/中班轮换", salary: "2800-3500元/月", source: "企业直招" },
+      { id: 7, title: "厨房帮工", location: "杭州", company: "连锁快餐店", categories: ["skill_growth", "light_interact", "moving"], description: "协助备菜洗碗、简单烹饪", requirements: "勤快、讲究卫生", workTime: "早中晚班轮换", salary: "3000-4000元/月+餐补", source: "企业直招" },
+      { id: 8, title: "快递分拣员", location: "武汉", company: "快递公司", categories: ["simple_task", "moving", "independent"], description: "分拣快递包裹，扫码入库", requirements: "认识数字、手脚快", workTime: "早班/夜班", salary: "3500-5000元/月", source: "企业直招" }
+    ]
+  }
+};
 
 // ========================================
 // 获取求救卡
 // ========================================
 function getSosCard(level) {
   return tools.sosCards[level] || tools.sosCards.mild;
+}
+
+// ========================================
+// 工作支持工具函数
+// ========================================
+
+// 获取随机工作提示
+function getRandomWorkTip() {
+  return workSupport.workTips[Math.floor(Math.random() * workSupport.workTips.length)];
+}
+
+// 获取任务拆解
+function getTaskBreakdown(task) {
+  return workSupport.taskBreakdown[task] || ["1️⃣ 想想怎么做", "2️⃣ 开始做"];
+}
+
+// 获取沟通卡片（按类别）
+function getCommunicationCards(category) {
+  if (!category || category === 'all') {
+    return workSupport.communicationCards;
+  }
+  return workSupport.communicationCards.filter(function(card) {
+    return card.category === category;
+  });
+}
+
+// 获取工作节拍
+function getWorkRhythms() {
+  return workSupport.workRhythms;
+}
+
+// 获取感觉信号
+function getFeelingSignals() {
+  return workSupport.feelingSignals;
+}
+
+// ========================================
+// 获取精神天气
+// ========================================
+function getWeather() {
+  return tools.weather[Math.floor(Math.random() * tools.weather.length)];
 }
